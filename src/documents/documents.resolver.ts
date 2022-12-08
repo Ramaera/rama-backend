@@ -71,7 +71,7 @@ import { UserIdArgs } from 'src/users/args/user-id.args';
 
   @UseGuards(GqlAuthGuard)
   @Mutation(() => Document)
-  async updateDocuments(
+  async updateDocument(
     @UserEntity() 
     user: User,
     @Args('data') 
@@ -85,24 +85,20 @@ import { UserIdArgs } from 'src/users/args/user-id.args';
   // ********************************************
 
 
-  @Query(() => Document)
-  async post(@Args() id: DocumentIdArgs) {
-    return this.prisma.document.findUnique({ where: { id: id.documentId } });
-  }
+ 
 
-
-
-  // *************************************************
-  // ************************************************
 
   @Query(() => [Document])
-  userPosts(@Args() id: UserIdArgs) {
+  myDocuments(@Args() id: UserIdArgs) {
     return this.prisma.user
       .findUnique({ where: { id: id.userId } })
       .documents();
   }
-  @Query(() => Document)
-      async document(@Args() id: DocumentIdArgs) {
-        return this.prisma.document.findUnique({ where: { id: id.documentId } });
-      }
+
+
+  // Todo Need Authentication
+  // @Query(() => Document)
+  //     async document(@Args() id: DocumentIdArgs) {
+  //       return this.prisma.document.findUnique({ where: { id: id.documentId } });
+  // }
 }

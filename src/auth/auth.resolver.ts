@@ -13,13 +13,18 @@ import { SignupInput } from './dto/signup.input';
 import { RefreshTokenInput } from './dto/refresh-token.input';
 import { User } from 'src/users/models/user.model';
 import { PasswordRequestInput } from './dto/passwordRequest.input';
+import { ChangePasswordWithPrivateKeyInput } from './dto/forget-password.input';
+import { EmptyModal } from 'src/common/models/empty.model';
 @Resolver(() => Auth)
+  
+  
+  
 export class AuthResolver {
   constructor(private readonly auth: AuthService) {}
 
   @Mutation(() => Auth)
   async signup(@Args('data') data: SignupInput) {
-    data.pw_id = data.pw_id.toLowerCase();
+    data.pw_id = data.pw_id.toUpperCase();
     const { accessToken, refreshToken } = await this.auth.createUser(data);
     return {
       accessToken,
@@ -33,7 +38,7 @@ export class AuthResolver {
     password 
   }: LoginInput ) {
     const { accessToken, refreshToken } = await this.auth.login(
-      pw_id.toLowerCase(),
+      pw_id.toUpperCase(),
       // RM_id.toLowerCase(),
       password
     );
@@ -57,10 +62,19 @@ export class AuthResolver {
     }
   }
 
+
+  @Mutation(()=>EmptyModal)
+  async forgetPasswordWithPrivateKey(@Args('data') payload:ChangePasswordWithPrivateKeyInput){
+   return this.auth.forgetPasswordWithPrivateKey(payload)
+  }
+
   @Mutation(() => Token)
   async refreshToken(@Args() { token }: RefreshTokenInput) {
     return this.auth.refreshToken(token);
   }
+
+
+
 
   @ResolveField('user', () => User)
   async user(@Parent() auth: Auth) {

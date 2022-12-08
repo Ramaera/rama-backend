@@ -5,7 +5,11 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
-  // previewFeatures = []
+}
+
+
+generator custom_generator {
+  provider = "nestjs-prisma-graphql-crud-gen"
 }
 
 generator dbml {
@@ -18,7 +22,7 @@ model User {
   updatedAt               DateTime   @updatedAt
   email                   String?    @unique
   password                String
-  name                    String
+  name                    String?
   father_or_husband_name  String?
   mobile_number           String?
   alternate_mobile_number String?

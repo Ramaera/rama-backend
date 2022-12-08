@@ -13,6 +13,7 @@ import { PasswordService } from './password.service';
 import { SignupInput } from './dto/signup.input';
 import { Token } from './models/token.model';
 import { SecurityConfig } from 'src/common/configs/config.interface';
+import { ChangePasswordWithPrivateKeyInput } from './dto/forget-password.input';
 
 @Injectable()
 export class AuthService {
@@ -24,21 +25,25 @@ export class AuthService {
   ) {}
 
   async createUser(
-    // user:User, 
-    payload: SignupInput): Promise<Token> {
+    // user:User,
+    payload: SignupInput
+  ): Promise<Token> {
     const hashedPassword = await this.passwordService.hashPassword(
       payload.password
     );
-  
-
-
 
     try {
+      const rm_id = `RM-${(Math.random() + 1)
+        .toString(36)
+        .substring(7)
+        .toLocaleUpperCase()}`;
+
       const user = await this.prisma.user.create({
         data: {
           ...payload,
           password: hashedPassword,
-          // RM_id,
+          pw_id: payload.pw_id.toUpperCase(),
+          rm_id,
           role: 'USER',
         },
       });
@@ -51,23 +56,28 @@ export class AuthService {
         e instanceof Prisma.PrismaClientKnownRequestError &&
         e.code === 'P2002'
       ) {
-        throw new ConflictException(`pw_id  ${payload.pw_id} already used.`);
+        let problemField = e.meta.target[0];
+        if (problemField === 'pw_id') {
+          problemField = `PlanetWay Id ${payload.pw_id}`;
+        }
+
+        throw new ConflictException(`${problemField} already used122.`);
       }
       throw new Error(e);
     }
   }
-  async passwordresetRequest(pw_id:string):Promise<Token>{
-    const user=await this.prisma.user.findUnique({where:{pw_id}})
+  async passwordresetRequest(pw_id: string): Promise<Token> {
+    const user = await this.prisma.user.findUnique({ where: { pw_id } });
 
-    if (!user){
+    if (!user) {
       throw new NotFoundException(`No user found for PW_Id: ${pw_id}`);
     }
     return this.generateTokens({
-      userId:user.id
-    })
+      userId: user.id,
+    });
   }
 
-  async login(pw_id: string,password: string): Promise<Token> {    
+  async login(pw_id: string, password: string): Promise<Token> {
     const user = await this.prisma.user.findUnique({ where: { pw_id } });
 
     if (!user) {
@@ -91,7 +101,6 @@ export class AuthService {
   validateUser(userId: string): Promise<User> {
     return this.prisma.user.findUnique({ where: { id: userId } });
   }
-
 
   getUserFromToken(token: string): Promise<User> {
     const id = this.jwtService.decode(token)['userId'];
@@ -131,6 +140,36 @@ export class AuthService {
     }
   }
 
+  async forgetPasswordWithPrivateKey(
+    payload: ChangePasswordWithPrivateKeyInput
+  ) {
+    const hashedPassword = await this.passwordService.hashPassword(
+      payload.newPassword
+    );
+    const user = await this.prisma.user.findFirst({
+      where: {
+        private_key: {
+          equals: payload.private_key,
+          mode:"insensitive"
+      } },
+    });
+
+
+    if (!user) {
+      throw new NotFoundException(`No user found`);
+    }
+
+    await this.prisma.user.update({
+      data: {
+        password: hashedPassword,
+      },
+      where: {
+        id: user.id,
+      },
+    });
+    return {message:"success"};
+  }
+
   // async updateDocuments(pw_id:string):Promise<Token>{
   //   const user=await this.prisma.user.findUnique({where:{pw_id}})
 
@@ -141,5 +180,4 @@ export class AuthService {
   //     userId:user.id
   //   })
   // }
-
 }

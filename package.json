@@ -25,7 +25,7 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "dev": "nest start --watch",
-    "prismastudio":"npx prisma studio",
+    "prismastudio": "npx prisma studio",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -72,11 +72,13 @@
     "graphql-scalars": "1.17.0",
     "graphql-subscriptions": "2.0.0",
     "nestjs-prisma": "0.17.0",
+    "nestjs-prisma-graphql-crud-gen": "^1.0.3",
     "passport": "0.6.0",
     "passport-jwt": "4.0.0",
     "reflect-metadata": "0.1.13",
     "rimraf": "3.0.2",
-    "rxjs": "7.5.6"
+    "rxjs": "7.5.6",
+    "typegraphql-prisma": "^0.23.1"
   },
   "devDependencies": {
     "@nestjs/cli": "9.0.0",

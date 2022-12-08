@@ -15,6 +15,11 @@ input ChangePasswordInput {
   newPassword: String!
 }
 
+input ChangePasswordWithPrivateKeyInput {
+  newPassword: String!
+  private_key: String!
+}
+
 input CreateDocumentInput {
   title: String!
   url: String!
@@ -30,10 +35,34 @@ type Document {
   url: String!
 }
 
+type DocumentModal {
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  id: ID!
+  title: String!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+  url: String
+}
+
+type EmptyModal {
+  message: String
+}
+
 """
 A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction.
 """
 scalar JWT
+
+"""User KYC Status"""
+enum KYC {
+  APPROVED
+  NOT_INITIALIZED
+  ONGOING
+  REJECTED
+  SUBMITTED
+}
 
 input LoginInput {
   password: String!
@@ -43,12 +72,12 @@ input LoginInput {
 type Mutation {
   changePassword(data: ChangePasswordInput!): User!
   createDocument(data: CreateDocumentInput!): Document!
+  forgetPasswordWithPrivateKey(data: ChangePasswordWithPrivateKeyInput!): EmptyModal!
   login(data: LoginInput!): Auth!
-  newPassword(data: ChangePasswordInput!): User!
   passwordresetRequest(data: PasswordRequestInput!): Auth!
   refreshToken(token: JWT!): Token!
   signup(data: SignupInput!): Auth!
-  updateDocuments(data: UpdateDocumentsInput!): Document!
+  updateDocument(data: UpdateDocumentsInput!): Document!
   updateUser(data: UpdateUserInput!): User!
 }
 
@@ -57,12 +86,10 @@ input PasswordRequestInput {
 }
 
 type Query {
-  document(documentId: String!): Document!
   hello(name: String!): String!
   helloWorld: String!
   me: User!
-  post(documentId: String!): Document!
-  userPosts(userId: String!): [Document!]!
+  myDocuments(userId: String!): [Document!]!
 }
 
 """User role"""
@@ -72,9 +99,9 @@ enum Role {
 }
 
 input SignupInput {
-  email: String!
+  email: String
   mobile: String
-  name: String!
+  name: String
   password: String!
   pw_id: String!
 }
@@ -104,16 +131,20 @@ input UpdateUserInput {
 }
 
 type User {
-  RM_id: String
-  author: User!
-
-  """Identifies the date and time when the object was created."""
+  alternate_mobile_number: String
   createdAt: DateTime!
+  date_of_birth: String
+  demat_account: String
+  documents: DocumentModal
   email: String
-  id: ID!
+  father_or_husband_name: String
+  id: String!
+  kyc: KYC!
+  mobile_number: String
   name: String
+  private_key: String
+  pw_id: String
+  rm_id: String
   role: Role!
-
-  """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
 }

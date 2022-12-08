@@ -4,9 +4,12 @@
 ##########################################################################################################################
 ##########################################################################################################################
 mutation AuthUser {
-  signup(data: {  email:"trial@gmail.com",
-    password: "secret42" ,name:"Mohan",pw_id:"PW12"}) {
+  signup(data: { "pw_id":"1234", "password":"password1234"}) {
     accessToken
+    user{
+     createdAt
+      
+    }
     refreshToken
   }
 }
@@ -18,22 +21,31 @@ mutation AuthUser {
 ##########################################################################################################################
 
 mutation Login {
-  login(data:{pw_id:"pw12",password:"secret42"}){
+ login(data:{pw_id:"1234", password:"password1234"}){
     accessToken
+    refreshToken
+    user{
+       createdAt
+      updatedAt
+      rm_id
+      pw_id
+      private_key
+     email
+    }
   }
 }
 
 
 #########################################################################################################################
 #########################################################################################################################
-######### Forget Password ####################################################################################################
+######### Change Password ####################################################################################################
 ##########################################################################################################################
 ##########################################################################################################################
 mutation AuthUser{
-  newPassword(data:{
+  changePassword(data:{
     newPassword:"1234567890"
   }){
-    name
+    id
   }
 }
 
@@ -41,5 +53,5 @@ mutation AuthUser{
 # In Header Mention the accessToken  for that Particular user
  
 {
-  "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbGI2ZGdidzYwMDU3cmd1d2oxdGpnY3htIiwiaWF0IjoxNjY5OTc3NDY4LCJleHAiOjE2Njk5Nzc1ODh9.VnH5zvvix_GKkfe6TRhHYWYmoWQfNoIzg5k-QodDwfQ"
+  "Authorization":"Bearer token"
 }

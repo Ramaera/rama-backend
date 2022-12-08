@@ -8,7 +8,7 @@ Table User {
   updatedAt DateTime [not null]
   email String [unique]
   password String [not null]
-  name String [not null]
+  name String
   father_or_husband_name String
   mobile_number String
   alternate_mobile_number String
