@@ -1,0 +1,119 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Auth {
+  """JWT access token"""
+  accessToken: JWT!
+
+  """JWT refresh token"""
+  refreshToken: JWT!
+  user: User!
+}
+
+input ChangePasswordInput {
+  newPassword: String!
+}
+
+input CreateDocumentInput {
+  title: String!
+  url: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Document {
+  title: String!
+  url: String!
+}
+
+"""
+A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction.
+"""
+scalar JWT
+
+input LoginInput {
+  password: String!
+  pw_id: String!
+}
+
+type Mutation {
+  changePassword(data: ChangePasswordInput!): User!
+  createDocument(data: CreateDocumentInput!): Document!
+  login(data: LoginInput!): Auth!
+  newPassword(data: ChangePasswordInput!): User!
+  passwordresetRequest(data: PasswordRequestInput!): Auth!
+  refreshToken(token: JWT!): Token!
+  signup(data: SignupInput!): Auth!
+  updateDocuments(data: UpdateDocumentsInput!): Document!
+  updateUser(data: UpdateUserInput!): User!
+}
+
+input PasswordRequestInput {
+  pw_id: String!
+}
+
+type Query {
+  document(documentId: String!): Document!
+  hello(name: String!): String!
+  helloWorld: String!
+  me: User!
+  post(documentId: String!): Document!
+  userPosts(userId: String!): [Document!]!
+}
+
+"""User role"""
+enum Role {
+  ADMIN
+  USER
+}
+
+input SignupInput {
+  email: String!
+  mobile: String
+  name: String!
+  password: String!
+  pw_id: String!
+}
+
+type Token {
+  """JWT access token"""
+  accessToken: JWT!
+
+  """JWT refresh token"""
+  refreshToken: JWT!
+}
+
+input UpdateDocumentsInput {
+  title: String
+  url: String
+}
+
+input UpdateUserInput {
+  Alternate_Mobile_number: String
+  DOB: String
+  Demat_Account: String
+  Mobile: String
+  Private_Key: String
+  email: String
+  father_or_husband_name: String
+  name: String
+}
+
+type User {
+  RM_id: String
+  author: User!
+
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  email: String
+  id: ID!
+  name: String
+  role: Role!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}

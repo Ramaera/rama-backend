@@ -1,0 +1,62 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  // previewFeatures = []
+}
+
+generator dbml {
+  provider = "prisma-dbml-generator"
+}
+
+model User {
+  id                      String     @id @default(cuid())
+  createdAt               DateTime   @default(now())
+  updatedAt               DateTime   @updatedAt
+  email                   String?    @unique
+  password                String
+  name                    String
+  father_or_husband_name  String?
+  mobile_number           String?
+  alternate_mobile_number String?
+  documents               Document[]
+  kyc                     KYC        @default(NOT_INITIALIZED)
+  role                    Role
+  date_of_birth           String?
+  demat_account           String?
+  private_key             String?
+  pw_id                   String?    @unique
+  rm_id                   String?    @unique
+}
+
+model Document {
+  id     String  @id @default(cuid())
+  title  String
+  url    String
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
+  status STATUS  @default(PENDING)
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum KYC {
+  NOT_INITIALIZED
+  SUBMITTED
+  ONGOING
+  REJECTED
+  APPROVED
+}
+
+enum STATUS {
+  NOT_INITILAIZED
+  PENDING
+  SUBMITTED
+  REJECTED
+}
