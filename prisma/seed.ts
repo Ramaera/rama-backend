@@ -19,6 +19,7 @@ async function main() {
       password: '$2b$10$EpRnTzVlqHNP0.fUbXUwSOyuiXe/QLSUG6xNekdHgTGmrpHEfIoxm', // secret42
       role: 'USER',
       pw_id:'PW12345',
+      membership: "BASIC",
       // RM_id:"12345",
       documents: {
         create: {
