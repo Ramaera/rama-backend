@@ -20,7 +20,6 @@ async function main() {
       role: 'USER',
       pw_id:'PW12345',
       membership: "BASIC",
-      // RM_id:"12345",
       documents: {
         create: {
           title: 'Aadhar Card Front',
