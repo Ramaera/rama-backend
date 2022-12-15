@@ -14,23 +14,28 @@ export class UpdateUserInput {
   @Field({ nullable: true })
   father_or_husband_name?: string;
 
-  @Field({ nullable: true })
-  Mobile?: string;
-
-  @Field({ nullable: true })
-  Alternate_Mobile_number?: string;
-
-  @Field({ nullable: true })
-  DOB?: string;
-
-  @Field({ nullable: true })
-  Demat_Account?: string;
-
-  @Field({ nullable: true })
-  Private_Key?: string;
 
   @Field({ nullable: true })
   email?: string;
 
 
+
+
+
+   @Field({ nullable: true })
+  mobile_number?: string
+
+   @Field({ nullable: true })
+  alternate_mobile_number?: string
+
+
+   @Field({ nullable: true })
+  date_of_birth?: string
+
+   @Field({ nullable: true })
+  demat_account?: string
+
 }
+
+
+
