@@ -14,6 +14,7 @@ import { UsersService } from './users.service';
 import { User } from './models/user.model';
 import { ChangePasswordInput } from './dto/change-password.input';
 import { UpdateUserInput } from './dto/update-user.input';
+import { UpdateNomineeInput } from './dto/update-user.input';
 
 
 
@@ -46,6 +47,20 @@ export class UsersResolver {
     @Args('data') newUserData: UpdateUserInput
   ) {
     return this.usersService.updateUser(user.id, newUserData);
+  }
+
+   // *********************************Updated  Nominee details********************
+  // ****************************************************************************
+  // ****************************************************************************
+
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => User)
+  async updateNominee(
+    @UserEntity() user: User,
+    @Args('data') newUserData: UpdateNomineeInput
+  ) {
+    return this.usersService.updateNominee(user.id, newUserData);
   }
 
    // *********************************Mutation command  about the Changed Password   ********************

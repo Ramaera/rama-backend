@@ -26,8 +26,15 @@ async function main() {
           url: 'https://www.prisma.io/day/',
         },
       },
+      nominee:{
+        create:{
+        name:"test1son",
+        relationship:"son",
+      }
+    }
     },
-  });
+  }
+  );
   
   console.log({ user1 });
 }

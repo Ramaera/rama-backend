@@ -27,6 +27,7 @@ model User {
   mobile_number           String?
   alternate_mobile_number String?
   documents               Document[]
+  nominee                 Nominee?
   kyc                     KYC        @default(NOT_INITIALIZED)
   role                    Role
   membership              Membership   @default(BASIC)
@@ -44,6 +45,13 @@ model Document {
   user   User?   @relation(fields: [userId], references: [id])
   userId String?
   status STATUS  @default(PENDING)
+}
+
+model Nominee {
+      user              User?   @relation(fields: [userPw_id], references: [pw_id])
+      userPw_id         String @unique
+      name              String?
+      relationship      String
 }
 
 enum Role {

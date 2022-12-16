@@ -13,6 +13,7 @@ Table User {
   mobile_number String
   alternate_mobile_number String
   documents Document [not null]
+  nominee Nominee
   kyc KYC [not null, default: 'NOT_INITIALIZED']
   role Role [not null]
   membership Membership [not null, default: 'BASIC']
@@ -30,6 +31,13 @@ Table Document {
   user User
   userId String
   status STATUS [not null, default: 'PENDING']
+}
+
+Table Nominee {
+  user User
+  userPw_id String [unique, not null]
+  name String
+  relationship String [not null]
 }
 
 Enum Role {
@@ -58,3 +66,5 @@ Enum STATUS {
 }
 
 Ref: Document.userId > User.id
+
+Ref: Nominee.userPw_id - User.pw_id
