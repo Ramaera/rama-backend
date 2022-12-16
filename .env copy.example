@@ -1,0 +1,11 @@
+DATABASE_URL="postgres://myuser:mypassword@localhost:5432/ramaera-db"
+
+# Nest
+PORT=3000
+
+# Security
+JWT_ACCESS_SECRET=nestjsPrismaAccessSecret
+JWT_REFRESH_SECRET=nestjsPrismaRefreshSecret
+
+
+JWT_SECRET=LCHSy/ZflUZunbONW8Jcmi2eexevmv0FvjtJkf+dvgC8RsLc16upPBKOGtZ+hdYeZK4nirRWprZRsfacXBtBQJQnZl7tjsoHM1yUNyIIQcNpPHibx2Ttww02+BO1lXxkFuTRCFVch5Qv+YLALOagRRoXyKX1noUGwM+s+HIVdmLQMF8hiBIHN5kdjgbU5LM1fMaWXRUtY2NP+F0+GG9XSdlgYVeFQflHR3LFRhH00KevDputOY867tZT1P0oEu7ur59N9vUN44lfQcjitjxdNgy5K/Vr4i/lYLzZ0PFhaz8mQxCSPCwR+Su4C8mYXEMW289gCPyjf+YXAboyUfzmUA==

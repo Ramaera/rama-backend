@@ -15,7 +15,8 @@ import { User } from './models/user.model';
 import { ChangePasswordInput } from './dto/change-password.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { UpdateNomineeInput } from './dto/update-user.input';
-
+import { CreateNomineeInput } from './dto/createNominee.input';
+import { Nominee } from './entities/nominee.entity';
 
 
 // 
@@ -34,6 +35,32 @@ export class UsersResolver {
   async me(@UserEntity() user: User): Promise<User> {
     return user;
   }
+
+  // ******************************************************
+// ******************************************************
+// **************Create Nominee************************
+// ****************************************************** 
+// ******************************************************
+
+
+@UseGuards(GqlAuthGuard)   // Gql Authentication Guards
+@Mutation(() => Nominee) 
+async createNominee(       
+  @UserEntity()
+  user:User,
+  @Args('data') 
+  data: CreateNomineeInput
+  ) 
+  {
+    const newNominee=this.prisma.nominee.create({
+      data:{
+        name:data.name,
+        relationship:data.relationship,
+        userId:user.id
+      }
+    })
+  return newNominee
+}
 
     // *********************************Updated  User details********************
   // ****************************************************************************
@@ -55,12 +82,12 @@ export class UsersResolver {
 
 
   @UseGuards(GqlAuthGuard)
-  @Mutation(() => User)
+  @Mutation(() => Nominee)
   async updateNominee(
     @UserEntity() user: User,
-    @Args('data') newUserData: UpdateNomineeInput
+    @Args('data') newNomineeData: UpdateNomineeInput
   ) {
-    return this.usersService.updateNominee(user.id, newUserData);
+    return this.usersService.updateNominee(user.id, newNomineeData);
   }
 
    // *********************************Mutation command  about the Changed Password   ********************

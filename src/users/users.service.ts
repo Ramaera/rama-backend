@@ -1,10 +1,8 @@
 import { PrismaService } from 'nestjs-prisma';
 import { Injectable } from '@nestjs/common';
 import { PasswordService } from 'src/auth/password.service';
-import {
-  ChangePasswordInput,
-} from './dto/change-password.input';
-import { UpdateUserInput } from './dto/update-user.input';
+import {ChangePasswordInput} from './dto/change-password.input';
+import { UpdateUserInput,UpdateNomineeInput} from './dto/update-user.input'; 
 
 @Injectable()
 export class UsersService {
@@ -39,11 +37,11 @@ export class UsersService {
   // ###############################################################
   // ##################################################################
 
-  async updateNominee(userPw_id: string, newUserData: UpdateUserInput) {
-    const updated_nominee = this.prisma.user.update({
-      data: newUserData,
+  async updateNominee(userId: string, newNomineeData: UpdateNomineeInput) {
+    const updated_nominee = this.prisma.nominee.update({
+      data: newNomineeData,
       where: {
-        id: userPw_id,
+        id: userId,
       },
     });
     return updated_nominee;

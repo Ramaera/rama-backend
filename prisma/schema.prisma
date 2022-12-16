@@ -8,9 +8,7 @@ generator client {
 }
 
 
-generator custom_generator {
-  provider = "nestjs-prisma-graphql-crud-gen"
-}
+
 
 generator dbml {
   provider = "prisma-dbml-generator"
@@ -48,10 +46,11 @@ model Document {
 }
 
 model Nominee {
-      user              User?   @relation(fields: [userPw_id], references: [pw_id])
-      userPw_id         String @unique
+      user              User?   @relation(fields: [userId], references: [id])
+      userId            String @unique
       name              String?
       relationship      String
+      id                 String @id @default(cuid())
 }
 
 enum Role {

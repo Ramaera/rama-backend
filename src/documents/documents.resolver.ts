@@ -23,8 +23,6 @@ import { UserIdArgs } from 'src/users/args/user-id.args';
 
 
 
-
-// const pubSub = new PubSub();
 @Resolver(() => Document)
   export class DocumentsResolver {
     constructor(

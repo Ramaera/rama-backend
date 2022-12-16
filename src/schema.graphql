@@ -25,6 +25,11 @@ input CreateDocumentInput {
   url: String!
 }
 
+input CreateNomineeInput {
+  name: String!
+  relationship: String!
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -72,13 +77,20 @@ input LoginInput {
 type Mutation {
   changePassword(data: ChangePasswordInput!): User!
   createDocument(data: CreateDocumentInput!): Document!
+  createNominee(data: CreateNomineeInput!): Nominee!
   forgetPasswordWithPrivateKey(data: ChangePasswordWithPrivateKeyInput!): EmptyModal!
   login(data: LoginInput!): Auth!
   passwordresetRequest(data: PasswordRequestInput!): Auth!
   refreshToken(token: JWT!): Token!
   signup(data: SignupInput!): Auth!
   updateDocument(data: UpdateDocumentsInput!): Document!
+  updateNominee(data: UpdateNomineeInput!): Nominee!
   updateUser(data: UpdateUserInput!): User!
+}
+
+type Nominee {
+  name: String!
+  relatiosnhip: String!
 }
 
 input PasswordRequestInput {
@@ -119,14 +131,18 @@ input UpdateDocumentsInput {
   url: String
 }
 
+input UpdateNomineeInput {
+  name: String
+  relationship: String
+}
+
 input UpdateUserInput {
-  Alternate_Mobile_number: String
-  DOB: String
-  Demat_Account: String
-  Mobile: String
-  Private_Key: String
+  alternate_mobile_number: String
+  date_of_birth: String
+  demat_account: String
   email: String
   father_or_husband_name: String
+  mobile_number: String
   name: String
 }
 

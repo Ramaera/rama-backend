@@ -35,9 +35,10 @@ Table Document {
 
 Table Nominee {
   user User
-  userPw_id String [unique, not null]
+  userId String [unique, not null]
   name String
   relationship String [not null]
+  id String [pk]
 }
 
 Enum Role {
@@ -67,4 +68,4 @@ Enum STATUS {
 
 Ref: Document.userId > User.id
 
-Ref: Nominee.userPw_id - User.pw_id
+Ref: Nominee.userId - User.id
