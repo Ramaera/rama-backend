@@ -93,6 +93,17 @@ type Nominee {
   relatiosnhip: String!
 }
 
+type NomineeModel {
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  id: ID!
+  name: String!
+  relationship: String
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
 input PasswordRequestInput {
   pw_id: String!
 }
@@ -102,6 +113,7 @@ type Query {
   helloWorld: String!
   me: User!
   myDocuments(userId: String!): [Document!]!
+  myNominee(userId: String!): [Nominee!]!
 }
 
 """User role"""
@@ -147,6 +159,7 @@ input UpdateUserInput {
 }
 
 type User {
+  Nominee: NomineeModel
   alternate_mobile_number: String
   createdAt: DateTime!
   date_of_birth: String

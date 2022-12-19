@@ -6,3 +6,9 @@ export class UserIdArgs {
   @IsNotEmpty()
   userId: string;
 }
+
+@ArgsType()
+export class NomineeIdArgs {
+  @IsNotEmpty()
+  userId: string;
+}

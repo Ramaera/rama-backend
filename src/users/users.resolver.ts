@@ -17,6 +17,7 @@ import { UpdateUserInput } from './dto/update-user.input';
 import { UpdateNomineeInput } from './dto/update-user.input';
 import { CreateNomineeInput } from './dto/createNominee.input';
 import { Nominee } from './entities/nominee.entity';
+import { UserIdArgs } from './args/user-id.args';
 
 
 // 
@@ -32,8 +33,17 @@ export class UsersResolver {
   // ****************************************************************************
   // ****************************************************************************
   @Query(() => User)
-  async me(@UserEntity() user: User): Promise<User> {
-    return user;
+  @Query(()=>Nominee)
+  async me(@UserEntity() user:User, nominee:Nominee): Promise<User> {
+const getUser=await this.prisma.user.findUnique({
+  where :{
+    id:user.id
+  },
+  include:{
+    nominee:true
+  }
+})
+    return (getUser);
   }
 
   // ******************************************************
@@ -107,7 +117,12 @@ async createNominee(
 
  
   
-
+  @Query(() => [Nominee])
+  myNominee(@Args() id: UserIdArgs) {
+    return this.prisma.user
+      .findUnique({ where: { id: id.userId } })
+      .nominee();
+  }
 
   // @ResolveField('author',()=>User)
   // documents(@Parent() user: User) {
