@@ -1,7 +1,7 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 
 @ObjectType()
-export class Nominee {
+export class nominee {
  
 @Field()
   name: string;

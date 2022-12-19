@@ -11,7 +11,7 @@ import { Role, KYC} from '@prisma/client';
 // import { Document } from 'src/documents/entities/document.entity';
 
 import {  DocumentModal } from 'src/documents/models/document.models';
-import { NomineeModel } from './nominee.model'; 
+import { nomineeModel} from './nominee.model'; 
 
 registerEnumType(Role, {
   name: 'Role',
@@ -66,8 +66,8 @@ export class User extends BaseModel {
   @Field(() => DocumentModal)
   documents?: [DocumentModal]| null;
 
-  @Field(() => NomineeModel)
-  Nominee?: [NomineeModel]| null;
+  @Field(() => nomineeModel)
+  nominee?: [nomineeModel]| null;
 
   @Field(() => KYC)
   kyc!: KYC

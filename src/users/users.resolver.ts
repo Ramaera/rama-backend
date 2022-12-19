@@ -16,7 +16,7 @@ import { ChangePasswordInput } from './dto/change-password.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { UpdateNomineeInput } from './dto/update-user.input';
 import { CreateNomineeInput } from './dto/createNominee.input';
-import { Nominee } from './entities/nominee.entity';
+import { nominee } from './entities/nominee.entity';
 import { UserIdArgs } from './args/user-id.args';
 
 
@@ -33,17 +33,10 @@ export class UsersResolver {
   // ****************************************************************************
   // ****************************************************************************
   @Query(() => User)
-  @Query(()=>Nominee)
-  async me(@UserEntity() user:User, nominee:Nominee): Promise<User> {
-const getUser=await this.prisma.user.findUnique({
-  where :{
-    id:user.id
-  },
-  include:{
-    nominee:true
-  }
-})
-    return (getUser);
+  @Query(()=>nominee)
+  async me(@UserEntity() user:User): Promise<User> {
+
+    return (user);
   }
 
   // ******************************************************
@@ -54,7 +47,7 @@ const getUser=await this.prisma.user.findUnique({
 
 
 @UseGuards(GqlAuthGuard)   // Gql Authentication Guards
-@Mutation(() => Nominee) 
+@Mutation(() => nominee) 
 async createNominee(       
   @UserEntity()
   user:User,
@@ -92,7 +85,7 @@ async createNominee(
 
 
   @UseGuards(GqlAuthGuard)
-  @Mutation(() => Nominee)
+  @Mutation(() => nominee)
   async updateNominee(
     @UserEntity() user: User,
     @Args('data') newNomineeData: UpdateNomineeInput
@@ -117,7 +110,7 @@ async createNominee(
 
  
   
-  @Query(() => [Nominee])
+  @Query(() => [nominee])
   myNominee(@Args() id: UserIdArgs) {
     return this.prisma.user
       .findUnique({ where: { id: id.userId } })

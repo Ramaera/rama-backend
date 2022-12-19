@@ -77,31 +77,15 @@ input LoginInput {
 type Mutation {
   changePassword(data: ChangePasswordInput!): User!
   createDocument(data: CreateDocumentInput!): Document!
-  createNominee(data: CreateNomineeInput!): Nominee!
+  createNominee(data: CreateNomineeInput!): nominee!
   forgetPasswordWithPrivateKey(data: ChangePasswordWithPrivateKeyInput!): EmptyModal!
   login(data: LoginInput!): Auth!
   passwordresetRequest(data: PasswordRequestInput!): Auth!
   refreshToken(token: JWT!): Token!
   signup(data: SignupInput!): Auth!
   updateDocument(data: UpdateDocumentsInput!): Document!
-  updateNominee(data: UpdateNomineeInput!): Nominee!
+  updateNominee(data: UpdateNomineeInput!): nominee!
   updateUser(data: UpdateUserInput!): User!
-}
-
-type Nominee {
-  name: String!
-  relatiosnhip: String!
-}
-
-type NomineeModel {
-  """Identifies the date and time when the object was created."""
-  createdAt: DateTime!
-  id: ID!
-  name: String!
-  relationship: String
-
-  """Identifies the date and time when the object was last updated."""
-  updatedAt: DateTime!
 }
 
 input PasswordRequestInput {
@@ -113,7 +97,7 @@ type Query {
   helloWorld: String!
   me: User!
   myDocuments(userId: String!): [Document!]!
-  myNominee(userId: String!): [Nominee!]!
+  myNominee(userId: String!): [nominee!]!
 }
 
 """User role"""
@@ -159,7 +143,6 @@ input UpdateUserInput {
 }
 
 type User {
-  Nominee: NomineeModel
   alternate_mobile_number: String
   createdAt: DateTime!
   date_of_birth: String
@@ -171,9 +154,26 @@ type User {
   kyc: KYC!
   mobile_number: String
   name: String
+  nominee: nomineeModel
   private_key: String
   pw_id: String
   rm_id: String
   role: Role!
+  updatedAt: DateTime!
+}
+
+type nominee {
+  name: String!
+  relatiosnhip: String!
+}
+
+type nomineeModel {
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  id: ID!
+  name: String!
+  relationship: String
+
+  """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
 }
