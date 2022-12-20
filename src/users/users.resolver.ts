@@ -38,7 +38,6 @@ export class UsersResolver {
   async me(@UserEntity() user:User): Promise<User> {
     const _user = await this.usersService.getUser(user.id);
     return _user
-
   }
 
   // *****************************************************************************************************************************
