@@ -36,12 +36,9 @@ type Document {
 }
 
 type DocumentModal {
-  """Identifies the date and time when the object was created."""
   createdAt: DateTime!
-  id: ID!
+  id: String!
   title: String
-
-  """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
   url: String
 }

@@ -61,7 +61,7 @@ export class User extends BaseModel {
   alternate_mobile_number?: string | null;
 
   @Field(() => [DocumentModal])
-  documents?:DocumentModal[]
+  documents?:DocumentModal[]|null
 
 
   @Field(() => NomineeModel)

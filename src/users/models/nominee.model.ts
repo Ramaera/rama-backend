@@ -18,9 +18,5 @@ export class NomineeModel extends BaseModel {
 
   @Field(() => String, { nullable: false })
   relationship!: string;
-
-
-
-
- 
+  
 }
