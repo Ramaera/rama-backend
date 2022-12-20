@@ -32,6 +32,9 @@ export class AuthResolver {
     };
   }
   
+
+
+  
   @Mutation(() => Auth)
   async login(@Args('data') 
   { pw_id,//  RM_id, 

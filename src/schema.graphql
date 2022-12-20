@@ -25,11 +25,6 @@ input CreateDocumentInput {
   url: String!
 }
 
-input CreateNomineeInput {
-  name: String!
-  relationship: String!
-}
-
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -77,15 +72,24 @@ input LoginInput {
 type Mutation {
   changePassword(data: ChangePasswordInput!): User!
   createDocument(data: CreateDocumentInput!): Document!
-  createNominee(data: CreateNomineeInput!): nominee!
   forgetPasswordWithPrivateKey(data: ChangePasswordWithPrivateKeyInput!): EmptyModal!
   login(data: LoginInput!): Auth!
   passwordresetRequest(data: PasswordRequestInput!): Auth!
   refreshToken(token: JWT!): Token!
   signup(data: SignupInput!): Auth!
   updateDocument(data: UpdateDocumentsInput!): Document!
-  updateNominee(data: UpdateNomineeInput!): nominee!
   updateUser(data: UpdateUserInput!): User!
+  upsertNominee(data: NomineeInput!): Nominee!
+}
+
+type Nominee {
+  name: String!
+  relationship: String!
+}
+
+input NomineeInput {
+  name: String
+  relationship: String
 }
 
 input PasswordRequestInput {
@@ -97,7 +101,7 @@ type Query {
   helloWorld: String!
   me: User!
   myDocuments(userId: String!): [Document!]!
-  myNominee(userId: String!): [nominee!]!
+  myNominee(userId: String!): [Nominee!]!
 }
 
 """User role"""
@@ -125,11 +129,6 @@ type Token {
 input UpdateDocumentsInput {
   title: String
   url: String
-}
-
-input UpdateNomineeInput {
-  name: String
-  relationship: String
 }
 
 input UpdateUserInput {
@@ -160,11 +159,6 @@ type User {
   rm_id: String
   role: Role!
   updatedAt: DateTime!
-}
-
-type nominee {
-  name: String!
-  relatiosnhip: String!
 }
 
 type nomineeModel {

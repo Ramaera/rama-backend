@@ -1,9 +1,14 @@
 import { PrismaService } from 'nestjs-prisma';
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { PasswordService } from 'src/auth/password.service';
 import {ChangePasswordInput} from './dto/change-password.input';
-import { UpdateUserInput,UpdateNomineeInput} from './dto/update-user.input'; 
-
+import { UpdateUserInput} from './dto/update-user.input'; 
+import { NomineeInput } from './dto/createNominee.input';
+import { Token } from "../../src/auth/models/token.model"
+import { Prisma } from '@prisma/client';
+import { UserEntity } from 'src/common/decorators/user.decorator';
+import { Args } from '@nestjs/graphql';
+import { User } from './models/user.model';
 @Injectable()
 export class UsersService {
   constructor(
@@ -32,21 +37,22 @@ export class UsersService {
     // ###############################################################
   // ################################################################
   // ################################################################
-  // ########################## Update Nominee Details ##################
+  // ###################### Update Nominee Details ##################
   // ################################################################
   // ###############################################################
   // ##################################################################
 
-  async updateNominee(userId: string, newNomineeData: UpdateNomineeInput) {
-    const updated_nominee = this.prisma.nominee.update({
-      data: newNomineeData,
+  async upsertNominee(userId: string, newNomineeData: NomineeInput) {
+    const payload ={...newNomineeData,userId}
+    const updated_nominee = this.prisma.nominee.upsert({
+      create: {...payload},
+      update: {...payload},
       where: {
-        id: userId,
+        userId: userId,
       },
     });
     return updated_nominee;
   }
-
 
   // ##################################################################
   // ##################################################################

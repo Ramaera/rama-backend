@@ -61,11 +61,15 @@ export class AuthService {
           problemField = `PlanetWay Id ${payload.pw_id}`;
         }
 
-        throw new ConflictException(`${problemField} already used122.`);
+        throw new ConflictException(`${problemField} already used.`);
       }
       throw new Error(e);
     }
   }
+
+
+
+
   async passwordresetRequest(pw_id: string): Promise<Token> {
     const user = await this.prisma.user.findUnique({ where: { pw_id } });
 

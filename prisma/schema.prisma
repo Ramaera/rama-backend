@@ -50,7 +50,7 @@ model Nominee {
       userId            String @unique
       name              String?
       relationship      String
-      id                 String @id @default(cuid())
+      id                String @id @default(cuid())
 }
 
 enum Role {

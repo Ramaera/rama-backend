@@ -1,10 +1,10 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 
 @ObjectType()
-export class nominee {
+export class Nominee {
  
 @Field()
   name: string;
   @Field()
-  relatiosnhip: string;
+  relationship: string;
 }

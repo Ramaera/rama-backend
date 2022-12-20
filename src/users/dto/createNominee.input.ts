@@ -2,12 +2,10 @@ import { IsNotEmpty } from 'class-validator';
 import { InputType, Field } from '@nestjs/graphql';
 
 @InputType()
-export class CreateNomineeInput {
-  @Field()
-  @IsNotEmpty()
+export class NomineeInput {
+  @Field({ nullable: true })
   name: string;
 
-  @Field()
-  @IsNotEmpty()
+  @Field({ nullable: true })
   relationship: string;
 }

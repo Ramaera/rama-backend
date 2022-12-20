@@ -7,17 +7,18 @@ import {
   Args,
   ResolveField,
 } from '@nestjs/graphql';
-import { UseGuards } from '@nestjs/common';
+import { ConflictException, UseGuards } from '@nestjs/common';
 import { UserEntity } from 'src/common/decorators/user.decorator';
 import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
 import { UsersService } from './users.service';
 import { User } from './models/user.model';
 import { ChangePasswordInput } from './dto/change-password.input';
 import { UpdateUserInput } from './dto/update-user.input';
-import { UpdateNomineeInput } from './dto/update-user.input';
-import { CreateNomineeInput } from './dto/createNominee.input';
-import { nominee } from './entities/nominee.entity';
+// import { UpdateNomineeInput } from './dto/update-user.input';
+import { NomineeInput } from './dto/createNominee.input';
+import { Nominee } from './entities/nominee.entity';
 import { UserIdArgs } from './args/user-id.args';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 
 
 // 
@@ -33,37 +34,26 @@ export class UsersResolver {
   // ****************************************************************************
   // ****************************************************************************
   @Query(() => User)
-  @Query(()=>nominee)
+  @Query(()=>Nominee)
   async me(@UserEntity() user:User): Promise<User> {
 
     return (user);
   }
 
-  // ******************************************************
+
+
+
+
+  // *****************************************************************************************************************************
+// *****************************************************Noiminee Section**********************************
+
+// ******************************************************
 // ******************************************************
 // **************Create Nominee************************
 // ****************************************************** 
 // ******************************************************
 
 
-@UseGuards(GqlAuthGuard)   // Gql Authentication Guards
-@Mutation(() => nominee) 
-async createNominee(       
-  @UserEntity()
-  user:User,
-  @Args('data') 
-  data: CreateNomineeInput
-  ) 
-  {
-    const newNominee=this.prisma.nominee.create({
-      data:{
-        name:data.name,
-        relationship:data.relationship,
-        userId:user.id
-      }
-    })
-  return newNominee
-}
 
     // *********************************Updated  User details********************
   // ****************************************************************************
@@ -85,12 +75,12 @@ async createNominee(
 
 
   @UseGuards(GqlAuthGuard)
-  @Mutation(() => nominee)
-  async updateNominee(
+  @Mutation(() => Nominee)
+  async upsertNominee(
     @UserEntity() user: User,
-    @Args('data') newNomineeData: UpdateNomineeInput
+    @Args('data') newNomineeData: NomineeInput
   ) {
-    return this.usersService.updateNominee(user.id, newNomineeData);
+    return this.usersService.upsertNominee(user.id, newNomineeData);
   }
 
    // *********************************Mutation command  about the Changed Password   ********************
@@ -103,22 +93,26 @@ async createNominee(
   async changePassword(@UserEntity() user: User,@Args('data') changePassword: ChangePasswordInput) {
     return this.usersService.changePassword(user.id, changePassword);
       }
-   // *********************************Mutation command  about the new Password   ********************
-  // ****************************************************************************
-  // ****************************************************************************
+
 
 
  
-  
-  @Query(() => [nominee])
+// Nomineee Details  // 
+  @Query(() => [Nominee])
   myNominee(@Args() id: UserIdArgs) {
     return this.prisma.user
       .findUnique({ where: { id: id.userId } })
       .nominee();
   }
-
-  // @ResolveField('author',()=>User)
-  // documents(@Parent() user: User) {
-  //   return this.prisma.user.findUnique({ where: { id: user.id } }).documents();
-  // }
 }
+
+
+// **********************
+// @UseGuards(GqlAuthGuard)
+//   @Mutation(() => User)
+//   async updateOrCreateNominee(
+//     @UserEntity() user: User,
+//     @Args('data') newUserData: UpdateUserInput
+//   ) {
+//     return this.usersService.updateUser(user.id, newUserData);
+//   }

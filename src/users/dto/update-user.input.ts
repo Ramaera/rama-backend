@@ -34,17 +34,3 @@ export class UpdateUserInput {
 
 }
 
-// ***************************************************************
-// *******************Update Nominee Details Input*******************
-// ***************************************************************
-
-@InputType()
-export class UpdateNomineeInput {
-  @Field({ nullable: true })
-  name?: string;
-
-  @Field({ nullable: true })
-  relationship?: string;
-
-
-}
