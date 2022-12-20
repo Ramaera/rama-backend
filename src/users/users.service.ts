@@ -1,8 +1,8 @@
 import { PrismaService } from 'nestjs-prisma';
 import { ConflictException, Injectable } from '@nestjs/common';
 import { PasswordService } from 'src/auth/password.service';
-import {ChangePasswordInput} from './dto/change-password.input';
-import { UpdateUserInput} from './dto/update-user.input'; 
+import { ChangePasswordInput } from './dto/change-password.input';
+import { UpdateUserInput } from './dto/update-user.input';
 import { NomineeInput } from './dto/createNominee.input';
 import { Token } from "../../src/auth/models/token.model"
 import { Prisma } from '@prisma/client';
@@ -14,7 +14,7 @@ export class UsersService {
   constructor(
     private prisma: PrismaService,
     private passwordService: PasswordService
-  ) {}
+  ) { }
 
   // ###############################################################
   // ################################################################
@@ -34,7 +34,31 @@ export class UsersService {
     return updated_user;
   }
 
-    // ###############################################################
+
+  async getUser(userId: string) {
+    const user = await this.prisma.user.findFirst({
+      where: { id: userId }, 
+      include: {
+        nominee:true,
+        documents:true,
+        //  {
+        //   select:{
+        //     relationship:true,
+        //     name:true,
+        //     id:true,
+        //     createdAt:true,
+        //     updatedAt:true,
+        //   }
+        // },
+        
+      }
+    })
+    return user
+  }
+
+
+
+  // ###############################################################
   // ################################################################
   // ################################################################
   // ###################### Update Nominee Details ##################
@@ -43,10 +67,10 @@ export class UsersService {
   // ##################################################################
 
   async upsertNominee(userId: string, newNomineeData: NomineeInput) {
-    const payload ={...newNomineeData,userId}
+    const payload = { ...newNomineeData, userId }
     const updated_nominee = this.prisma.nominee.upsert({
-      create: {...payload},
-      update: {...payload},
+      create: { ...payload },
+      update: { ...payload },
       where: {
         userId: userId,
       },
@@ -74,7 +98,6 @@ export class UsersService {
         id: id,
       },
     });
-
     return updated_password;
   }
 

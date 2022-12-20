@@ -10,8 +10,8 @@ import { BaseModel } from 'src/common/models/base.model';
 import { Role, KYC} from '@prisma/client';
 // import { Document } from 'src/documents/entities/document.entity';
 
-import {  DocumentModal } from 'src/documents/models/document.models';
-import { nomineeModel} from './nominee.model'; 
+import { DocumentModal } from 'src/documents/models/document.models';
+import { NomineeModel} from './nominee.model'; 
 
 registerEnumType(Role, {
   name: 'Role',
@@ -23,9 +23,6 @@ registerEnumType(KYC, {
   name: 'KYC',
   description: 'User KYC Status',
 });
-
-
-
 
 @ObjectType()
 export class User extends BaseModel {
@@ -63,11 +60,12 @@ export class User extends BaseModel {
   @Field(() => String, { nullable: true })
   alternate_mobile_number?: string | null;
 
-  @Field(() => DocumentModal)
-  documents?: [DocumentModal]| null;
+  @Field(() => [DocumentModal])
+  documents?:DocumentModal[]
 
-  @Field(() => nomineeModel)
-  nominee?: [nomineeModel]| null;
+
+  @Field(() => NomineeModel)
+  nominee?: NomineeModel;
 
   @Field(() => KYC)
   kyc!: KYC

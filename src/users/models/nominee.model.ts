@@ -2,10 +2,25 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { BaseModel } from 'src/common/models/base.model';
 
 @ObjectType()
-export class nomineeModel extends BaseModel {
-  @Field()
-  name: string;
+export class NomineeModel extends BaseModel {
 
-  @Field(() => String, { nullable: true })
-  relationship?: string;
+  @Field(() => String)
+  id!: string;
+
+  @Field(() => Date)
+  createdAt!: Date;
+
+  @Field(() => Date)
+  updatedAt!: Date;
+
+  @Field(()=> String,{nullable:false})
+  name!: string;
+
+  @Field(() => String, { nullable: false })
+  relationship!: string;
+
+
+
+
+ 
 }

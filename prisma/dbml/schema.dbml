@@ -25,6 +25,8 @@ Table User {
 }
 
 Table Document {
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
   id String [pk]
   title String [not null]
   url String [not null]
@@ -34,6 +36,8 @@ Table Document {
 }
 
 Table Nominee {
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
   user User
   userId String [unique, not null]
   name String

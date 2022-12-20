@@ -39,7 +39,7 @@ type DocumentModal {
   """Identifies the date and time when the object was created."""
   createdAt: DateTime!
   id: ID!
-  title: String!
+  title: String
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
@@ -90,6 +90,14 @@ type Nominee {
 input NomineeInput {
   name: String
   relationship: String
+}
+
+type NomineeModel {
+  createdAt: DateTime!
+  id: String!
+  name: String!
+  relationship: String!
+  updatedAt: DateTime!
 }
 
 input PasswordRequestInput {
@@ -146,28 +154,17 @@ type User {
   createdAt: DateTime!
   date_of_birth: String
   demat_account: String
-  documents: DocumentModal
+  documents: [DocumentModal!]
   email: String
   father_or_husband_name: String
   id: String!
   kyc: KYC!
   mobile_number: String
   name: String
-  nominee: nomineeModel
+  nominee: NomineeModel
   private_key: String
   pw_id: String
   rm_id: String
   role: Role!
-  updatedAt: DateTime!
-}
-
-type nomineeModel {
-  """Identifies the date and time when the object was created."""
-  createdAt: DateTime!
-  id: ID!
-  name: String!
-  relationship: String
-
-  """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
 }
