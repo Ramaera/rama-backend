@@ -132,6 +132,7 @@ type Token {
 }
 
 input UpdateDocumentsInput {
+  id: String!
   title: String
   url: String
 }

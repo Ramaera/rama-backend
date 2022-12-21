@@ -10,11 +10,11 @@ export class DocumentsService{
     // **********Update Documents*****************
     // *******************************************
     
-    async updateDocuments(userId:string,UpdateDocumentsInput){
+    async updateDocuments(documentId:string,data:UpdateDocumentsInput){
         return this.prisma.document.update({
-            data:UpdateDocumentsInput,
+            data,
             where:{
-                id:userId,
+                id:documentId,
             },
         })
     }

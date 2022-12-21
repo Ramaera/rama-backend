@@ -73,10 +73,10 @@ import { UserIdArgs } from 'src/users/args/user-id.args';
     @UserEntity() 
     user: User,
     @Args('data') 
-    newDocumentData: UpdateDocumentsInput
+    data: UpdateDocumentsInput
   ) {
     // return this.prisma.document.update(newDocumentData)
-    return this.documentsService.updateDocuments(user.id, newDocumentData);
+    return this.documentsService.updateDocuments(data.id, data);
   }
   // ********************************************
   // ********************************************
