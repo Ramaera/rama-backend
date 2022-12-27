@@ -10,29 +10,36 @@ import {
 } from '@nestjs/common';
 import { createReadStream } from 'fs';
 import { join } from 'path';
+import Express from 'express';
 
+import 'multer';
+ 
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { extname } from 'path';
 import { diskStorage } from 'multer';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 
 export const editFileName = (req, file, callback) => {
-  const name = file.originalname.split('.')[0];
   const fileExtName = extname(file.originalname);
-  const randomName = Array(4)
-    .fill(null)
-    .map(() => Math.round(Math.random() * 16).toString(16))
-    .join('');
-  callback(null, `${name}-${randomName}${fileExtName}`);
+ 
+  // const randomName = `${(Math.random() + 1)
+  //     .toString(36)
+  //     .substring(7)
+  //     .toLocaleUpperCase()}`;
+
+  const randomName =     Date.now().toString(36) + Math.random().toString(36).substring(2);
+  callback(null, `${randomName}${fileExtName}`);
 };
 
 export const imageFileFilter = (req, file, callback) => {
-  if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+  if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
     return callback(new Error('Only image files are allowed!'), false);
   }
   callback(null, true);
 };
 
-@Controller('photos')
+@Controller('documents')
+@ApiTags('documents')
 export class MediasController {
   @Post('upload')
   @UseInterceptors(
@@ -44,16 +51,25 @@ export class MediasController {
       fileFilter: imageFileFilter,
     })
   )
+  @ApiBody({
+    schema:{
+      type:'object',
+      properties:{
+        photo:{
+          type:'string',
+          format:'binary',
+        }
+      }
+    }
+  })
   uploadSingle(@UploadedFile() file) {
     console.log(file);
     const response = {
       originalname: file.originalname,
       filename: file.filename,
     };
-
     return response;
   }
-
   @Get(":name")
   getFile(@Param() params): StreamableFile {
     const file = createReadStream(join(process.cwd(), `uploads/${params.name}`));
