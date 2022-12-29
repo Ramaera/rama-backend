@@ -5,7 +5,9 @@ import {
   UploadedFile,
   Get,
   StreamableFile,
+  Headers,
   UploadedFiles,
+  Request,
   Param,
 } from '@nestjs/common';
 import { createReadStream } from 'fs';
@@ -39,11 +41,11 @@ export const imageFileFilter = (req, file, callback) => {
 };
 
 @Controller('documents')
-@ApiTags('documents')
+// @ApiTags('documents')
 export class MediasController {
   @Post('upload')
   @UseInterceptors(
-    FileInterceptor('photo', {
+    FileInterceptor('document', {
       storage: diskStorage({
         destination: './uploads',
         filename: editFileName,
@@ -62,11 +64,15 @@ export class MediasController {
       }
     }
   })
-  uploadSingle(@UploadedFile() file) {
-    console.log(file);
+  uploadSingle(@UploadedFile() file,@Headers() header) {
+    const  origin =header.host
+
+    const url = `http://${origin}/documents/${file.filename}`;
+   
     const response = {
       originalname: file.originalname,
       filename: file.filename,
+      url
     };
     return response;
   }
