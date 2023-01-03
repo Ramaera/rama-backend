@@ -61,6 +61,7 @@ enum Role {
   ADMIN
   USER
 }
+
 enum Membership{
   BASIC
   ADVANCE

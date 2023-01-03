@@ -38,6 +38,8 @@ export class AuthService {
         .substring(7)
         .toLocaleUpperCase()}`;
 
+        
+
       const user = await this.prisma.user.create({
         data: {
           ...payload,

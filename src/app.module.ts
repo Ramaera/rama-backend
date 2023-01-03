@@ -26,6 +26,7 @@ import { MediasModule } from './medias/medias.module';
 
     GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
+      
       useClass: GqlConfigService,
     }),
 

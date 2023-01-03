@@ -66,6 +66,11 @@ input LoginInput {
   pw_id: String!
 }
 
+enum Membership {
+  ADVANCE
+  BASIC
+}
+
 type Mutation {
   changePassword(data: ChangePasswordInput!): User!
   createDocument(data: CreateDocumentInput!): Document!
@@ -117,6 +122,7 @@ enum Role {
 
 input SignupInput {
   email: String
+  membership: Membership
   mobile: String
   name: String
   password: String!
