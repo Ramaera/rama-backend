@@ -11,7 +11,6 @@ import { Resolver,
 import { Document } from './entities/document.entity';
 import { CreateDocumentInput } from './dto/createDocument.input';
 import { PrismaService } from 'nestjs-prisma';
-import { PubSub } from 'graphql-subscriptions';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
 import { UserEntity } from 'src/common/decorators/user.decorator';

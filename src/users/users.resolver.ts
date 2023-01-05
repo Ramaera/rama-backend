@@ -40,11 +40,6 @@ export class UsersResolver {
     return _user
   }
 
-  // *****************************************************************************************************************************
-// *****************************************************Noiminee Section*********************************
-
-
-
     // *********************************Updated  User details********************
   // ****************************************************************************
   // ****************************************************************************
@@ -74,20 +69,24 @@ export class UsersResolver {
   }
 
    // *********************************Mutation command  about the Changed Password   ********************
-  // ****************************************************************************
-  // ****************************************************************************
+  // ******************************************************************************************
+  // ***************************************************************************************
 
 
-  @UseGuards(GqlAuthGuard)
+  // @UseGuards(GqlAuthGuard)
   @Mutation(() => User)
-  async changePassword(@UserEntity() user: User,@Args('data') changePassword: ChangePasswordInput) {
-    return this.usersService.changePassword(user.id, changePassword);
+  async changePassword(
+  @UserEntity() 
+  user: User,
+  @Args('data') 
+  changePasswordValue: ChangePasswordInput) {
+    return this.usersService.changePassword(changePasswordValue, user.private_key );
       }
 
 
 
  
-// Nomineee Details  // 
+// *************************Nomineee Details  **************************************// 
   @Query(() => [Nominee])
   myNominee(@Args() id: UserIdArgs) {
     return this.prisma.user
@@ -95,14 +94,3 @@ export class UsersResolver {
       .nominee();
   }
 }
-
-
-// **********************
-// @UseGuards(GqlAuthGuard)
-//   @Mutation(() => User)
-//   async updateOrCreateNominee(
-//     @UserEntity() user: User,
-//     @Args('data') newUserData: UpdateUserInput
-//   ) {
-//     return this.usersService.updateUser(user.id, newUserData);
-//   }

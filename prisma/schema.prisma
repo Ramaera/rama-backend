@@ -31,9 +31,9 @@ model User {
   membership              Membership   @default(BASIC)
   date_of_birth           String?
   demat_account           String?
-  private_key             String?    
-  pw_id                   String?    @unique
-  rm_id                   String?    @unique
+  private_key             String? @unique
+  pw_id                   String? @unique 
+  rm_id                   String? @unique
 }
 
 model Document {

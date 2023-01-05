@@ -86,42 +86,54 @@ export class UsersService {
   // ##################################################################
   // ##################################################################
 
-  async newPassword(id: string, newchangedpassword: ChangePasswordInput) {
+  // async newPassword(id: string, newchangedpassword: ChangePasswordInput,private_key:string) {
+  //   const hashedPassword = await this.passwordService.hashPassword(
+  //     newchangedpassword.newPassword
+  //   );
+  //   const updated_password = this.prisma.user.update({
+  //     data: {
+  //       password: hashedPassword,
+  //     },
+  //     where: {
+  //       id: id,
+        
+        
+        
+
+  //     },
+  //   });
+  //   return updated_password;
+  // }
+
+
+  // ###################################################################################################
+  // #################################### Change Password ###########################################
+  // ###############################################################################################
+
+
+  async changePassword(changePasswordValue: ChangePasswordInput,private_key) {
     const hashedPassword = await this.passwordService.hashPassword(
-      newchangedpassword.newPassword
+      changePasswordValue.newPassword
     );
+    try {
     const updated_password = this.prisma.user.update({
       data: {
         password: hashedPassword,
       },
       where: {
-        id: id,
-      },
+        private_key:changePasswordValue.private_key
+      }
     });
     return updated_password;
+  }catch(e){
+    if (
+      e instanceof Prisma.PrismaClientKnownRequestError &&
+      e.code==='P2002'
+    ){
+      let problemField=e.meta.target[0];
+      throw new ConflictException(`${problemField} is used`)
+    }
+    throw new Error(e)
   }
-
-
-  // ##################################################################
-  // ##################################################################
-  // ##################################################################
-  // ########################## Change Password #######################
-  // ##################################################################
-  // ##################################################################
-  // ##################################################################
-
-  async changePassword(userId: string, changePassword: ChangePasswordInput) {
-    const hashedPassword = await this.passwordService.hashPassword(
-      changePassword.newPassword
-    );
-    const updated_password = this.prisma.user.update({
-      data: {
-        password: hashedPassword,
-      },
-      where: {
-        id: userId,
-      },
-    });
-    return updated_password;
-  }
+}
 }
