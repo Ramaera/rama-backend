@@ -7,7 +7,7 @@ import {
 } from '@nestjs/graphql';
 import { IsEmail, registerDecorator } from 'class-validator';
 import { BaseModel } from 'src/common/models/base.model';
-import { Role, KYC} from '@prisma/client';
+import { Role, KYC, Membership} from '@prisma/client';
 // import { Document } from 'src/documents/entities/document.entity';
 
 import { DocumentModal } from 'src/documents/models/document.models';
@@ -84,6 +84,10 @@ export class User extends BaseModel {
 
   @Field(() => String, { nullable: true })
   pw_id?: string | null;
+
+
+  @Field(()=> Membership)
+  membership?:Membership
 
 
 

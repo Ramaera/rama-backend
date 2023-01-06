@@ -164,6 +164,7 @@ type User {
   father_or_husband_name: String
   id: String!
   kyc: KYC!
+  membership: Membership
   mobile_number: String
   name: String
   nominee: NomineeModel

@@ -37,9 +37,6 @@ export class AuthService {
         .toString(36)
         .substring(7)
         .toLocaleUpperCase()}`;
-
-        
-
       const user = await this.prisma.user.create({
         data: {
           ...payload,
@@ -176,14 +173,5 @@ export class AuthService {
     return {message:"success"};
   }
 
-  // async updateDocuments(pw_id:string):Promise<Token>{
-  //   const user=await this.prisma.user.findUnique({where:{pw_id}})
-
-  //   if (!user){
-  //     throw new NotFoundException(`No user found for PW_Id: ${pw_id}`);
-  //   }
-  //   return this.generateTokens({
-  //     userId:user.id
-  //   })
-  // }
+  
 }

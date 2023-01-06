@@ -31,18 +31,16 @@ export class UsersResolver {
   ) {}
 
 
-  // *********************************Details about the User ********************
-  // ****************************************************************************
-  // ****************************************************************************
+// *********************************Details about the User ********************
+
   @Query(() => User)
   async me(@UserEntity() user:User): Promise<User> {
     const _user = await this.usersService.getUser(user.id);
     return _user
   }
 
-    // *********************************Updated  User details********************
-  // ****************************************************************************
-  // ****************************************************************************
+// *********************************Updated  User details********************
+ 
 
 
   @UseGuards(GqlAuthGuard)
@@ -73,14 +71,12 @@ export class UsersResolver {
   // ***************************************************************************************
 
 
-  // @UseGuards(GqlAuthGuard)
+  
   @Mutation(() => User)
   async changePassword(
-  @UserEntity() 
-  user: User,
   @Args('data') 
   changePasswordValue: ChangePasswordInput) {
-    return this.usersService.changePassword(changePasswordValue, user.private_key );
+    return this.usersService.changePassword(changePasswordValue);
       }
 
 

@@ -41,30 +41,13 @@ export class UsersService {
       include: {
         nominee:true,
         documents:true,
-        //  {
-        //   select:{
-        //     relationship:true,
-        //     name:true,
-        //     id:true,
-        //     createdAt:true,
-        //     updatedAt:true,
-        //   }
-        // },
-        
       }
     })
     return user
   }
 
 
-
-  // ###############################################################
-  // ################################################################
-  // ################################################################
-  // ###################### Update Nominee Details ##################
-  // ################################################################
-  // ###############################################################
-  // ##################################################################
+// ###################### Update Nominee Details ##################
 
   async upsertNominee(userId: string, newNomineeData: NomineeInput) {
     const payload = { ...newNomineeData, userId }
@@ -78,40 +61,14 @@ export class UsersService {
     return updated_nominee;
   }
 
-  // ##################################################################
-  // ##################################################################
-  // ##################################################################
-  // ########################## New Password ##########################
-  // ##################################################################
-  // ##################################################################
-  // ##################################################################
-
-  // async newPassword(id: string, newchangedpassword: ChangePasswordInput,private_key:string) {
-  //   const hashedPassword = await this.passwordService.hashPassword(
-  //     newchangedpassword.newPassword
-  //   );
-  //   const updated_password = this.prisma.user.update({
-  //     data: {
-  //       password: hashedPassword,
-  //     },
-  //     where: {
-  //       id: id,
-        
-        
-        
-
-  //     },
-  //   });
-  //   return updated_password;
-  // }
-
 
   // ###################################################################################################
   // #################################### Change Password ###########################################
   // ###############################################################################################
 
 
-  async changePassword(changePasswordValue: ChangePasswordInput,private_key) {
+  
+  async changePassword(changePasswordValue: ChangePasswordInput) {
     const hashedPassword = await this.passwordService.hashPassword(
       changePasswordValue.newPassword
     );
@@ -126,14 +83,6 @@ export class UsersService {
     });
     return updated_password;
   }catch(e){
-    if (
-      e instanceof Prisma.PrismaClientKnownRequestError &&
-      e.code==='P2002'
-    ){
-      let problemField=e.meta.target[0];
-      throw new ConflictException(`${problemField} is used`)
-    }
-    throw new Error(e)
   }
 }
 }
