@@ -70,13 +70,11 @@ export class User extends BaseModel {
   @Field(() => KYC)
   kyc!: KYC
   
-
   @Field(() => String, { nullable: true })
   date_of_birth?: string | null;
 
   @Field(() => String, { nullable: true })
   demat_account?: string | null;
-
 
   @Field(() => String, { nullable: true })
   @HideField()
@@ -85,11 +83,6 @@ export class User extends BaseModel {
   @Field(() => String, { nullable: true })
   pw_id?: string | null;
 
-
   @Field(()=> Membership)
   membership?:Membership
-
-
-
-  
 }
