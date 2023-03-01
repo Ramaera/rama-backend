@@ -7,4 +7,6 @@ export class Document {
   title: string;
   @Field()
   url: string;
+@Field()
+id:string
 }

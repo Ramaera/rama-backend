@@ -74,6 +74,8 @@ export class MediasController {
       filename: file.filename,
       url
     };
+
+    console.log({response})
     return response;
   }
   @Get(":name")
