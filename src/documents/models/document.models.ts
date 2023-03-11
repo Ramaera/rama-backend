@@ -6,6 +6,9 @@ export class DocumentModal extends BaseModel {
   @Field(() => String)
   id!: string;
 
+  @Field(() => String)
+  userId!: string;
+
   @Field(() => Date)
   createdAt!: Date;
 
