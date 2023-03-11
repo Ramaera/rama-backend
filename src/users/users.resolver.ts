@@ -14,6 +14,8 @@ import { UsersService } from './users.service';
 import { User } from './models/user.model';
 import { ChangePasswordInput } from './dto/change-password.input';
 import { UpdateUserInput } from './dto/update-user.input';
+import { UpdateUserInputByAdmin, UpdateUserStatusAdmin } from './dto/update-user-Admin.input ';
+
 // import { UpdateNomineeInput } from './dto/update-user.input';
 import { NomineeInput } from './dto/createNominee.input';
 import { Nominee } from './entities/nominee.entity';
@@ -39,9 +41,54 @@ export class UsersResolver {
     return _user
   }
 
-// *********************************Updated  User details********************
+
+
+
+
+  @Query(() => [User])
+  async getAllUser() {
+    const _user = await this.usersService.getAllUser();
+    return _user
+  }
+
+
+// *********************************Update Details by Admin ********************
+
+
+@UseGuards(GqlAuthGuard)
+@Mutation(() => User)
+async updateUserByAdmin(
+  @UserEntity() user: User,
+  @Args('data') newUserData: UpdateUserInputByAdmin
+) {
+  newUserData.kyc="ONGOING"
+  return this.usersService.updateUserByAdmin(user.id, newUserData);
+
+}
+
+
+@UseGuards(GqlAuthGuard)
+@Mutation(() => User)
+async updateStatus(
+  @UserEntity() user: User,
+  @Args('data') newUserData: UpdateUserStatusAdmin
+) {
+  if(user.role==="ADMIN"){
+    return this.usersService.updateStatus(user.id, newUserData);
+
+  }
+  throw new Error("Unauthorized")
  
 
+}
+
+
+
+
+ 
+
+
+// *********************************Updated  User details********************
 
   @UseGuards(GqlAuthGuard)
   @Mutation(() => User)

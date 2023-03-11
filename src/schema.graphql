@@ -54,7 +54,6 @@ A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction.
 """
 scalar JWT
 
-"""User KYC Status"""
 enum KYC {
   APPROVED
   NOT_INITIALIZED
@@ -82,7 +81,9 @@ type Mutation {
   refreshToken(token: JWT!): Token!
   signup(data: SignupInput!): Auth!
   updateDocument(data: UpdateDocumentsInput!): Document!
+  updateStatus(data: UpdateUserStatusAdmin!): User!
   updateUser(data: UpdateUserInput!): User!
+  updateUserByAdmin(data: UpdateUserInputByAdmin!): User!
   upsertNominee(data: NomineeInput!): Nominee!
 }
 
@@ -109,6 +110,7 @@ input PasswordRequestInput {
 }
 
 type Query {
+  getAllUser: [User!]!
   hello(name: String!): String!
   helloWorld: String!
   me: User!
@@ -151,8 +153,25 @@ input UpdateUserInput {
   demat_account: String
   email: String
   father_or_husband_name: String
+  kyc: KYC!
   mobile_number: String
   name: String
+}
+
+input UpdateUserInputByAdmin {
+  alternate_mobile_number: String
+  date_of_birth: String
+  demat_account: String
+  email: String
+  father_or_husband_name: String
+  kyc: KYC!
+  mobile_number: String
+  name: String
+}
+
+input UpdateUserStatusAdmin {
+  id: String!
+  kyc: KYC!
 }
 
 type User {

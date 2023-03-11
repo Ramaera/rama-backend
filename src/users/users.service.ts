@@ -9,6 +9,8 @@ import { Prisma } from '@prisma/client';
 import { UserEntity } from 'src/common/decorators/user.decorator';
 import { Args } from '@nestjs/graphql';
 import { User } from './models/user.model';
+import { UpdateKycHandlerInput } from './dto/update-kychandler.input';
+import { UpdateUserStatusAdmin } from './dto/update-user-Admin.input ';
 @Injectable()
 export class UsersService {
   constructor(
@@ -35,6 +37,100 @@ export class UsersService {
   }
 
 
+
+  async updateUserByAdmin(userId: string,newUserData: UpdateUserInput) {
+    const updated_user = this.prisma.user.update({
+      data: newUserData,
+      where: {
+        id: userId,
+      },
+    });
+
+
+  
+
+
+
+
+    
+    // const update=this.prisma.kycHandler.update({
+    //   data:{
+    //     userId:userId,
+    //     handlerId:,
+    //     identifier:[userId,handlerId].join("-")
+    //   }
+    // })
+
+
+
+
+
+    return updated_user;
+  }
+
+  
+
+  async updateStatus(adminId: string,newUserData: UpdateUserStatusAdmin) {
+    
+    // const payload = { ...newUserData, userId }
+    let user = await this.prisma.user.findFirst({
+      where:{
+        id:newUserData.id
+      }
+    })
+
+    if(!user){
+      throw new Error("User not found")
+    }
+    user.kyc = newUserData.kyc;
+    const userPayload = {
+      ...user
+    }
+
+    user = await this.prisma.user.update({
+      where:{
+        id:user.id
+      },
+      data:{
+        ...userPayload
+      }
+    })
+
+
+    // createdAt         DateTime   @default(now())
+    // updatedAt         DateTime   @updatedAt
+    // userId            String @unique
+    // handlerId         String @unique
+    // identifier        String @unique
+    // id                String @id @default(cuid())
+
+    const identifier = `${user.id}-${adminId}`
+    let kycHandler = await this.prisma.kycHandler.findFirst({where:{identifier:identifier}})
+    if(!kycHandler){
+      const kycHandlerData = {
+        identifier,
+        userId:user.id,
+        handlerId:adminId
+      }
+
+    await this.prisma.kycHandler.create({data:kycHandlerData});
+    }
+ 
+
+  //   const updatedStatus = this.prisma.kycHandler.upsert({
+   
+  //  create:,
+  //  update:,
+  //  where:,
+   
+  //   })
+
+  return user
+  }
+
+
+
+
   async getUser(userId: string) {
     const user = await this.prisma.user.findFirst({
       where: { id: userId }, 
@@ -44,6 +140,15 @@ export class UsersService {
       }
     })
     return user
+  }
+
+
+  // ##########get All User
+
+  async getAllUser(){
+    const allUser=this.prisma.user.findMany()
+    
+    return allUser
   }
 
 

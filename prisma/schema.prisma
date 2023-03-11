@@ -34,6 +34,7 @@ model User {
   private_key             String? @unique
   pw_id                   String? @unique 
   rm_id                   String? @unique
+
 }
 
 model Document {
@@ -56,6 +57,16 @@ model Nominee {
       relationship      String
       id                String @id @default(cuid())
 }
+
+model KycHandler {
+      createdAt         DateTime   @default(now())
+      updatedAt         DateTime   @updatedAt
+      userId            String @unique
+      handlerId         String @unique
+      identifier        String @unique
+      id                String @id @default(cuid())
+}
+
 
 enum Role {
   ADMIN

@@ -37,6 +37,7 @@ import { MediasModule } from './medias/medias.module';
     
     MediasModule,
     
+    
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],

@@ -1,5 +1,5 @@
 import { InputType, Field, registerEnumType } from '@nestjs/graphql';
-import { KYC } from '@prisma/client';
+import { KYC, Membership } from '@prisma/client';
 
 
 
@@ -8,7 +8,7 @@ import { KYC } from '@prisma/client';
 // ***************************************************************
 
 @InputType()
-export class UpdateUserInput {
+export class UpdateUserInputByAdmin {
   @Field({ nullable: true })
   name?: string;
 
@@ -32,6 +32,19 @@ export class UpdateUserInput {
 
    @Field({ nullable: true })
   demat_account?: string
+
+  
+  @Field(()=>KYC)
+  kyc: KYC;
+
+}
+
+
+
+@InputType()
+export class UpdateUserStatusAdmin {
+  @Field({ nullable: false })
+  id: string;
 
   @Field(()=>KYC)
   kyc: KYC;
