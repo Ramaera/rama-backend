@@ -74,7 +74,7 @@ import { UserIdArgs } from 'src/users/args/user-id.args';
     @Args('data') 
     data: UpdateDocumentsInput
   ) {
-    // return this.prisma.document.update(newDocumentData)
+    
     return this.documentsService.updateDocuments(data.id, data);
   }
   // ********************************************

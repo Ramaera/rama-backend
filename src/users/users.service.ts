@@ -97,13 +97,6 @@ export class UsersService {
     })
 
 
-    // createdAt         DateTime   @default(now())
-    // updatedAt         DateTime   @updatedAt
-    // userId            String @unique
-    // handlerId         String @unique
-    // identifier        String @unique
-    // id                String @id @default(cuid())
-
     const identifier = `${user.id}-${adminId}`
     let kycHandler = await this.prisma.kycHandler.findFirst({where:{identifier:identifier}})
     if(!kycHandler){
@@ -146,7 +139,12 @@ export class UsersService {
   // ##########get All User
 
   async getAllUser(){
-    const allUser=this.prisma.user.findMany()
+    const allUser=this.prisma.user.findMany({
+      include:{
+        documents:true
+      }
+    }
+    )
     
     return allUser
   }
