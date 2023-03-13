@@ -46,25 +46,6 @@ export class UsersService {
       },
     });
 
-
-  
-
-
-
-
-    
-    // const update=this.prisma.kycHandler.update({
-    //   data:{
-    //     userId:userId,
-    //     handlerId:,
-    //     identifier:[userId,handlerId].join("-")
-    //   }
-    // })
-
-
-
-
-
     return updated_user;
   }
 
@@ -72,7 +53,7 @@ export class UsersService {
 
   async updateStatus(adminId: string,newUserData: UpdateUserStatusAdmin) {
     
-    // const payload = { ...newUserData, userId }
+
     let user = await this.prisma.user.findFirst({
       where:{
         id:newUserData.id
@@ -110,13 +91,6 @@ export class UsersService {
     }
  
 
-  //   const updatedStatus = this.prisma.kycHandler.upsert({
-   
-  //  create:,
-  //  update:,
-  //  where:,
-   
-  //   })
 
   return user
   }
@@ -187,5 +161,6 @@ export class UsersService {
     return updated_password;
   }catch(e){
   }
+  
 }
 }
