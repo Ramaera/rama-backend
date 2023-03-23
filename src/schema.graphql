@@ -43,6 +43,7 @@ type DocumentModal {
   title: String
   updatedAt: DateTime!
   url: String
+  userId: String!
 }
 
 type EmptyModal {
@@ -153,7 +154,7 @@ input UpdateUserInput {
   demat_account: String
   email: String
   father_or_husband_name: String
-  kyc: KYC!
+  kyc: KYC
   mobile_number: String
   name: String
 }
