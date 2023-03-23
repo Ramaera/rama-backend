@@ -34,7 +34,7 @@ export class UpdateUserInput {
   demat_account?: string
 
   @Field(()=>KYC)
-  kyc: KYC;
+  kyc?: KYC;
 
 }
 registerEnumType(KYC,{

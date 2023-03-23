@@ -31,7 +31,7 @@ export class AuthService {
     const hashedPassword = await this.passwordService.hashPassword(
       payload.password
     );
-
+    
     try {
       const rm_id = `RM-${(Math.random() + 1)
         .toString(36)

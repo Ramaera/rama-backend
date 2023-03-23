@@ -35,7 +35,7 @@ export class UpdateUserInputByAdmin {
 
   
   @Field(()=>KYC)
-  kyc: KYC;
+  kyc?: KYC;
 
 }
 
