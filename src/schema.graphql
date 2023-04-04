@@ -85,6 +85,7 @@ type Mutation {
   updateStatus(data: UpdateUserStatusAdmin!): User!
   updateUser(data: UpdateUserInput!): User!
   updateUserByAdmin(data: UpdateUserInputByAdmin!): User!
+  updateUserByRajnish(data: UpdateUserInputByAdmin!): User!
   upsertNominee(data: NomineeInput!): Nominee!
 }
 
@@ -154,6 +155,7 @@ input UpdateUserInput {
   demat_account: String
   email: String
   father_or_husband_name: String
+  id: String!
   kyc: KYC
   mobile_number: String
   name: String
@@ -165,6 +167,7 @@ input UpdateUserInputByAdmin {
   demat_account: String
   email: String
   father_or_husband_name: String
+  id: String!
   kyc: KYC!
   mobile_number: String
   name: String

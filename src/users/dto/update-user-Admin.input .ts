@@ -9,6 +9,11 @@ import { KYC, Membership } from '@prisma/client';
 
 @InputType()
 export class UpdateUserInputByAdmin {
+
+  @Field()
+  id:string
+
+
   @Field({ nullable: true })
   name?: string;
 

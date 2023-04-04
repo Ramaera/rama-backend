@@ -62,8 +62,7 @@ async updateUserByAdmin(
   @Args('data') newUserData: UpdateUserInputByAdmin
 ) {
   newUserData.kyc="ONGOING"
-  return this.usersService.updateUserByAdmin(user.id, newUserData);
-
+  return this.usersService.updateUserByAdmin(newUserData);
 }
 
 

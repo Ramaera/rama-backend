@@ -38,16 +38,19 @@ export class UsersService {
 
 
 
-  async updateUserByAdmin(userId: string,newUserData: UpdateUserInput) {
+  async updateUserByAdmin(newUserData: UpdateUserInput) {
     const updated_user = this.prisma.user.update({
       data: newUserData,
       where: {
-        id: userId,
+        id: newUserData.id,
       },
     });
 
     return updated_user;
   }
+
+
+  
 
   
 
