@@ -10,7 +10,7 @@ import { UserEntity } from 'src/common/decorators/user.decorator';
 import { Args } from '@nestjs/graphql';
 import { User } from './models/user.model';
 import { UpdateKycHandlerInput } from './dto/update-kychandler.input';
-import { UpdateUserStatusAdmin } from './dto/update-user-Admin.input ';
+import { UpdateUserInputByAdmin, UpdateUserStatusAdmin } from './dto/update-user-Admin.input ';
 @Injectable()
 export class UsersService {
   constructor(
@@ -38,7 +38,7 @@ export class UsersService {
 
 
 
-  async updateUserByAdmin(newUserData: UpdateUserInput) {
+  async updateUserByAdmin(newUserData: UpdateUserInputByAdmin) {
     const updated_user = this.prisma.user.update({
       data: newUserData,
       where: {
