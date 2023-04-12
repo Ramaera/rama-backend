@@ -132,7 +132,8 @@ export class UsersService {
   async getAllUser(){
     const allUser=this.prisma.user.findMany({
       include:{
-        documents:true
+        documents:true,
+        nominee:true
       }
     }
     )
