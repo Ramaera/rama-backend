@@ -82,9 +82,10 @@ type Mutation {
   refreshToken(token: JWT!): Token!
   signup(data: SignupInput!): Auth!
   updateDocument(data: UpdateDocumentsInput!): Document!
+  updateNomineeByAdmin(data: NomineeInput!): User!
   updateStatus(data: UpdateUserStatusAdmin!): User!
   updateUser(data: UpdateUserInput!): User!
-  updateUserByAdmin(data: UpdateUserInputByAdmin!): User!
+  updateUserByAdmin(data: UpdateUserInput!): User!
   upsertNominee(data: NomineeInput!): Nominee!
 }
 
@@ -94,6 +95,7 @@ type Nominee {
 }
 
 input NomineeInput {
+  id: String
   name: String
   relationship: String
 }
@@ -155,23 +157,8 @@ input UpdateUserInput {
   email: String
   father_or_husband_name: String
   id: String!
-  kyc: KYC
   mobile_number: String
   name: String
-}
-
-input UpdateUserInputByAdmin {
-  alternate_mobile_number: String
-  date_of_birth: String
-  demat_account: String
-  document: [UpdateDocumentsInput!]!
-  email: String
-  father_or_husband_name: String
-  id: String!
-  kyc: KYC!
-  mobile_number: String
-  name: String
-  nominee: [NomineeInput!]!
 }
 
 input UpdateUserStatusAdmin {

@@ -39,28 +39,7 @@ export class UpdateUserInputByAdmin {
      @Field({ nullable: true })
     demat_account?: string
   
-    @Field(()=>KYC)
-    kyc?: KYC;
-
-    @Field(()=>[NomineeInput])
-    nominee?: NomineeInput[];
-
-    @Field(()=>[UpdateDocumentsInput])
-    document?:UpdateDocumentsInput[]
-  
   }
-
-  // @InputType()
-  // export class NomineeInputs {
-  //   @Field({ nullable: false })
-  //   id: string;
-  
-  //   @Field(()=>String)
-  //   name: string;
-  
-  //   @Field(()=>String)
-  //   relationship: string;
-  // }
 
 
 

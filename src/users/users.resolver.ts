@@ -59,10 +59,20 @@ export class UsersResolver {
 @Mutation(() => User)
 async updateUserByAdmin(
   @UserEntity() user: User,
-  @Args('data') newUserData: UpdateUserInputByAdmin
+  @Args('data') newUserData: UpdateUserInput
 ) {
-  newUserData.kyc="ONGOING"
+  // newUserData.kyc="ONGOING"
   return this.usersService.updateUserByAdmin(newUserData);
+}
+
+
+@UseGuards(GqlAuthGuard)
+@Mutation(() => User)
+async updateNomineeByAdmin(
+  // @UserEntity() user: User,
+  @Args('data') newNomineeData: NomineeInput
+) {
+  return this.usersService.updateNomineeByAdmin(newNomineeData);
 }
 
 

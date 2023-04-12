@@ -1,5 +1,6 @@
 import { InputType, Field, registerEnumType } from '@nestjs/graphql';
 import { KYC } from '@prisma/client';
+import { NomineeInput } from './createNominee.input';
 
 
 
@@ -37,10 +38,12 @@ id:string
    @Field({ nullable: true })
   demat_account?: string
 
-  @Field(()=>KYC)
-  kyc?: KYC;
+  // @Field(()=>KYC,{nullable:true})
+  // kyc?: KYC;
 
 }
+
+
 registerEnumType(KYC,{
   name:'KYC',
 })
