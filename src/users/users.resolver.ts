@@ -59,11 +59,16 @@ export class UsersResolver {
 @UseGuards(GqlAuthGuard)
 @Mutation(() => User)
 async updateDataByAdmin(
+   @UserEntity() user: User,
   @Args('data') 
   updatedData:UpdateUserInputByAdmin,
   
 ) {
-  return this.usersService.updateDataByAdmin(updatedData)
+  if (user.role==="ADMIN"){
+    return this.usersService.updateDataByAdmin(updatedData)
+  }
+  throw new Error("Unauthorized")
+  
 }
 
 
