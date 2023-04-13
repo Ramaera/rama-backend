@@ -14,13 +14,13 @@ import { UsersService } from './users.service';
 import { User } from './models/user.model';
 import { ChangePasswordInput } from './dto/change-password.input';
 import { UpdateUserInput } from './dto/update-user.input';
-import { UpdateUserInputByAdmin, UpdateUserStatusAdmin } from './dto/update-user-Admin.input ';
+import { UpdateNomineeInputByAdmin, UpdateUserInputByAdmin, UpdateUserStatusAdmin } from './dto/update-user-Admin.input ';
 
 // import { UpdateNomineeInput } from './dto/update-user.input';
-import { NomineeInput } from './dto/createNominee.input';
+import { NomineeInput, UpdatedData } from './dto/createNominee.input';
 import { Nominee } from './entities/nominee.entity';
 import { UserIdArgs } from './args/user-id.args';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+
 
 
 // 
@@ -52,28 +52,20 @@ export class UsersResolver {
   }
 
 
+
 // *********************************Update Details by Admin ********************
 
 
 @UseGuards(GqlAuthGuard)
 @Mutation(() => User)
-async updateUserByAdmin(
-  @UserEntity() user: User,
-  @Args('data') newUserData: UpdateUserInput
+async updateDataByAdmin(
+  @Args('data') 
+  updatedData:UpdateUserInputByAdmin,
+  
 ) {
-  // newUserData.kyc="ONGOING"
-  return this.usersService.updateUserByAdmin(newUserData);
+  return this.usersService.updateDataByAdmin(updatedData)
 }
 
-
-@UseGuards(GqlAuthGuard)
-@Mutation(() => User)
-async updateNomineeByAdmin(
-  // @UserEntity() user: User,
-  @Args('data') newNomineeData: NomineeInput
-) {
-  return this.usersService.updateNomineeByAdmin(newNomineeData);
-}
 
 
 @UseGuards(GqlAuthGuard)
@@ -87,8 +79,6 @@ async updateStatus(
 
   }
   throw new Error("Unauthorized")
- 
-
 }
 
 
@@ -108,9 +98,7 @@ async updateStatus(
     return this.usersService.updateUser(user.id, newUserData);
   }
 
-   // *********************************Updated  Nominee details********************
-  // ****************************************************************************
-  // ****************************************************************************
+  // *********************************Updated  Nominee details********************
 
 
   @UseGuards(GqlAuthGuard)

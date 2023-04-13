@@ -4,7 +4,7 @@ import { InputType,Field } from "@nestjs/graphql";
 export class UpdateDocumentsInput{
 
     @Field()
-    id:string;
+    documentId:string;
     
     @Field({nullable:true})
     title?:string;

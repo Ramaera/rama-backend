@@ -17,6 +17,7 @@ Table User {
   kyc KYC [not null, default: 'NOT_INITIALIZED']
   role Role [not null]
   membership Membership [not null, default: 'BASIC']
+  subKyc SubKyc [not null]
   date_of_birth String
   demat_account String
   private_key String [unique]
@@ -33,6 +34,16 @@ Table Document {
   user User
   userId String
   status STATUS [not null, default: 'PENDING']
+}
+
+Table SubKyc {
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+  id String [pk]
+  fieldName String [not null]
+  fieldStatus KYC [not null]
+  user User
+  userId String
 }
 
 Table Nominee {
@@ -80,5 +91,7 @@ Enum STATUS {
 }
 
 Ref: Document.userId > User.id
+
+Ref: SubKyc.userId > User.id
 
 Ref: Nominee.userId - User.id

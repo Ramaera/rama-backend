@@ -2,6 +2,7 @@ import { InputType, Field, registerEnumType } from '@nestjs/graphql';
 import { KYC, Membership } from '@prisma/client';
 import { NomineeInput } from './createNominee.input';
 import { UpdateDocumentsInput } from 'src/documents/dto/update-document';
+import { NomineeModel } from '../models/nominee.model';
 
 
 
@@ -38,8 +39,64 @@ export class UpdateUserInputByAdmin {
   
      @Field({ nullable: true })
     demat_account?: string
+
+    @Field({ nullable: true })
+    nomineeName?: string
   
+     @Field({ nullable: true })
+    nomineeRelationship?: string
+
+
+    @Field({ nullable: true })
+    documentId?: string
+
+    @Field({ nullable: true })
+    url?: string
+
+
+  
+    
+
+
+
   }
+
+
+  @InputType()
+export class UpdateNomineeInputByAdmin {
+    
+  
+    @Field({ nullable: true })
+    nomineeName?: string
+
+    @Field({ nullable: true })
+    relationship?: string
+
+  
+
+
+
+  }
+
+
+  @InputType()
+  export class UpdateDocumentInputByAdmin{
+      
+    
+    @Field({ nullable: true })
+    title?: string
+
+    @Field({ nullable: true })
+    url?: string
+    
+    @Field({nullable:true})
+    documentId?:string
+  
+    
+  
+  
+  
+    }
 
 
 

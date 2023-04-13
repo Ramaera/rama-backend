@@ -2,10 +2,12 @@ version: '3.8'
 services:
   postgres:
     image: postgres:13
-    container_name: postgresdb1
+    container_name: postgresdb
     restart: always
+    expose:
+    - "5433"
     ports:
-      - '5430:5430'
+      - '5433:5432'
     env_file:
       - .env
     volumes:
@@ -13,4 +15,4 @@ services:
 
 volumes:
   postgres:
-    name: nest-db1
+    name: nest-db

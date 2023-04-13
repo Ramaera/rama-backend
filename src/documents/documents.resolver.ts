@@ -75,7 +75,7 @@ import { UserIdArgs } from 'src/users/args/user-id.args';
     data: UpdateDocumentsInput
   ) {
     
-    return this.documentsService.updateDocuments(data.id, data);
+    return this.documentsService.updateDocuments(data.documentId, data);
   }
   // ********************************************
   // ********************************************

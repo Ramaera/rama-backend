@@ -81,11 +81,10 @@ type Mutation {
   passwordresetRequest(data: PasswordRequestInput!): Auth!
   refreshToken(token: JWT!): Token!
   signup(data: SignupInput!): Auth!
+  updateDataByAdmin(data: UpdateUserInputByAdmin!): User!
   updateDocument(data: UpdateDocumentsInput!): Document!
-  updateNomineeByAdmin(data: NomineeInput!): User!
   updateStatus(data: UpdateUserStatusAdmin!): User!
   updateUser(data: UpdateUserInput!): User!
-  updateUserByAdmin(data: UpdateUserInput!): User!
   upsertNominee(data: NomineeInput!): Nominee!
 }
 
@@ -145,7 +144,7 @@ type Token {
 }
 
 input UpdateDocumentsInput {
-  id: String!
+  documentId: String!
   title: String
   url: String
 }
@@ -159,6 +158,21 @@ input UpdateUserInput {
   id: String!
   mobile_number: String
   name: String
+}
+
+input UpdateUserInputByAdmin {
+  alternate_mobile_number: String
+  date_of_birth: String
+  demat_account: String
+  documentId: String
+  email: String
+  father_or_husband_name: String
+  id: String!
+  mobile_number: String
+  name: String
+  nomineeName: String
+  nomineeRelationship: String
+  url: String
 }
 
 input UpdateUserStatusAdmin {

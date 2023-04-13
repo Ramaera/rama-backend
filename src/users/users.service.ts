@@ -3,20 +3,28 @@ import { ConflictException, Injectable } from '@nestjs/common';
 import { PasswordService } from 'src/auth/password.service';
 import { ChangePasswordInput } from './dto/change-password.input';
 import { UpdateUserInput } from './dto/update-user.input';
-import { NomineeInput } from './dto/createNominee.input';
-import { Token } from "../../src/auth/models/token.model"
+import { NomineeInput, UpdatedData } from './dto/createNominee.input';
+import { Token } from '../../src/auth/models/token.model';
 import { Prisma } from '@prisma/client';
 import { UserEntity } from 'src/common/decorators/user.decorator';
 import { Args } from '@nestjs/graphql';
 import { User } from './models/user.model';
 import { UpdateKycHandlerInput } from './dto/update-kychandler.input';
-import { UpdateUserStatusAdmin } from './dto/update-user-Admin.input ';
+import {
+  UpdateNomineeInputByAdmin,
+  UpdateUserInputByAdmin,
+  UpdateUserStatusAdmin,
+} from './dto/update-user-Admin.input ';
+import { noop } from 'rxjs';
+import { title } from 'process';
+import { url } from 'inspector';
+import { UpdateDocumentsInput } from 'src/documents/dto/update-document';
 @Injectable()
 export class UsersService {
   constructor(
     private prisma: PrismaService,
     private passwordService: PasswordService
-  ) { }
+  ) {}
 
   // ###############################################################
   // ################################################################
@@ -33,119 +41,165 @@ export class UsersService {
         id: userId,
       },
     });
+
     return updated_user;
   }
 
+  async updateDataByAdmin(
+    newData: UpdateUserInputByAdmin
+  ) {
+    if (newData && newData.name) {
+      const updated_details = this.prisma.user.update({
+        where: {
+          id: newData.id,
+        },
+        data: {
+          name: newData.name,
+          email: newData.email,
+          father_or_husband_name: newData.father_or_husband_name,
+          mobile_number: newData.mobile_number,
+          alternate_mobile_number: newData.alternate_mobile_number,
+          date_of_birth: newData.date_of_birth,
+          demat_account: newData.demat_account,
+          documents:(newData.url && newData.documentId)?{
+            update:{
+                data:{
+                  url:newData.url
+                },
+                where:{
+                  id:newData.documentId
+                }
+            },
+          
+          }:undefined,
+          nominee:(newData.nomineeName || newData.nomineeRelationship)? {
+            upsert: {
+              create: {
+                name: newData.nomineeName,
+                relationship: newData.nomineeRelationship,
+              },
+              update: {
+                name: newData.nomineeName,
+                relationship: newData.nomineeRelationship,
+              },
+            },
+          }:undefined,
+        
+        },
+        include: {
+          nominee: true,
+          documents:true
+        },
+      });
+      return updated_details;
+    }
 
 
-  async updateUserByAdmin(newUserData: UpdateUserInput) {
-    const updated_user = this.prisma.user.update({
-      data: newUserData,
-      where: {
-        id: newUserData.id,
-      },
-    });
 
 
-    return updated_user;
-    
+    return newData ;
   }
 
-  async updateNomineeByAdmin(newUserData: UpdateUserInput) {
-    const updated_user = this.prisma.user.update({
-      data: newUserData,
-      where: {
-        id: newUserData.id,
-      },
-    });
+  // async updateUserByAdmin(newNomineeInput: NomineeInput) {
+  //   // const updated_user = this.prisma.user.update({
+  //   //   data: newUserData,
+  //   //   where: {
+  //   //     id: newUserData.id,
+  //   //   },
+  //   // });
+  //   const nomine_updated = this.prisma.nominee.update({
+  //     data: newNomineeInput,
+  //     where: {
+  //       id: newNomineeInput.id,
+  //     },
+  //   });
 
+  //   return {
+  //     // updated_user,
+  //     nomine_updated,
+  //   };
+  // }
 
-    return updated_user;
-    
-  }
+  // async updateNomineeByAdmin(newNomineeInput: NomineeInput) {
+  //   const updated_user = this.prisma.user.update({
+  //     data: newNomineeInput,
+  //     where: {
+  //       id: newNomineeInput.id,
+  //     },
+  //   });
 
-  
+  //   return updated_user;
+  // }
 
-  
-
-  async updateStatus(adminId: string,newUserData: UpdateUserStatusAdmin) {
-    
-
+  async updateStatus(adminId: string, newUserData: UpdateUserStatusAdmin) {
     let user = await this.prisma.user.findFirst({
-      where:{
-        id:newUserData.id
-      }
-    })
+      where: {
+        id: newUserData.id,
+      },
+    });
 
-    if(!user){
-      throw new Error("User not found")
+    if (!user) {
+      throw new Error('User not found');
     }
     user.kyc = newUserData.kyc;
     const userPayload = {
-      ...user
-    }
+      ...user,
+    };
 
     user = await this.prisma.user.update({
-      where:{
-        id:user.id
+      where: {
+        id: user.id,
       },
-      data:{
-        ...userPayload
-      }
-    })
+      data: {
+        ...userPayload,
+      },
+    });
 
-
-    const identifier = `${user.id}-${adminId}`
-    let kycHandler = await this.prisma.kycHandler.findFirst({where:{identifier:identifier}})
-    if(!kycHandler){
+    const identifier = `${user.id}-${adminId}`;
+    let kycHandler = await this.prisma.kycHandler.findFirst({
+      where: { identifier: identifier },
+    });
+    if (!kycHandler) {
       const kycHandlerData = {
         identifier,
-        userId:user.id,
-        handlerId:adminId
-      }
+        userId: user.id,
+        handlerId: adminId,
+      };
 
-    await this.prisma.kycHandler.create({data:kycHandlerData});
+      await this.prisma.kycHandler.create({ data: kycHandlerData });
     }
- 
 
-
-  return user
+    return user;
   }
-
-
-
 
   async getUser(userId: string) {
     const user = await this.prisma.user.findFirst({
-      where: { id: userId }, 
+      where: { id: userId },
       include: {
-        nominee:true,
-        documents:true,
-      }
-    })
-    return user
+        nominee: true,
+        documents: true,
+      },
+    });
+    return user;
   }
-
 
   // ##########get All User
 
-  async getAllUser(){
-    const allUser=this.prisma.user.findMany({
-      include:{
-        documents:true,
-        nominee:true
-      }
-    }
-    )
-    
-    return allUser
+  async getAllUser() {
+    const allUser = this.prisma.user.findMany({
+      include: {
+        documents: true,
+        nominee: true,
+      },
+    });
+
+    return allUser;
   }
 
-
-// ###################### Update Nominee Details ##################
+  // ###################### Update Nominee Details ##################
 
   async upsertNominee(userId: string, newNomineeData: NomineeInput) {
-    const payload = { ...newNomineeData, userId }
+    const payload = { ...newNomineeData, userId };
     const updated_nominee = this.prisma.nominee.upsert({
       create: { ...payload },
       update: { ...payload },
@@ -156,29 +210,24 @@ export class UsersService {
     return updated_nominee;
   }
 
-
   // ###################################################################################################
   // #################################### Change Password ###########################################
   // ###############################################################################################
 
-
-  
   async changePassword(changePasswordValue: ChangePasswordInput) {
     const hashedPassword = await this.passwordService.hashPassword(
       changePasswordValue.newPassword
     );
     try {
-    const updated_password = this.prisma.user.update({
-      data: {
-        password: hashedPassword,
-      },
-      where: {
-        private_key:changePasswordValue.private_key
-      }
-    });
-    return updated_password;
-  }catch(e){
+      const updated_password = this.prisma.user.update({
+        data: {
+          password: hashedPassword,
+        },
+        where: {
+          private_key: changePasswordValue.private_key,
+        },
+      });
+      return updated_password;
+    } catch (e) {}
   }
-  
-}
 }
