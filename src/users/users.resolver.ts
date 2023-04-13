@@ -65,13 +65,14 @@ async updateDataByAdmin(
   
 ) {
   if (user.role==="ADMIN"){
+   
     return this.usersService.updateDataByAdmin(updatedData)
   }
   throw new Error("Unauthorized")
   
 }
 
-
+// *********************************Update Details by Admin ********************
 
 @UseGuards(GqlAuthGuard)
 @Mutation(() => User)

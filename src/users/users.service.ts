@@ -48,13 +48,14 @@ export class UsersService {
   async updateDataByAdmin(
     newData: UpdateUserInputByAdmin
   ) {
-    if (newData && newData.name) {
+  
       const updated_details = this.prisma.user.update({
         where: {
           id: newData.id,
         },
         data: {
           name: newData.name,
+          kyc:"ONGOING",
           email: newData.email,
           father_or_husband_name: newData.father_or_husband_name,
           mobile_number: newData.mobile_number,
@@ -92,7 +93,7 @@ export class UsersService {
         },
       });
       return updated_details;
-    }
+    
 
 
 

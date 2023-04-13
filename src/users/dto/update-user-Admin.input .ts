@@ -51,6 +51,9 @@ export class UpdateUserInputByAdmin {
     documentId?: string
 
     @Field({ nullable: true })
+    kyc?: string
+
+    @Field({ nullable: true })
     url?: string
 
 

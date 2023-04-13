@@ -168,6 +168,7 @@ input UpdateUserInputByAdmin {
   email: String
   father_or_husband_name: String
   id: String!
+  kyc: String
   mobile_number: String
   name: String
   nomineeName: String

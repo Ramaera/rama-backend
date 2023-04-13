@@ -53,7 +53,7 @@ Setup a development PostgreSQL with Docker. Copy [.env.example](./.env.example) 
 Start the PostgreSQL database
 
 ```bash
-docker-compose -f docker-compose.db.yml up -d
+docker-compose -f docker-compose-db.yml up -d
 # or
 npm run docker:db
 ```

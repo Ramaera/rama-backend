@@ -83,4 +83,6 @@ export class User extends BaseModel {
 
   @Field(()=> Membership)
   membership?:Membership
+
+
 }
