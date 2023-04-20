@@ -20,4 +20,8 @@ export class DocumentModal extends BaseModel {
 
   @Field(() => String, { nullable: true })
   url?: string;
+
+  @Field(() => String, { nullable: true })
+  status?: string;
+  
 }

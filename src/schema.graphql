@@ -41,6 +41,7 @@ type Document {
 type DocumentModal {
   createdAt: DateTime!
   id: String!
+  status: String
   title: String
   updatedAt: DateTime!
   url: String
