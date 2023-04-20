@@ -97,11 +97,21 @@ import { UserIdArgs } from 'src/users/args/user-id.args';
   @UseGuards(GqlAuthGuard)
   @Mutation(() => Document)
   async updateDocumentStatusByAdmin(
+    @UserEntity() 
+    user: User,
     @Args('data') 
     data: UpdateDocumentStatusByAdmin
   ) {
+    try{
+    if(user.role==="ADMIN"){
+      return this.documentsService.updateDocumentStatusByAdmin(data);
+    }
+  }
+  catch(error){
+    console.log("UNAUTHORIZED")
+
+  }
     
-    return this.documentsService.updateDocumentStatusByAdmin(data);
   }
 
  
