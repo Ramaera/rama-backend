@@ -33,6 +33,7 @@ scalar DateTime
 
 type Document {
   id: String!
+  status: String!
   title: String!
   url: String!
 }
@@ -83,7 +84,9 @@ type Mutation {
   signup(data: SignupInput!): Auth!
   updateDataByAdmin(data: UpdateUserInputByAdmin!): User!
   updateDocument(data: UpdateDocumentsInput!): Document!
+  updateDocumentStatusByAdmin(data: UpdateDocumentStatusByAdmin!): Document!
   updateStatus(data: UpdateUserStatusAdmin!): User!
+  updateSubKycStatus(data: UpdateSubKycStatus!): User!
   updateUser(data: UpdateUserInput!): User!
   upsertNominee(data: NomineeInput!): Nominee!
 }
@@ -126,6 +129,13 @@ enum Role {
   USER
 }
 
+enum STATUS {
+  APPROVED
+  NOT_INITILAIZED
+  PENDING
+  REJECTED
+}
+
 input SignupInput {
   email: String
   membership: Membership
@@ -143,10 +153,21 @@ type Token {
   refreshToken: JWT!
 }
 
+input UpdateDocumentStatusByAdmin {
+  id: String!
+  status: STATUS!
+}
+
 input UpdateDocumentsInput {
-  documentId: String!
+  id: String!
   title: String
   url: String
+}
+
+input UpdateSubKycStatus {
+  fieldName: String!
+  fieldStatus: String!
+  id: String!
 }
 
 input UpdateUserInput {

@@ -9,4 +9,8 @@ export class Document {
   url: string;
 @Field()
 id:string
+
+@Field()
+status:string
+
 }

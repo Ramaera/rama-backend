@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
-import { UpdateDocumentsInput } from './dto/update-document';
+import {  UpdateDocumentStatusByAdmin, UpdateDocumentsInput } from './dto/update-document';
 
 @Injectable()
 export class DocumentsService{
@@ -10,11 +10,20 @@ export class DocumentsService{
     // **********Update Documents*****************
     // *******************************************
     
-    async updateDocuments(documentId:string,data:UpdateDocumentsInput){
+    async updateDocuments(data:UpdateDocumentsInput){
         return this.prisma.document.update({
             data,
             where:{
-                id:documentId,
+                id:data.id,
+            },
+        })
+    }
+
+    async updateDocumentStatusByAdmin(data:UpdateDocumentStatusByAdmin){
+        return this.prisma.document.update({
+            data,
+            where:{
+                id:data.id,
             },
         })
     }

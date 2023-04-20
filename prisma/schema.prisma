@@ -50,7 +50,7 @@ model SubKyc {
   updatedAt DateTime @default(now()) @updatedAt()
   id        String   @id @default(cuid())
   fieldName String
-  fieldStatus  KYC
+  fieldStatus  KYC  @default(NOT_INITIALIZED)
   user      User?    @relation(fields: [userId], references: [id])
   userId    String?
 }

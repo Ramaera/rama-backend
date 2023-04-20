@@ -14,7 +14,7 @@ import { UsersService } from './users.service';
 import { User } from './models/user.model';
 import { ChangePasswordInput } from './dto/change-password.input';
 import { UpdateUserInput } from './dto/update-user.input';
-import { UpdateNomineeInputByAdmin, UpdateUserInputByAdmin, UpdateUserStatusAdmin } from './dto/update-user-Admin.input ';
+import {  UpdateNomineeInputByAdmin, UpdateSubKycStatus, UpdateUserInputByAdmin, UpdateUserStatusAdmin } from './dto/update-user-Admin.input ';
 
 // import { UpdateNomineeInput } from './dto/update-user.input';
 import { NomineeInput, UpdatedData } from './dto/createNominee.input';
@@ -23,7 +23,7 @@ import { UserIdArgs } from './args/user-id.args';
 
 
 
-// 
+
 @Resolver(() => User)
 @UseGuards(GqlAuthGuard)
 export class UsersResolver {
@@ -57,7 +57,7 @@ export class UsersResolver {
 
 
 @UseGuards(GqlAuthGuard)
-@Mutation(() => User)
+@Mutation(()=>User)
 async updateDataByAdmin(
    @UserEntity() user: User,
   @Args('data') 
@@ -72,7 +72,7 @@ async updateDataByAdmin(
   
 }
 
-// *********************************Update Details by Admin ********************
+// *********************************Update Status by Admin ********************
 
 @UseGuards(GqlAuthGuard)
 @Mutation(() => User)
@@ -82,6 +82,34 @@ async updateStatus(
 ) {
   if(user.role==="ADMIN"){
     return this.usersService.updateStatus(user.id, newUserData);
+
+  }
+  throw new Error("Unauthorized")
+}
+
+
+// @UseGuards(GqlAuthGuard)
+// @Mutation(() => User)
+// async CreateSubKycStatus(
+//   @UserEntity() user: User,
+//   @Args('data') newKycData: SubKycStatusAdmin
+// ) {
+
+//     return this.usersService.createSubKycStatus(newKycData);
+
+
+  
+// }
+
+
+@UseGuards(GqlAuthGuard)
+@Mutation(() => User)
+async updateSubKycStatus(
+  @UserEntity() user: User,
+  @Args('data') newKycData: UpdateSubKycStatus
+) {
+  if(user.role==="ADMIN"){
+    return this.usersService.updateSubKycStatus(newKycData);
 
   }
   throw new Error("Unauthorized")

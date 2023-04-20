@@ -4,21 +4,13 @@ import { PasswordService } from 'src/auth/password.service';
 import { ChangePasswordInput } from './dto/change-password.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { NomineeInput, UpdatedData } from './dto/createNominee.input';
-import { Token } from '../../src/auth/models/token.model';
-import { Prisma } from '@prisma/client';
-import { UserEntity } from 'src/common/decorators/user.decorator';
-import { Args } from '@nestjs/graphql';
-import { User } from './models/user.model';
-import { UpdateKycHandlerInput } from './dto/update-kychandler.input';
+
 import {
   UpdateNomineeInputByAdmin,
+  UpdateSubKycStatus,
   UpdateUserInputByAdmin,
   UpdateUserStatusAdmin,
 } from './dto/update-user-Admin.input ';
-import { noop } from 'rxjs';
-import { title } from 'process';
-import { url } from 'inspector';
-import { UpdateDocumentsInput } from 'src/documents/dto/update-document';
 @Injectable()
 export class UsersService {
   constructor(
@@ -172,6 +164,44 @@ export class UsersService {
 
     return user;
   }
+
+// async createSubKycStatus(newUserData:UpdateSubKycStatus){
+
+// const subKyc=await this.prisma.subKyc.findFirst({
+//   where:{
+//     userId:newUserData.id
+//   }
+// })
+
+//   const updated_nominee = this.prisma.subKyc.upsert({
+//     create: newUserData,
+//     update: newUserData,
+//     where: {
+//       id: newUserData.id,
+//     },
+//   });
+//   return updated_nominee;
+
+// }
+
+  async updateSubKycStatus( newUserData: UpdateSubKycStatus) {
+   let subKycStatus= await this.prisma.subKyc.findFirst({
+      where :{
+        AND:[
+          {userId:newUserData.id},
+          {fieldName:newUserData.fieldName}
+        ]  
+      },
+    })
+  subKycStatus.fieldStatus=newUserData.fieldStatus    
+    return subKycStatus;
+  }
+
+
+
+
+
+
 
   async getUser(userId: string) {
     const user = await this.prisma.user.findFirst({

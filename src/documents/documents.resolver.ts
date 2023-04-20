@@ -15,7 +15,7 @@ import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
 import { UserEntity } from 'src/common/decorators/user.decorator';
 import {DocumentsService} from './documents.service'
-import {UpdateDocumentsInput} from './dto/update-document';
+import { UpdateDocumentStatusByAdmin, UpdateDocumentsInput} from './dto/update-document';
 import { DocumentIdArgs } from './args/document-id.args';
 import { User } from 'src/users/models/user.model';
 import { UserIdArgs } from 'src/users/args/user-id.args';
@@ -56,7 +56,20 @@ import { UserIdArgs } from 'src/users/args/user-id.args';
           userId:user.id
         }
       })
-    return newDocument
+      
+      return newDocument
+
+
+
+      // const subKycStatus= this.prisma.subKyc.create({
+      //   data:{
+      // fieldName:`${data.title}_status`,
+      // fieldStatus:"NOT_INITIALIZED"
+
+
+      //   }
+      // })
+      // console.log("------------->>>>>>>>>>",subKycStatus)
   }
 
 
@@ -75,12 +88,21 @@ import { UserIdArgs } from 'src/users/args/user-id.args';
     data: UpdateDocumentsInput
   ) {
     
-    return this.documentsService.updateDocuments(data.documentId, data);
+    return this.documentsService.updateDocuments(data);
   }
   // ********************************************
   // ********************************************
   // ********************************************
 
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => Document)
+  async updateDocumentStatusByAdmin(
+    @Args('data') 
+    data: UpdateDocumentStatusByAdmin
+  ) {
+    
+    return this.documentsService.updateDocumentStatusByAdmin(data);
+  }
 
  
 

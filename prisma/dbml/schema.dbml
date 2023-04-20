@@ -41,7 +41,7 @@ Table SubKyc {
   updatedAt DateTime [default: `now()`, not null]
   id String [pk]
   fieldName String [not null]
-  fieldStatus KYC [not null]
+  fieldStatus KYC [not null, default: 'NOT_INITIALIZED']
   user User
   userId String
 }
