@@ -151,10 +151,12 @@ async updateSubKycStatus(
 
   
   @Mutation(() => User)
+
   async changePassword(
+    @UserEntity() user:User,
   @Args('data') 
-  changePasswordValue: ChangePasswordInput) {
-    return this.usersService.changePassword(changePasswordValue);
+  data: ChangePasswordInput) {
+    return this.usersService.changePassword(user,data);
       }
 
 

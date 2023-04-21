@@ -13,7 +13,7 @@ type Auth {
 
 input ChangePasswordInput {
   newPassword: String!
-  private_key: String!
+  oldpassword: String!
 }
 
 input ChangePasswordWithPrivateKeyInput {
@@ -121,7 +121,7 @@ type Query {
   helloWorld: String!
   me: User!
   myDocuments(userId: String!): [Document!]!
-  myNominee(userId: String!): [Nominee!]!
+  myNominee(userId: String!): Nominee!
 }
 
 """User role"""
@@ -177,7 +177,6 @@ input UpdateUserInput {
   demat_account: String
   email: String
   father_or_husband_name: String
-  id: String!
   mobile_number: String
   name: String
 }
