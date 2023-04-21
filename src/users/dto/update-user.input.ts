@@ -11,9 +11,6 @@ import { NomineeInput } from './createNominee.input';
 @InputType()
 export class UpdateUserInput {
 
-@Field()
-id:string
-
   @Field({ nullable: true })
   name?: string;
 
@@ -38,8 +35,7 @@ id:string
    @Field({ nullable: true })
   demat_account?: string
 
-  // @Field(()=>KYC,{nullable:true})
-  // kyc?: KYC;
+ 
 
 }
 

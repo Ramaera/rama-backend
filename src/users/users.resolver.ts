@@ -161,7 +161,7 @@ async updateSubKycStatus(
 
  
 // *************************Nomineee Details  **************************************// 
-  @Query(() => [Nominee])
+  @Query(() => Nominee)
   myNominee(@Args() id: UserIdArgs) {
     return this.prisma.user
       .findUnique({ where: { id: id.userId } })
