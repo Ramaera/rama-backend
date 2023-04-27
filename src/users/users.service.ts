@@ -167,7 +167,7 @@ export class UsersService {
     const check = this.prisma.kycHandler.create({
       data: kycHandlerData,
     });
-    console.log((await check).identifier);
+
     // }
 
     return user;
