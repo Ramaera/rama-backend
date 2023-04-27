@@ -66,12 +66,13 @@ model Nominee {
 }
 
 model KycHandler {
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  userId     String
-  handlerId  String
-  identifier String
-  id         String   @id @default(cuid())
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  userId           String
+  handlerId        String
+  identifier       String
+  updatedKycStatus String
+  id               String   @id @default(cuid())
 }
 
 enum Role {

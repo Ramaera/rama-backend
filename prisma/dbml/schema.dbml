@@ -59,9 +59,10 @@ Table Nominee {
 Table KycHandler {
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
-  userId String [unique, not null]
-  handlerId String [unique, not null]
-  identifier String [unique, not null]
+  userId String [not null]
+  handlerId String [not null]
+  identifier String [not null]
+  updatedKycStatus String [not null]
   id String [pk]
 }
 
