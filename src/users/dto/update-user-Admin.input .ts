@@ -83,10 +83,8 @@ registerEnumType(KYC, {
   name: 'KYC',
 });
 
-
 @InputType()
 export class UpdateSubKycStatus {
-
   @Field({ nullable: false })
   id: string;
 
@@ -94,13 +92,9 @@ export class UpdateSubKycStatus {
   fieldName: string;
 
   @Field()
-  fieldStatus : KYC;
-
+  fieldStatus: KYC;
 }
 
 registerEnumType(KYC, {
   name: 'KYC',
 });
-
-
-

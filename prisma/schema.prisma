@@ -46,13 +46,13 @@ model Document {
 }
 
 model SubKyc {
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt()
-  id        String   @id @default(cuid())
-  fieldName String
-  fieldStatus  KYC  @default(NOT_INITIALIZED)
-  user      User?    @relation(fields: [userId], references: [id])
-  userId    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt()
+  id          String   @id @default(cuid())
+  fieldName   String
+  fieldStatus KYC      @default(NOT_INITIALIZED)
+  user        User?    @relation(fields: [userId], references: [id])
+  userId      String?
 }
 
 model Nominee {
@@ -68,9 +68,9 @@ model Nominee {
 model KycHandler {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  userId     String   @unique
-  handlerId  String   @unique
-  identifier String   @unique
+  userId     String
+  handlerId  String
+  identifier String
   id         String   @id @default(cuid())
 }
 
