@@ -31,7 +31,7 @@ export class AuthService {
     const hashedPassword = await this.passwordService.hashPassword(
       payload.password
     );
-    
+
     try {
       const rm_id = `RM-${(Math.random() + 1)
         .toString(36)
@@ -66,9 +66,6 @@ export class AuthService {
     }
   }
 
-
-
-
   async passwordresetRequest(pw_id: string): Promise<Token> {
     const user = await this.prisma.user.findUnique({ where: { pw_id } });
 
@@ -81,7 +78,10 @@ export class AuthService {
   }
 
   async login(pw_id: string, password: string): Promise<Token> {
-    const user = await this.prisma.user.findUnique({ where: { pw_id } });
+    const user = await this.prisma.user.findUnique({
+      where: { pw_id },
+      include: { nominee: true },
+    });
 
     if (!user) {
       throw new NotFoundException(`No user found for PW_Id: ${pw_id}`);
@@ -107,7 +107,10 @@ export class AuthService {
 
   getUserFromToken(token: string): Promise<User> {
     const id = this.jwtService.decode(token)['userId'];
-    return this.prisma.user.findUnique({ where: { id } });
+    return this.prisma.user.findUnique({
+      where: { id },
+      include: { nominee: true, documents: true },
+    });
   }
 
   generateTokens(payload: { userId: string }): Token {
@@ -153,10 +156,10 @@ export class AuthService {
       where: {
         private_key: {
           equals: payload.private_key,
-          mode:"insensitive"
-      } },
+          mode: 'insensitive',
+        },
+      },
     });
-
 
     if (!user) {
       throw new NotFoundException(`No user found`);
@@ -170,8 +173,6 @@ export class AuthService {
         id: user.id,
       },
     });
-    return {message:"success"};
+    return { message: 'success' };
   }
-
-  
 }

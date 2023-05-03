@@ -5,17 +5,16 @@ import {
   HideField,
   Field,
 } from '@nestjs/graphql';
-import { IsEmail, registerDecorator } from 'class-validator';
+import { IsEmail } from 'class-validator';
 import { BaseModel } from 'src/common/models/base.model';
-import { Role, KYC, Membership} from '@prisma/client';
+import { Role, KYC, Membership } from '@prisma/client';
 import { DocumentModal } from 'src/documents/models/document.models';
-import { NomineeModel} from './nominee.model'; 
+import { NomineeModel } from './nominee.model';
 
 registerEnumType(Role, {
   name: 'Role',
   description: 'User role',
 });
-
 
 registerEnumType(KYC, {
   name: 'KYC',
@@ -59,15 +58,14 @@ export class User extends BaseModel {
   alternate_mobile_number?: string | null;
 
   @Field(() => [DocumentModal])
-  documents?:DocumentModal[]|null
-
+  documents?: DocumentModal[] | null;
 
   @Field(() => NomineeModel)
   nominee?: NomineeModel;
 
   @Field(() => KYC)
-  kyc!: KYC
-  
+  kyc!: KYC;
+
   @Field(() => String, { nullable: true })
   date_of_birth?: string | null;
 
@@ -81,10 +79,6 @@ export class User extends BaseModel {
   @Field(() => String, { nullable: true })
   pw_id?: string | null;
 
-  @Field(()=> Membership)
-  membership?:Membership
-
- 
-
-
+  @Field(() => Membership)
+  membership?: Membership;
 }

@@ -15,17 +15,16 @@ import { User } from 'src/users/models/user.model';
 import { PasswordRequestInput } from './dto/passwordRequest.input';
 import { ChangePasswordWithPrivateKeyInput } from './dto/forget-password.input';
 import { EmptyModal } from 'src/common/models/empty.model';
+import { UserEntity } from 'src/common/decorators/user.decorator';
 @Resolver(() => Auth)
-  
-  
-  
 export class AuthResolver {
   constructor(private readonly auth: AuthService) {}
 
   @Mutation(() => Auth)
   async signup(
-  @Args('data') 
-  data: SignupInput) {
+    @Args('data')
+    data: SignupInput
+  ) {
     data.pw_id = data.pw_id.toUpperCase();
     const { accessToken, refreshToken } = await this.auth.createUser(data);
     return {
@@ -33,52 +32,37 @@ export class AuthResolver {
       refreshToken,
     };
   }
-  
 
-
-  
   @Mutation(() => Auth)
-  async login(@Args('data') 
-  { pw_id,
-    password 
-  }: LoginInput ) {
-    const { accessToken, refreshToken } = await this.auth.login(
-      pw_id.toUpperCase(),
-      password
-    );
+  async login(
+    @Args('data')
+    { pw_id, password }: LoginInput
+  ) {
+    return await this.auth.login(pw_id.toUpperCase(), password);
+  }
+
+  @Mutation(() => Auth)
+  async passwordresetRequest(
+    @Args('data')
+    { pw_id }: PasswordRequestInput
+  ) {
+    const { accessToken } = await this.auth.passwordresetRequest(pw_id);
     return {
       accessToken,
-      refreshToken,
     };
   }
 
-  @Mutation(()=>Auth)
-  async passwordresetRequest(@Args('data')
-  {
-    pw_id
-  }:PasswordRequestInput)
-  {
-    const {accessToken} =await this.auth.passwordresetRequest(
-      pw_id
-    )
-    return {
-      accessToken
-    }
-  }
-
-
-  @Mutation(()=>EmptyModal)
-  async forgetPasswordWithPrivateKey(@Args('data') payload:ChangePasswordWithPrivateKeyInput){
-   return this.auth.forgetPasswordWithPrivateKey(payload)
+  @Mutation(() => EmptyModal)
+  async forgetPasswordWithPrivateKey(
+    @Args('data') payload: ChangePasswordWithPrivateKeyInput
+  ) {
+    return this.auth.forgetPasswordWithPrivateKey(payload);
   }
 
   @Mutation(() => Token)
   async refreshToken(@Args() { token }: RefreshTokenInput) {
     return this.auth.refreshToken(token);
   }
-
-
-
 
   @ResolveField('user', () => User)
   async user(@Parent() auth: Auth) {
