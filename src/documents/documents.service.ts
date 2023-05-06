@@ -14,8 +14,9 @@ export class DocumentsService {
   // *******************************************
 
   async updateDocuments(data: UpdateDocumentsInput) {
+    data.status = 'PENDING';
     return this.prisma.document.update({
-      data,
+      data: { ...data },
       where: {
         id: data.id,
       },

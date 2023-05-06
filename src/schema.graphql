@@ -161,7 +161,7 @@ input UpdateDocumentStatusByAdmin {
 
 input UpdateDocumentsInput {
   id: String!
-  status: STATUS!
+  status: STATUS
   title: String
   url: String
 }

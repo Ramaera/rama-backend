@@ -12,7 +12,7 @@ export class UpdateDocumentsInput {
   @Field({ nullable: true })
   url?: string;
 
-  @Field(() => STATUS)
+  @Field(() => STATUS, { nullable: true })
   status?: STATUS;
 }
 
