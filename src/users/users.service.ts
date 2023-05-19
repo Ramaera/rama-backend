@@ -159,11 +159,14 @@ export class UsersService {
       handlerId: adminId,
     };
 
-    const check = this.prisma.kycHandler.create({
+    await this.prisma.kycHandler.create({
       data: kycHandlerData,
     });
-
-    // }
+    // const us = this.prisma.kycHandler.findFirst({
+    //   where: {
+    //     userId: user.id,
+    //   },
+    // });
 
     return user;
   }
