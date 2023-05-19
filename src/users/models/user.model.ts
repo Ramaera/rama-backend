@@ -82,3 +82,14 @@ export class User extends BaseModel {
   @Field(() => Membership)
   membership?: Membership;
 }
+
+@ObjectType()
+export class KYCHANDLER extends BaseModel {
+  @Field(() => String, { nullable: true })
+  handlerId?: string;
+  @Field(() => String, { nullable: true })
+  userId?: string;
+
+  @Field(() => KYC, { nullable: true })
+  updatedKycStatus?: KYC;
+}

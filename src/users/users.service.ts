@@ -152,11 +152,6 @@ export class UsersService {
 
     const identifier = `${user.id}-${adminId}`;
 
-    // let kycHandler = await this.prisma.kycHandler.findFirst({
-    //   where: { identifier: identifier },
-    // });
-
-    // if (!kycHandler) {
     const kycHandlerData = {
       identifier,
       userId: user.id,
@@ -192,6 +187,17 @@ export class UsersService {
       },
     });
     return user;
+  }
+
+  async getKycHandler() {
+    return await this.prisma.kycHandler.findMany({});
+    // const user = await this.prisma.user.findFirst({
+    //   where: { id: userId },
+    //   include: {
+    //     nominee: true,
+    //     documents: true,
+    //   },
+    // });
   }
 
   // ##########get All User

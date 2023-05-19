@@ -11,7 +11,7 @@ import { ConflictException, UseGuards } from '@nestjs/common';
 import { UserEntity } from 'src/common/decorators/user.decorator';
 import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
 import { UsersService } from './users.service';
-import { User } from './models/user.model';
+import { KYCHANDLER, User } from './models/user.model';
 import { ChangePasswordInput } from './dto/change-password.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import {
@@ -48,6 +48,12 @@ export class UsersResolver {
     return _user;
   }
 
+  @Query(() => [KYCHANDLER])
+  async getAllKycHandler() {
+    const _kycHandler = await this.usersService.getKycHandler();
+    return _kycHandler;
+  }
+
   // *********************************Update Details by Admin ********************
 
   @UseGuards(GqlAuthGuard)
@@ -76,17 +82,6 @@ export class UsersResolver {
     }
     throw new Error('Unauthorized');
   }
-
-  // @UseGuards(GqlAuthGuard)
-  // @Mutation(() => User)
-  // async CreateSubKycStatus(
-  //   @UserEntity() user: User,
-  //   @Args('data') newKycData: SubKycStatusAdmin
-  // ) {
-
-  //     return this.usersService.createSubKycStatus(newKycData);
-
-  // }
 
   @UseGuards(GqlAuthGuard)
   @Mutation(() => User)

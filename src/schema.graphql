@@ -65,6 +65,18 @@ enum KYC {
   SUBMITTED
 }
 
+type KYCHANDLER {
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  handlerId: String
+  id: ID!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+  updatedKycStatus: KYC
+  userId: String
+}
+
 input LoginInput {
   password: String!
   pw_id: String!
@@ -116,6 +128,7 @@ input PasswordRequestInput {
 }
 
 type Query {
+  getAllKycHandler: [KYCHANDLER!]!
   getAllUser: [User!]!
   hello(name: String!): String!
   helloWorld: String!
