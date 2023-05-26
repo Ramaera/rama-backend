@@ -24,10 +24,7 @@ export class AuthService {
     private readonly configService: ConfigService
   ) {}
 
-  async createUser(
-    // user:User,
-    payload: SignupInput
-  ): Promise<Token> {
+  async createUser(payload: SignupInput): Promise<Token> {
     const hashedPassword = await this.passwordService.hashPassword(
       payload.password
     );

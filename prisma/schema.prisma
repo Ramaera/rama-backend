@@ -15,7 +15,7 @@ model User {
   id                      String     @id @default(cuid())
   createdAt               DateTime   @default(now())
   updatedAt               DateTime   @updatedAt
-  email                   String?    @unique
+  email                   String?
   password                String
   name                    String?
   father_or_husband_name  String?
@@ -40,6 +40,7 @@ model Document {
   id        String   @id @default(cuid())
   title     String
   url       String
+  amount    Int?
   user      User?    @relation(fields: [userId], references: [id])
   userId    String?
   status    STATUS   @default(PENDING)

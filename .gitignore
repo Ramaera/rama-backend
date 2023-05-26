@@ -6,6 +6,7 @@ coverage/
 .DS_Store
 
 prisma/migrations/dev/
+prisma/migrations/
 .env
 
 docker-compose-db.yml

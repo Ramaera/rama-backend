@@ -1,93 +1,74 @@
-import { Resolver,
+import {
+  Resolver,
   Subscription,
-   Query, 
-   Mutation, 
-   Args,
-   Parent,
-   ResolveField,
-
-   Int 
-  } from '@nestjs/graphql';
+  Query,
+  Mutation,
+  Args,
+  Parent,
+  ResolveField,
+  Int,
+} from '@nestjs/graphql';
 import { Document } from './entities/document.entity';
 import { CreateDocumentInput } from './dto/createDocument.input';
 import { PrismaService } from 'nestjs-prisma';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
 import { UserEntity } from 'src/common/decorators/user.decorator';
-import {DocumentsService} from './documents.service'
-import { UpdateDocumentStatusByAdmin, UpdateDocumentsInput} from './dto/update-document';
+import { DocumentsService } from './documents.service';
+import {
+  UpdateDocumentStatusByAdmin,
+  UpdateDocumentsInput,
+} from './dto/update-document';
 import { DocumentIdArgs } from './args/document-id.args';
 import { User } from 'src/users/models/user.model';
 import { UserIdArgs } from 'src/users/args/user-id.args';
 
-
-
 @Resolver(() => Document)
-  export class DocumentsResolver {
-    constructor(
-      private documentsService:DocumentsService,
-      private prisma: PrismaService
-      ) {}
+export class DocumentsResolver {
+  constructor(
+    private documentsService: DocumentsService,
+    private prisma: PrismaService
+  ) {}
 
+  // ******************************************************
+  // ******************************************************
+  // **************Create Documents************************
+  // ******************************************************
+  // ******************************************************
 
-      
-
-
-// ******************************************************
-// ******************************************************
-// **************Create Documents************************
-// ****************************************************** 
-// ******************************************************
-
-
-  @UseGuards(GqlAuthGuard)   // Gql Authentication Guards
-  @Mutation(() => Document)  // Mutation  --> Document Object Types (title , url)
-  async createDocument(       
+  @UseGuards(GqlAuthGuard) // Gql Authentication Guards
+  @Mutation(() => Document) // Mutation  --> Document Object Types (title , url)
+  async createDocument(
     @UserEntity()
-    user:User,
-    @Args('data') 
+    user: User,
+    @Args('data')
     data: CreateDocumentInput
-    ) 
-    {
-      const newDocument=this.prisma.document.create({
-        data:{
-          title:data.title,
-          url:data.url,
-          userId:user.id
-        }
-      })
-      
-      return newDocument
+  ) {
+    const newDocument = this.prisma.document.create({
+      data: {
+        title: data.title,
+        url: data.url,
+        userId: user.id,
+      },
+    });
 
-
-
-      // const subKycStatus= this.prisma.subKyc.create({
-      //   data:{
-      // fieldName:`${data.title}_status`,
-      // fieldStatus:"NOT_INITIALIZED"
-
-
-      //   }
-      // })
-      // console.log("------------->>>>>>>>>>",subKycStatus)
+    return newDocument;
   }
 
-
-// ***************************************
-// ****************************************
-// ********Update Documents********************
-// ********************************************
-// *********************************************
+  // ***************************************
+  // ****************************************
+  // ********Update Documents********************
+  // ********************************************
+  // *********************************************
 
   @UseGuards(GqlAuthGuard)
   @Mutation(() => Document)
   async updateDocument(
-    @UserEntity() 
+    @UserEntity()
     user: User,
-    @Args('data') 
+    @Args('data')
     data: UpdateDocumentsInput
   ) {
-    
     return this.documentsService.updateDocuments(data);
   }
   // ********************************************
@@ -97,25 +78,19 @@ import { UserIdArgs } from 'src/users/args/user-id.args';
   @UseGuards(GqlAuthGuard)
   @Mutation(() => Document)
   async updateDocumentStatusByAdmin(
-    @UserEntity() 
+    @UserEntity()
     user: User,
-    @Args('data') 
+    @Args('data')
     data: UpdateDocumentStatusByAdmin
   ) {
-    try{
-    if(user.role==="ADMIN"){
-      return this.documentsService.updateDocumentStatusByAdmin(data);
+    try {
+      if (user.role === 'ADMIN') {
+        return this.documentsService.updateDocumentStatusByAdmin(data);
+      }
+    } catch (error) {
+      console.log('UNAUTHORIZED');
     }
   }
-  catch(error){
-    console.log("UNAUTHORIZED")
-
-  }
-    
-  }
-
- 
-
 
   @Query(() => [Document])
   myDocuments(@Args() id: UserIdArgs) {
@@ -123,7 +98,6 @@ import { UserIdArgs } from 'src/users/args/user-id.args';
       .findUnique({ where: { id: id.userId } })
       .documents();
   }
-
 
   // Todo Need Authentication
   // @Query(() => Document)

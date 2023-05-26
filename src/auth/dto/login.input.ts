@@ -8,7 +8,7 @@ export class LoginInput {
 
   @Field()
   @IsNotEmpty()
-  @MinLength(8)
+  // @MinLength(8)
   password: string;
 
   // @Field()
