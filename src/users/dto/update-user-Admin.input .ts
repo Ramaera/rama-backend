@@ -48,6 +48,9 @@ export class UpdateUserInputByAdmin {
 
   @Field({ nullable: true })
   url?: string;
+
+  @Field({ nullable: true })
+  amount?: number;
 }
 
 @InputType()

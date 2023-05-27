@@ -7,10 +7,9 @@ import {
 import { PasswordService } from 'src/auth/password.service';
 import { ChangePasswordInput } from './dto/change-password.input';
 import { UpdateUserInput } from './dto/update-user.input';
-import { NomineeInput, UpdatedData } from './dto/createNominee.input';
+import { NomineeInput } from './dto/createNominee.input';
 
 import {
-  UpdateNomineeInputByAdmin,
   UpdateSubKycStatus,
   UpdateUserInputByAdmin,
   UpdateUserStatusAdmin,
@@ -62,6 +61,7 @@ export class UsersService {
                 update: {
                   data: {
                     url: newData.url,
+                    amount: newData.amount,
                   },
                   where: {
                     id: newData.documentId,
@@ -92,39 +92,8 @@ export class UsersService {
     });
     return updated_details;
 
-    return newData;
+    // return newData;
   }
-
-  // async updateUserByAdmin(newNomineeInput: NomineeInput) {
-  //   // const updated_user = this.prisma.user.update({
-  //   //   data: newUserData,
-  //   //   where: {
-  //   //     id: newUserData.id,
-  //   //   },
-  //   // });
-  //   const nomine_updated = this.prisma.nominee.update({
-  //     data: newNomineeInput,
-  //     where: {
-  //       id: newNomineeInput.id,
-  //     },
-  //   });
-
-  //   return {
-  //     // updated_user,
-  //     nomine_updated,
-  //   };
-  // }
-
-  // async updateNomineeByAdmin(newNomineeInput: NomineeInput) {
-  //   const updated_user = this.prisma.user.update({
-  //     data: newNomineeInput,
-  //     where: {
-  //       id: newNomineeInput.id,
-  //     },
-  //   });
-
-  //   return updated_user;
-  // }
 
   async updateStatus(adminId: string, newUserData: UpdateUserStatusAdmin) {
     let user = await this.prisma.user.findFirst({
@@ -189,13 +158,6 @@ export class UsersService {
 
   async getKycHandler() {
     return await this.prisma.kycHandler.findMany({});
-    // const user = await this.prisma.user.findFirst({
-    //   where: { id: userId },
-    //   include: {
-    //     nominee: true,
-    //     documents: true,
-    //   },
-    // });
   }
 
   // ##########get All User
