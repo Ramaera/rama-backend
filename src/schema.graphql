@@ -39,6 +39,7 @@ type Document {
 }
 
 type DocumentModal {
+  amount: Int
   createdAt: DateTime!
   id: String!
   status: String
@@ -197,6 +198,7 @@ input UpdateUserInput {
 
 input UpdateUserInputByAdmin {
   alternate_mobile_number: String
+  amount: Int
   date_of_birth: String
   demat_account: String
   documentId: String
