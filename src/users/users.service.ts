@@ -56,7 +56,7 @@ export class UsersService {
         date_of_birth: newData.date_of_birth,
         demat_account: newData.demat_account,
         documents:
-          newData.url && newData.documentId
+          (newData.url || newData.amount) && newData.documentId
             ? {
                 update: {
                   data: {
