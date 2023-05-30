@@ -151,10 +151,7 @@ export class AuthService {
     );
     const user = await this.prisma.user.findFirst({
       where: {
-        private_key: {
-          equals: payload.private_key,
-          mode: 'insensitive',
-        },
+        pw_id: payload.pwId,
       },
     });
 
