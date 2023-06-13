@@ -18,7 +18,7 @@ input ChangePasswordInput {
 
 input ChangePasswordWithPrivateKeyInput {
   newPassword: String!
-  private_key: String!
+  pwId: String
 }
 
 input CreateDocumentInput {
@@ -129,6 +129,7 @@ input PasswordRequestInput {
 }
 
 type Query {
+  getAllHajipurProjectUser: [User!]!
   getAllKycHandler: [KYCHANDLER!]!
   getAllUser: [User!]!
   hello(name: String!): String!

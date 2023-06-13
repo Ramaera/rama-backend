@@ -173,6 +173,22 @@ export class UsersService {
     return allUser;
   }
 
+  async getAllHajipurProjectUser() {
+    const allUser = this.prisma.user.findMany({
+      where: {
+        documents: {
+          some: {
+            title: {
+              contains: 'Hajipur',
+            },
+          },
+        },
+      },
+    });
+
+    return allUser;
+  }
+
   // ###################### Update Nominee Details ##################
 
   async upsertNominee(userId: string, newNomineeData: NomineeInput) {

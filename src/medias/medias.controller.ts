@@ -24,11 +24,6 @@ import { ApiBody, ApiTags } from '@nestjs/swagger';
 export const editFileName = (req, file, callback) => {
   const fileExtName = extname(file.originalname);
 
-  // const randomName = `${(Math.random() + 1)
-  //     .toString(36)
-  //     .substring(7)
-  //     .toLocaleUpperCase()}`;
-
   const randomName =
     Date.now().toString(36) + Math.random().toString(36).substring(2);
   callback(null, `${randomName}${fileExtName}`);

@@ -135,4 +135,10 @@ export class UsersResolver {
   myNominee(@Args() id: UserIdArgs) {
     return this.prisma.user.findUnique({ where: { id: id.userId } }).nominee();
   }
+
+  @Query(() => [User])
+  async getAllHajipurProjectUser() {
+    const _user = await this.usersService.getAllHajipurProjectUser();
+    return _user;
+  }
 }
