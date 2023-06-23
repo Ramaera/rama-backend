@@ -83,17 +83,17 @@ export class UsersResolver {
     throw new Error('Unauthorized');
   }
 
-  @UseGuards(GqlAuthGuard)
-  @Mutation(() => User)
-  async updateSubKycStatus(
-    @UserEntity() user: User,
-    @Args('data') newKycData: UpdateSubKycStatus
-  ) {
-    if (user.role === 'ADMIN') {
-      return this.usersService.updateSubKycStatus(newKycData);
-    }
-    throw new Error('Unauthorized');
-  }
+  // @UseGuards(GqlAuthGuard)
+  // @Mutation(() => User)
+  // async updateSubKycStatus(
+  //   @UserEntity() user: User,
+  //   @Args('data') newKycData: UpdateSubKycStatus
+  // ) {
+  //   if (user.role === 'ADMIN') {
+  //     return this.usersService.updateSubKycStatus(newKycData);
+  //   }
+  //   throw new Error('Unauthorized');
+  // }
 
   // *********************************Updated  User details********************
 
@@ -141,4 +141,6 @@ export class UsersResolver {
     const _user = await this.usersService.getAllHajipurProjectUser();
     return _user;
   }
+
+  // ******************************** Create Agency Code ***********************************
 }

@@ -2,6 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type AllKycAgency {
+  agencyCode: String
+  name: String
+}
+
 type Auth {
   """JWT access token"""
   accessToken: JWT!
@@ -24,6 +29,10 @@ input ChangePasswordWithPrivateKeyInput {
 input CreateDocumentInput {
   title: String!
   url: String!
+}
+
+input CreateKycAgencyCodeInput {
+  userId: String!
 }
 
 """
@@ -58,6 +67,7 @@ A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction.
 """
 scalar JWT
 
+"""User KYC Status"""
 enum KYC {
   APPROVED
   NOT_INITIALIZED
@@ -78,6 +88,28 @@ type KYCHANDLER {
   userId: String
 }
 
+type KycAgency {
+  alternate_mobile_number: String
+  createdAt: DateTime!
+  date_of_birth: String
+  demat_account: String
+  documents: [DocumentModal!]
+  email: String
+  father_or_husband_name: String
+  id: String!
+  kyc: KYC!
+  membership: Membership
+  mobile_number: String
+  name: String
+  nominee: NomineeModel
+  private_key: String
+  pw_id: String
+  referralAgencyCode: String
+  rm_id: String
+  role: Role!
+  updatedAt: DateTime!
+}
+
 input LoginInput {
   password: String!
   pw_id: String!
@@ -91,16 +123,18 @@ enum Membership {
 type Mutation {
   changePassword(data: ChangePasswordInput!): User!
   createDocument(data: CreateDocumentInput!): Document!
+  createKycAgency(data: CreateKycAgencyCodeInput!): AllKycAgency!
   forgetPasswordWithPrivateKey(data: ChangePasswordWithPrivateKeyInput!): EmptyModal!
   login(data: LoginInput!): Auth!
   passwordresetRequest(data: PasswordRequestInput!): Auth!
   refreshToken(token: JWT!): Token!
+  removeKycAgency(id: Int!): KycAgency!
   signup(data: SignupInput!): Auth!
   updateDataByAdmin(data: UpdateUserInputByAdmin!): User!
   updateDocument(data: UpdateDocumentsInput!): Document!
   updateDocumentStatusByAdmin(data: UpdateDocumentStatusByAdmin!): Document!
+  updateKycAgency(updateKycAgencyInput: UpdateKycAgencyInput!): KycAgency!
   updateStatus(data: UpdateUserStatusAdmin!): User!
-  updateSubKycStatus(data: UpdateSubKycStatus!): User!
   updateUser(data: UpdateUserInput!): User!
   upsertNominee(data: NomineeInput!): Nominee!
 }
@@ -129,11 +163,14 @@ input PasswordRequestInput {
 }
 
 type Query {
+  AllKycAgency: [KycAgency!]!
+  GetAllKycAgencyUser(agencyCode: String!): [KycAgency!]!
   getAllHajipurProjectUser: [User!]!
   getAllKycHandler: [KYCHANDLER!]!
   getAllUser: [User!]!
   hello(name: String!): String!
   helloWorld: String!
+  kycAgency(userId: String!): KycAgency!
   me: User!
   myDocuments(userId: String!): [Document!]!
   myNominee(userId: String!): Nominee!
@@ -181,10 +218,9 @@ input UpdateDocumentsInput {
   url: String
 }
 
-input UpdateSubKycStatus {
-  fieldName: String!
-  fieldStatus: String!
-  id: String!
+input UpdateKycAgencyInput {
+  id: Int!
+  userId: String
 }
 
 input UpdateUserInput {

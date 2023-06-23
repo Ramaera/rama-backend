@@ -17,12 +17,24 @@ Table User {
   kyc KYC [not null, default: 'NOT_INITIALIZED']
   role Role [not null]
   membership Membership [not null, default: 'BASIC']
-  subKyc SubKyc [not null]
+  referralAgencyCode String
   date_of_birth String
+  isKycAgent Boolean [not null, default: false]
   demat_account String
   private_key String [unique]
   pw_id String [unique]
   rm_id String [unique]
+  KycAgency KycAgency [not null]
+  SubKyc SubKyc [not null]
+}
+
+Table KycAgency {
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+  id String [pk]
+  agencyCode String
+  userId String
+  user User
 }
 
 Table Document {
@@ -91,6 +103,8 @@ Enum STATUS {
   APPROVED
   REJECTED
 }
+
+Ref: KycAgency.userId > User.id
 
 Ref: Document.userId > User.id
 

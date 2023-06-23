@@ -12,9 +12,9 @@ generator dbml {
 }
 
 model User {
-  id                      String     @id @default(cuid())
-  createdAt               DateTime   @default(now())
-  updatedAt               DateTime   @updatedAt
+  id                      String      @id @default(cuid())
+  createdAt               DateTime    @default(now())
+  updatedAt               DateTime    @updatedAt
   email                   String?
   password                String
   name                    String?
@@ -23,15 +23,27 @@ model User {
   alternate_mobile_number String?
   documents               Document[]
   nominee                 Nominee?
-  kyc                     KYC        @default(NOT_INITIALIZED)
+  kyc                     KYC         @default(NOT_INITIALIZED)
   role                    Role
-  membership              Membership @default(BASIC)
-  subKyc                  SubKyc[]
+  membership              Membership  @default(BASIC)
+  referralAgencyCode      String?
   date_of_birth           String?
+  isKycAgent              Boolean     @default(false)
   demat_account           String?
-  private_key             String?    @unique
-  pw_id                   String?    @unique
-  rm_id                   String?    @unique
+  private_key             String?     @unique
+  pw_id                   String?     @unique
+  rm_id                   String?     @unique
+  KycAgency               KycAgency[]
+  SubKyc                  SubKyc[]
+}
+
+model KycAgency {
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt()
+  id         String   @id @default(cuid())
+  agencyCode String?
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id])
 }
 
 model Document {

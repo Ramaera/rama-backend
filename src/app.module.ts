@@ -13,6 +13,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GqlConfigService } from './gql-config.service';
 import { DocumentsModule } from './documents/documents.module';
 import { MediasModule } from './medias/medias.module';
+import { KycAgencyModule } from './kyc-agency/kyc-agency.module';
 
 @Module({
   imports: [
@@ -36,6 +37,8 @@ import { MediasModule } from './medias/medias.module';
     DocumentsModule,
     
     MediasModule,
+    
+    KycAgencyModule,
     
     
   ],

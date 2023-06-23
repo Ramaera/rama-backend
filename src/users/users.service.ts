@@ -203,9 +203,7 @@ export class UsersService {
     return updated_nominee;
   }
 
-  // ###################################################################################################
   // #################################### Change Password ###########################################
-  // ###############################################################################################
 
   async changePassword(user, changePasswordValue: ChangePasswordInput) {
     const hashedPassword = await this.passwordService.hashPassword(
