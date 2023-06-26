@@ -84,7 +84,7 @@ export class DocumentsResolver {
     data: UpdateDocumentStatusByAdmin
   ) {
     try {
-      if (user.role === 'ADMIN') {
+      if (user.role === 'ADMIN' || user.role === 'AGENT') {
         return this.documentsService.updateDocumentStatusByAdmin(data);
       }
     } catch (error) {

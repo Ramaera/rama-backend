@@ -89,6 +89,7 @@ model KycHandler {
 }
 
 enum Role {
+  AGENT
   ADMIN
   USER
 }

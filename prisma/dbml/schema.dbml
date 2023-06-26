@@ -80,6 +80,7 @@ Table KycHandler {
 }
 
 Enum Role {
+  AGENT
   ADMIN
   USER
 }

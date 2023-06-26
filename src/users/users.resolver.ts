@@ -39,7 +39,6 @@ export class UsersResolver {
   @Query(() => User)
   async me(@UserEntity() user: User): Promise<User> {
     const _user = await this.usersService.getUser(user.id);
-    console.log('------>>>>', _user);
     return _user;
   }
 
@@ -65,7 +64,7 @@ export class UsersResolver {
     @Args('data')
     updatedData: UpdateUserInputByAdmin
   ) {
-    if (user.role === 'ADMIN') {
+    if (user.role === 'ADMIN' || user.role === 'AGENT') {
       return this.usersService.updateDataByAdmin(updatedData);
     }
     throw new Error('Unauthorized');
@@ -79,23 +78,11 @@ export class UsersResolver {
     @UserEntity() user: User,
     @Args('data') newUserData: UpdateUserStatusAdmin
   ) {
-    if (user.role === 'ADMIN') {
+    if (user.role === 'ADMIN' || user.role === 'AGENT') {
       return this.usersService.updateStatus(user.id, newUserData);
     }
     throw new Error('Unauthorized');
   }
-
-  // @UseGuards(GqlAuthGuard)
-  // @Mutation(() => User)
-  // async updateSubKycStatus(
-  //   @UserEntity() user: User,
-  //   @Args('data') newKycData: UpdateSubKycStatus
-  // ) {
-  //   if (user.role === 'ADMIN') {
-  //     return this.usersService.updateSubKycStatus(newKycData);
-  //   }
-  //   throw new Error('Unauthorized');
-  // }
 
   // *********************************Updated  User details********************
 
