@@ -89,6 +89,7 @@ type KYCHANDLER {
 }
 
 type KycAgency {
+  agencyCode: String
   alternate_mobile_number: String
   createdAt: DateTime!
   date_of_birth: String
@@ -280,6 +281,7 @@ type User {
   nominee: NomineeModel
   private_key: String
   pw_id: String
+  referralAgencyCode: String
   rm_id: String
   role: Role!
   updatedAt: DateTime!

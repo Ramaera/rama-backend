@@ -84,6 +84,9 @@ export class User extends BaseModel {
   @Field(() => String, { nullable: true })
   pw_id?: string | null;
 
+  @Field(() => String, { nullable: true })
+  referralAgencyCode: string;
+
   @Field(() => Membership)
   membership?: Membership;
 }

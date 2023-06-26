@@ -40,6 +40,9 @@ export class KycAgency extends BaseModel {
   email?: string;
 
   @Field(() => String, { nullable: true })
+  agencyCode?: string;
+
+  @Field(() => String, { nullable: true })
   name?: string;
 
   @Field(() => Role)
