@@ -41,8 +41,8 @@ model KycAgency {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now()) @updatedAt()
   id         String   @id @default(cuid())
-  agencyCode String?
-  userId     String?
+  agencyCode String?  @unique
+  userId     String   @unique
   user       User?    @relation(fields: [userId], references: [id])
 }
 

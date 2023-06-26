@@ -11,6 +11,7 @@ import { Role, KYC, Membership } from '@prisma/client';
 import { DocumentModal } from 'src/documents/models/document.models';
 import { NomineeModel } from './nominee.model';
 import { KycAgencyModel } from './kycAgency.model';
+import { AllKycAgency } from 'src/kyc-agency/entities/kyc-agency.entity';
 
 registerEnumType(Role, {
   name: 'Role',
@@ -64,8 +65,8 @@ export class User extends BaseModel {
   @Field(() => NomineeModel)
   nominee?: NomineeModel;
 
-  @Field(() => KycAgencyModel, { nullable: true })
-  kycAgency?: KycAgencyModel;
+  @Field(() => [KycAgencyModel])
+  kycAgency?: KycAgencyModel[] | null;
 
   @Field(() => KYC)
   kyc!: KYC;
@@ -91,6 +92,7 @@ export class User extends BaseModel {
 export class KYCHANDLER extends BaseModel {
   @Field(() => String, { nullable: true })
   handlerId?: string;
+
   @Field(() => String, { nullable: true })
   userId?: string;
 

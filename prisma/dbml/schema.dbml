@@ -32,8 +32,8 @@ Table KycAgency {
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [default: `now()`, not null]
   id String [pk]
-  agencyCode String
-  userId String
+  agencyCode String [unique]
+  userId String [unique, not null]
   user User
 }
 

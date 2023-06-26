@@ -6,11 +6,11 @@ export class KycAgencyModel {
   id!: string;
 
   @Field(() => Date)
-  createdAt!: Date;
+  createdAt?: Date;
 
   @Field(() => Date)
-  updatedAt!: Date;
+  updatedAt?: Date;
 
-  @Field(() => String)
-  agencyCode!: string;
+  @Field(() => String, { nullable: false })
+  agencyCode?: string;
 }

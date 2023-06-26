@@ -169,6 +169,7 @@ export class UsersService {
       include: {
         documents: true,
         nominee: true,
+        KycAgency: true,
       },
     });
 

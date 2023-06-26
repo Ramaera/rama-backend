@@ -112,9 +112,9 @@ type KycAgency {
 
 type KycAgencyModel {
   agencyCode: String!
-  createdAt: DateTime!
+  createdAt: DateTime
   id: String!
-  updatedAt: DateTime!
+  updatedAt: DateTime
 }
 
 input LoginInput {
@@ -273,7 +273,7 @@ type User {
   father_or_husband_name: String
   id: String!
   kyc: KYC!
-  kycAgency: KycAgencyModel
+  kycAgency: [KycAgencyModel!]
   membership: Membership
   mobile_number: String
   name: String

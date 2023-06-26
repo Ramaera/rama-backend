@@ -47,6 +47,8 @@ export class KycAgencyService {
         referralAgencyCode: code.agencyCode,
       },
       include: {
+        nominee: true,
+        documents: true,
         KycAgency: true,
       },
     });

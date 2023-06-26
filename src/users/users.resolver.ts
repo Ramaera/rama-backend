@@ -39,12 +39,14 @@ export class UsersResolver {
   @Query(() => User)
   async me(@UserEntity() user: User): Promise<User> {
     const _user = await this.usersService.getUser(user.id);
+    console.log('------>>>>', _user);
     return _user;
   }
 
   @Query(() => [User])
   async getAllUser() {
     const _user = await this.usersService.getAllUser();
+
     return _user;
   }
 
