@@ -1,7 +1,6 @@
 import { IsEmail, IsNotEmpty, IsOptional, MinLength } from 'class-validator';
-import { InputType, Field, registerEnumType, } from '@nestjs/graphql';
+import { InputType, Field, registerEnumType } from '@nestjs/graphql';
 import { Membership } from '@prisma/client';
-
 
 @InputType()
 export class SignupInput {
@@ -18,19 +17,18 @@ export class SignupInput {
   @Field()
   name?: string;
 
-
   @Field({ nullable: true })
   mobile?: string;
-
 
   @Field()
   pw_id: string;
 
-  @Field(()=>Membership)
+  @Field()
+  referralAgencyCode?: string;
+
+  @Field(() => Membership)
   membership?: Membership;
-
 }
-registerEnumType(Membership,{
-  name:'Membership',
-})
-
+registerEnumType(Membership, {
+  name: 'Membership',
+});

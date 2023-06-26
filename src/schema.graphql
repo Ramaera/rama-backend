@@ -110,6 +110,13 @@ type KycAgency {
   updatedAt: DateTime!
 }
 
+type KycAgencyModel {
+  agencyCode: String!
+  createdAt: DateTime!
+  id: String!
+  updatedAt: DateTime!
+}
+
 input LoginInput {
   password: String!
   pw_id: String!
@@ -196,6 +203,7 @@ input SignupInput {
   name: String
   password: String!
   pw_id: String!
+  referralAgencyCode: String
 }
 
 type Token {
@@ -265,6 +273,7 @@ type User {
   father_or_husband_name: String
   id: String!
   kyc: KYC!
+  kycAgency: KycAgencyModel
   membership: Membership
   mobile_number: String
   name: String

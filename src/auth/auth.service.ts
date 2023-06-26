@@ -38,6 +38,7 @@ export class AuthService {
         data: {
           ...payload,
           password: hashedPassword,
+          referralAgencyCode: payload.referralAgencyCode,
           pw_id: payload.pw_id.toUpperCase(),
           rm_id,
           role: 'USER',

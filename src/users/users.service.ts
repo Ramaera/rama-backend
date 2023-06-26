@@ -151,8 +151,10 @@ export class UsersService {
       include: {
         nominee: true,
         documents: true,
+        KycAgency: true,
       },
     });
+
     return user;
   }
 
