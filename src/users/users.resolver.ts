@@ -13,7 +13,7 @@ import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
 import { UsersService } from './users.service';
 import { KYCHANDLER, User } from './models/user.model';
 import { ChangePasswordInput } from './dto/change-password.input';
-import { UpdateUserInput } from './dto/update-user.input';
+import { UpdateUserInput, UpdateUserRoleInput } from './dto/update-user.input';
 import {
   UpdateNomineeInputByAdmin,
   UpdateSubKycStatus,
@@ -104,6 +104,14 @@ export class UsersResolver {
     @Args('data') newNomineeData: NomineeInput
   ) {
     return this.usersService.upsertNominee(user.id, newNomineeData);
+  }
+
+  // *************************Update User Role *******************
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => User)
+  async updateuserRole(@Args('data') newUserData: UpdateUserRoleInput) {
+    return this.usersService.updateUserRole(newUserData);
   }
 
   // *********************************Mutation command  about the Changed Password   ********************

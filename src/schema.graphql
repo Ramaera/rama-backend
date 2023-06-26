@@ -69,6 +69,7 @@ scalar JWT
 
 """User KYC Status"""
 enum KYC {
+  AGENT_APPROVED
   APPROVED
   NOT_INITIALIZED
   ONGOING
@@ -144,6 +145,7 @@ type Mutation {
   updateKycAgency(updateKycAgencyInput: UpdateKycAgencyInput!): KycAgency!
   updateStatus(data: UpdateUserStatusAdmin!): User!
   updateUser(data: UpdateUserInput!): User!
+  updateuserRole(data: UpdateUserRoleInput!): User!
   upsertNominee(data: NomineeInput!): Nominee!
 }
 
@@ -187,6 +189,7 @@ type Query {
 """User role"""
 enum Role {
   ADMIN
+  AGENT
   USER
 }
 
@@ -257,6 +260,11 @@ input UpdateUserInputByAdmin {
   nomineeName: String
   nomineeRelationship: String
   url: String
+}
+
+input UpdateUserRoleInput {
+  id: String!
+  role: Role!
 }
 
 input UpdateUserStatusAdmin {
