@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateKycAgencyCodeInput } from './dto/create-kyc-agency.input';
 import { UpdateKycAgencyInput } from './dto/update-kyc-agency.input';
 import { PrismaService } from 'nestjs-prisma';
@@ -6,15 +6,26 @@ import {
   GetAllUserofSpecificKycAgency,
   GetKycAgency,
 } from './dto/get-kyc-agency.input';
+import { error } from 'console';
 // import { getKycAgency } from './dto/get-kyc-agency.input';
 
 @Injectable()
 export class KycAgencyService {
   constructor(private prisma: PrismaService) {}
 
-  create(data: CreateKycAgencyCodeInput) {
+  async create(data: CreateKycAgencyCodeInput) {
     try {
-      const generatedAgencyCode = this.prisma.kycAgency.create({
+      const checkAgencyCode = await this.prisma.kycAgency.findFirst({
+        where: {
+          userId: data.userId,
+        },
+      });
+      console.log('checkAgencyCode', checkAgencyCode);
+
+      if (checkAgencyCode) {
+        throw new BadRequestException('Agency Code Already Exist');
+      }
+      const generatedAgencyCode = await this.prisma.kycAgency.create({
         data: {
           agencyCode: `RIL${Math.floor(Math.random() * 90000) + 10000}`,
           userId: data.userId,
@@ -22,7 +33,7 @@ export class KycAgencyService {
       });
       return generatedAgencyCode;
     } catch (error) {
-      console.log(error);
+      throw new Error(error.message);
     }
   }
 
