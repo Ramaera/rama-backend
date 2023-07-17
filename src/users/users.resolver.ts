@@ -18,6 +18,7 @@ import {
   UpdateNomineeInputByAdmin,
   UpdateSubKycStatus,
   UpdateUserInputByAdmin,
+  UpdateUserMembershipAdmin,
   UpdateUserStatusAdmin,
 } from './dto/update-user-Admin.input ';
 
@@ -106,6 +107,16 @@ export class UsersResolver {
     return this.usersService.upsertNominee(user.id, newNomineeData);
   }
 
+  // ****************** Remove a User ***************
+  @UseGuards(GqlAuthGuard)
+  @Query(() => User)
+  async DeleteUser(
+    @UserEntity() user: User
+    // @Args('data') data: UpdateUserInput
+  ) {
+    return this.usersService.DeleteUser(user.id);
+  }
+
   // *************************Update User Role *******************
 
   @UseGuards(GqlAuthGuard)
@@ -115,8 +126,6 @@ export class UsersResolver {
   }
 
   // *********************************Mutation command  about the Changed Password   ********************
-  // ******************************************************************************************
-  // ***************************************************************************************
 
   @Mutation(() => User)
   async changePassword(
@@ -140,4 +149,16 @@ export class UsersResolver {
   }
 
   // ******************************** Create Agency Code ***********************************
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => User)
+  async updateMembership(
+    @UserEntity() user: User,
+    @Args('data') newUserData: UpdateUserMembershipAdmin
+  ) {
+    if (user.role === 'ADMIN' || user.role === 'AGENT') {
+      return this.usersService.updateMembership(user.id, newUserData);
+    }
+    throw new Error('Unauthorized');
+  }
 }

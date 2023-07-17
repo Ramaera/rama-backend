@@ -31,6 +31,12 @@ export class UpdateUserInput {
 }
 
 @InputType()
+export class DeleteUserInput {
+  @Field({ nullable: true })
+  id?: string;
+}
+
+@InputType()
 export class UpdateUserRoleInput {
   @Field(() => String)
   id: string;

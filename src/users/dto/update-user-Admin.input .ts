@@ -87,6 +87,18 @@ registerEnumType(KYC, {
 });
 
 @InputType()
+export class UpdateUserMembershipAdmin {
+  @Field({ nullable: false })
+  id: string;
+
+  @Field(() => Membership)
+  membsership: Membership;
+}
+registerEnumType(Membership, {
+  name: 'Membership',
+});
+
+@InputType()
 export class UpdateSubKycStatus {
   @Field({ nullable: false })
   id: string;

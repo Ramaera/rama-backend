@@ -8,10 +8,12 @@ import { PasswordService } from 'src/auth/password.service';
 import { ChangePasswordInput } from './dto/change-password.input';
 import { UpdateUserInput, UpdateUserRoleInput } from './dto/update-user.input';
 import { NomineeInput } from './dto/createNominee.input';
+import { saveAs } from 'file-saver';
 
 import {
   UpdateSubKycStatus,
   UpdateUserInputByAdmin,
+  UpdateUserMembershipAdmin,
   UpdateUserStatusAdmin,
 } from './dto/update-user-Admin.input ';
 import { User } from '@prisma/client';
@@ -22,13 +24,7 @@ export class UsersService {
     private passwordService: PasswordService
   ) {}
 
-  // ###############################################################
-  // ################################################################
-  // ################################################################
-  // ########################## Update User Details ##################
-  // ################################################################
-  // ###############################################################
-  // ##################################################################
+  // ************************* Update User Details *****************
 
   async updateUser(userId: string, newUserData: UpdateUserInput) {
     const updated_user = this.prisma.user.update({
@@ -40,6 +36,8 @@ export class UsersService {
 
     return updated_user;
   }
+
+  // **************************************************************
 
   async updateUserRole(newUserData: UpdateUserRoleInput) {
     console.log('checl', newUserData.role);
@@ -55,6 +53,7 @@ export class UsersService {
     return updated_user;
   }
 
+  // *****************************************************
   async updateDataByAdmin(newData: UpdateUserInputByAdmin) {
     const updated_details = this.prisma.user.update({
       where: {
@@ -109,6 +108,7 @@ export class UsersService {
     // return newData;
   }
 
+  // *****************************************************
   async updateStatus(adminId: string, newUserData: UpdateUserStatusAdmin) {
     let user = await this.prisma.user.findFirst({
       where: {
@@ -149,6 +149,53 @@ export class UsersService {
     return user;
   }
 
+  // *****************************************************
+
+  async updateMembership(
+    adminId: string,
+    newUserData: UpdateUserMembershipAdmin
+  ) {
+    let user = await this.prisma.user.findFirst({
+      where: {
+        id: newUserData.id,
+      },
+    });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+    user.membership = newUserData.membsership;
+    const userPayload = {
+      ...user,
+    };
+
+    user = await this.prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        ...userPayload,
+      },
+    });
+
+    const identifier = `${user.id}-${adminId}`;
+
+    const kycHandlerData = {
+      identifier,
+      userId: user.id,
+      updatedKycStatus: newUserData.membsership,
+      handlerId: adminId,
+    };
+
+    await this.prisma.kycHandler.create({
+      data: kycHandlerData,
+    });
+
+    return user;
+  }
+
+  // *****************************************************
+
   async updateSubKycStatus(newUserData: UpdateSubKycStatus) {
     let subKycStatus = await this.prisma.subKyc.findFirst({
       where: {
@@ -159,6 +206,7 @@ export class UsersService {
     return subKycStatus;
   }
 
+  // *****************************************************
   async getUser(userId: string) {
     const user = await this.prisma.user.findFirst({
       where: { id: userId },
@@ -172,6 +220,7 @@ export class UsersService {
     return user;
   }
 
+  // *****************************************************
   async getKycHandler() {
     return await this.prisma.kycHandler.findMany({});
   }
@@ -189,6 +238,8 @@ export class UsersService {
 
     return allUser;
   }
+
+  // *************************
 
   async getAllHajipurProjectUser() {
     const allUser = this.prisma.user.findMany({
@@ -246,5 +297,23 @@ export class UsersService {
       });
       return updated_password;
     } catch (e) {}
+  }
+
+  // **************************
+  async DeleteUser(user) {
+    try {
+      const getUser = await this.getUser(user.id);
+      // console.log(typeof getUser);
+      // var blob = new Blob(['Hello, world!'], {
+      //   type: 'text/csv;charset=utf-8',
+      // });
+      // var FileSaver = require('file-saver');
+      // console.log('---->>>', blob);
+      // FileSaver.saveAs(blob, 'hello_world.txt');
+
+      return getUser;
+    } catch (err) {
+      console.log(err);
+    }
   }
 }

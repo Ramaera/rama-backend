@@ -143,6 +143,7 @@ type Mutation {
   updateDocument(data: UpdateDocumentsInput!): Document!
   updateDocumentStatusByAdmin(data: UpdateDocumentStatusByAdmin!): Document!
   updateKycAgency(updateKycAgencyInput: UpdateKycAgencyInput!): KycAgency!
+  updateMembership(data: UpdateUserMembershipAdmin!): User!
   updateStatus(data: UpdateUserStatusAdmin!): User!
   updateUser(data: UpdateUserInput!): User!
   updateuserRole(data: UpdateUserRoleInput!): User!
@@ -174,6 +175,7 @@ input PasswordRequestInput {
 
 type Query {
   AllKycAgency: [KycAgency!]!
+  DeleteUser: User!
   GetAllKycAgencyUser(agencyCode: String!): [KycAgency!]!
   getAllHajipurProjectUser: [User!]!
   getAllKycHandler: [KYCHANDLER!]!
@@ -260,6 +262,11 @@ input UpdateUserInputByAdmin {
   nomineeName: String
   nomineeRelationship: String
   url: String
+}
+
+input UpdateUserMembershipAdmin {
+  id: String!
+  membsership: Membership!
 }
 
 input UpdateUserRoleInput {

@@ -27,20 +27,15 @@ import { KycAgencyModule } from './kyc-agency/kyc-agency.module';
 
     GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
-      
+
       useClass: GqlConfigService,
     }),
 
     AuthModule,
     UsersModule,
-    
     DocumentsModule,
-    
     MediasModule,
-    
     KycAgencyModule,
-    
-    
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],
