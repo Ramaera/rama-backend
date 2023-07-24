@@ -14,6 +14,7 @@ import { GqlConfigService } from './gql-config.service';
 import { DocumentsModule } from './documents/documents.module';
 import { MediasModule } from './medias/medias.module';
 import { KycAgencyModule } from './kyc-agency/kyc-agency.module';
+import { ShareholdingModule } from './shareholding/shareholding.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { KycAgencyModule } from './kyc-agency/kyc-agency.module';
     DocumentsModule,
     MediasModule,
     KycAgencyModule,
+    ShareholdingModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],

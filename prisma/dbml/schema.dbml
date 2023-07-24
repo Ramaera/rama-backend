@@ -12,6 +12,7 @@ Table User {
   father_or_husband_name String
   mobile_number String
   alternate_mobile_number String
+  shareHoldingType ShareHoldingType [not null]
   documents Document [not null]
   nominee Nominee
   kyc KYC [not null, default: 'NOT_INITIALIZED']
@@ -79,6 +80,14 @@ Table KycHandler {
   id String [pk]
 }
 
+Table ShareHoldingType {
+  id String [pk]
+  InvestmentType String [not null]
+  allotedShare Int
+  user User
+  userId String [not null]
+}
+
 Enum Role {
   AGENT
   ADMIN
@@ -113,3 +122,5 @@ Ref: Document.userId > User.id
 Ref: SubKyc.userId > User.id
 
 Ref: Nominee.userId - User.id
+
+Ref: ShareHoldingType.userId > User.id

@@ -35,6 +35,11 @@ input CreateKycAgencyCodeInput {
   userId: String!
 }
 
+input CreateShareholdingInput {
+  InvestmentType: String!
+  userId: String!
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -133,17 +138,20 @@ type Mutation {
   changePassword(data: ChangePasswordInput!): User!
   createDocument(data: CreateDocumentInput!): Document!
   createKycAgency(data: CreateKycAgencyCodeInput!): AllKycAgency!
+  createShareholding(data: CreateShareholdingInput!): Shareholding!
   forgetPasswordWithPrivateKey(data: ChangePasswordWithPrivateKeyInput!): EmptyModal!
   login(data: LoginInput!): Auth!
   passwordresetRequest(data: PasswordRequestInput!): Auth!
   refreshToken(token: JWT!): Token!
   removeKycAgency(id: Int!): KycAgency!
+  removeShareholding(id: Int!): Shareholding!
   signup(data: SignupInput!): Auth!
   updateDataByAdmin(data: UpdateUserInputByAdmin!): User!
   updateDocument(data: UpdateDocumentsInput!): Document!
   updateDocumentStatusByAdmin(data: UpdateDocumentStatusByAdmin!): Document!
   updateKycAgency(updateKycAgencyInput: UpdateKycAgencyInput!): KycAgency!
   updateMembership(data: UpdateUserMembershipAdmin!): User!
+  updateShareholding(updateShareholdingInput: UpdateShareholdingInput!): Shareholding!
   updateStatus(data: UpdateUserStatusAdmin!): User!
   updateUser(data: UpdateUserInput!): User!
   updateuserRole(data: UpdateUserRoleInput!): User!
@@ -186,6 +194,7 @@ type Query {
   me: User!
   myDocuments(userId: String!): [Document!]!
   myNominee(userId: String!): Nominee!
+  shareholding(id: Int!): Shareholding!
 }
 
 """User role"""
@@ -200,6 +209,11 @@ enum STATUS {
   NOT_INITILAIZED
   PENDING
   REJECTED
+}
+
+type Shareholding {
+  """Example field (placeholder)"""
+  InvestmentType: String!
 }
 
 input SignupInput {
@@ -234,6 +248,12 @@ input UpdateDocumentsInput {
 
 input UpdateKycAgencyInput {
   id: Int!
+  userId: String
+}
+
+input UpdateShareholdingInput {
+  InvestmentType: String
+  id: String!
   userId: String
 }
 

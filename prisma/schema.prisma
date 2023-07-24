@@ -12,27 +12,28 @@ generator dbml {
 }
 
 model User {
-  id                      String      @id @default(cuid())
-  createdAt               DateTime    @default(now())
-  updatedAt               DateTime    @updatedAt
+  id                      String             @id @default(cuid())
+  createdAt               DateTime           @default(now())
+  updatedAt               DateTime           @updatedAt
   email                   String?
   password                String
   name                    String?
   father_or_husband_name  String?
   mobile_number           String?
   alternate_mobile_number String?
+  shareHoldingType        ShareHoldingType[]
   documents               Document[]
   nominee                 Nominee?
-  kyc                     KYC         @default(NOT_INITIALIZED)
+  kyc                     KYC                @default(NOT_INITIALIZED)
   role                    Role
-  membership              Membership  @default(BASIC)
+  membership              Membership         @default(BASIC)
   referralAgencyCode      String?
   date_of_birth           String?
-  isKycAgent              Boolean     @default(false)
+  isKycAgent              Boolean            @default(false)
   demat_account           String?
-  private_key             String?     @unique
-  pw_id                   String?     @unique
-  rm_id                   String?     @unique
+  private_key             String?            @unique
+  pw_id                   String?            @unique
+  rm_id                   String?            @unique
   KycAgency               KycAgency[]
   SubKyc                  SubKyc[]
 }
@@ -86,6 +87,14 @@ model KycHandler {
   identifier       String
   updatedKycStatus String
   id               String   @id @default(cuid())
+}
+
+model ShareHoldingType {
+  id             String @id @default(cuid())
+  InvestmentType String
+  allotedShare   Int?
+  user           User?  @relation(fields: [userId], references: [id])
+  userId         String
 }
 
 enum Role {
