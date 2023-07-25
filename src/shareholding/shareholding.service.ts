@@ -11,10 +11,9 @@ export class ShareholdingService {
       data: {
         InvestmentType: inputData.InvestmentType,
         userId: inputData.userId,
+        allotedShare: inputData.allotedShare,
       },
     });
-    console.log(createShareholding);
-
     return createShareholding;
   }
 
@@ -26,8 +25,16 @@ export class ShareholdingService {
     return `This action returns a #${id} shareholding`;
   }
 
-  update(id: string, updateShareholdingInput: UpdateShareholdingInput) {
-    return `This action updates a #${id} shareholding`;
+  update(id: string, input: UpdateShareholdingInput) {
+    return this.prisma.shareHoldingType.update({
+      data: {
+        allotedShare: input.allotedShare,
+        InvestmentType: input.InvestmentType,
+      },
+      where: {
+        id,
+      },
+    });
   }
 
   remove(id: number) {

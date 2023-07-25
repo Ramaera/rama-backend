@@ -27,7 +27,7 @@ export class ShareholdingResolver {
 
   @Mutation(() => Shareholding)
   updateShareholding(
-    @Args('updateShareholdingInput')
+    @Args('data')
     updateShareholdingInput: UpdateShareholdingInput
   ) {
     return this.shareholdingService.update(

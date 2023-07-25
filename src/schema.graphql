@@ -36,7 +36,8 @@ input CreateKycAgencyCodeInput {
 }
 
 input CreateShareholdingInput {
-  InvestmentType: String!
+  InvestmentType: String
+  allotedShare: Int
   userId: String!
 }
 
@@ -151,7 +152,7 @@ type Mutation {
   updateDocumentStatusByAdmin(data: UpdateDocumentStatusByAdmin!): Document!
   updateKycAgency(updateKycAgencyInput: UpdateKycAgencyInput!): KycAgency!
   updateMembership(data: UpdateUserMembershipAdmin!): User!
-  updateShareholding(updateShareholdingInput: UpdateShareholdingInput!): Shareholding!
+  updateShareholding(data: UpdateShareholdingInput!): Shareholding!
   updateStatus(data: UpdateUserStatusAdmin!): User!
   updateUser(data: UpdateUserInput!): User!
   updateuserRole(data: UpdateUserRoleInput!): User!
@@ -253,6 +254,7 @@ input UpdateKycAgencyInput {
 
 input UpdateShareholdingInput {
   InvestmentType: String
+  allotedShare: Int
   id: String!
   userId: String
 }

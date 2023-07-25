@@ -6,5 +6,8 @@ export class CreateShareholdingInput {
   userId: string;
 
   @Field(() => String)
-  InvestmentType: string;
+  InvestmentType?: string;
+
+  @Field(() => Number)
+  allotedShare?: number;
 }
