@@ -7,6 +7,7 @@ import {
   GetKycAgency,
 } from './dto/get-kyc-agency.input';
 import { error } from 'console';
+import { prisma } from '@prisma/client';
 // import { getKycAgency } from './dto/get-kyc-agency.input';
 
 @Injectable()
@@ -37,8 +38,15 @@ export class KycAgencyService {
     }
   }
 
-  findAll() {
-    return this.prisma.kycAgency.findMany({});
+  async findAll() {
+    console.log('clicked');
+    const check = await this.prisma.kycAgency.findMany({
+      include: {
+        user: true,
+      },
+    });
+    console.log('---', check);
+    return check;
   }
 
   async findAllKycAgnecyuser(code: GetAllUserofSpecificKycAgency) {

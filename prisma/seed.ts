@@ -6,9 +6,57 @@ import fs from 'fs';
 import { PasswordService } from 'src/auth/password.service';
 import { hash, compare } from 'bcrypt';
 import moment from 'moment';
+import cuid from 'cuid';
 
 const HashedPassword = async (password) => {
   return await hash(password, 10);
+};
+const specificISOString = '2023-04-29T01:26:02.529Z';
+const specificDate = new Date(specificISOString);
+
+const SeedCommand = async () => {
+  const filePath = '/Users/apple/Downloads/501to1000.csv';
+  const results = [];
+  fs.createReadStream(filePath)
+    .pipe(csv())
+    .on('data', (data) => results.push(data));
+
+  await prisma.$connect();
+  console.log('Seeding...');
+
+  for (const row of results) {
+    const ExistingBatch = await prisma.bATCH.findFirst({
+      where: {
+        batchCode: parseInt(row.Filename),
+      },
+    });
+    // console.log('goingon....', row.row);
+    if (ExistingBatch) {
+      await prisma.rewardCode.create({
+        data: {
+          id: cuid(),
+          createdAt: specificDate,
+          updatedAt: specificDate,
+          code: row.Data,
+          isClaimed: false,
+          batchCodeId: parseInt(row.Filename),
+        },
+      });
+    } else {
+      await prisma.bATCH.create({
+        data: {
+          batchCode: parseInt(row.Filename),
+          createdAt: specificDate,
+          updatedAt: specificDate,
+          rewardCode: {
+            create: {
+              code: row.Data,
+            },
+          },
+        },
+      });
+    }
+  }
 };
 
 // const SeedCommand = async () => {
@@ -145,7 +193,7 @@ async function main() {
   // await prisma.nominee.deleteMany();
   // await prisma.document.deleteMany();
   // await prisma.user.deleteMany();
-  // SeedCommand();
+  SeedCommand();
   console.log('Seeding completed!');
 }
 
