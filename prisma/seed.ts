@@ -14,50 +14,50 @@ const HashedPassword = async (password) => {
 const specificISOString = '2023-04-29T01:26:02.529Z';
 const specificDate = new Date(specificISOString);
 
-const SeedCommand = async () => {
-  const filePath = '/Users/apple/Downloads/501to1000.csv';
-  const results = [];
-  fs.createReadStream(filePath)
-    .pipe(csv())
-    .on('data', (data) => results.push(data));
+// const SeedCommand = async () => {
+//   const filePath = '/Users/apple/Downloads/501to1000.csv';
+//   const results = [];
+//   fs.createReadStream(filePath)
+//     .pipe(csv())
+//     .on('data', (data) => results.push(data));
 
-  await prisma.$connect();
-  console.log('Seeding...');
+//   await prisma.$connect();
+//   console.log('Seeding...');
 
-  for (const row of results) {
-    const ExistingBatch = await prisma.bATCH.findFirst({
-      where: {
-        batchCode: parseInt(row.Filename),
-      },
-    });
-    // console.log('goingon....', row.row);
-    if (ExistingBatch) {
-      await prisma.rewardCode.create({
-        data: {
-          id: cuid(),
-          createdAt: specificDate,
-          updatedAt: specificDate,
-          code: row.Data,
-          isClaimed: false,
-          batchCodeId: parseInt(row.Filename),
-        },
-      });
-    } else {
-      await prisma.bATCH.create({
-        data: {
-          batchCode: parseInt(row.Filename),
-          createdAt: specificDate,
-          updatedAt: specificDate,
-          rewardCode: {
-            create: {
-              code: row.Data,
-            },
-          },
-        },
-      });
-    }
-  }
-};
+//   for (const row of results) {
+//     const ExistingBatch = await prisma.bATCH.findFirst({
+//       where: {
+//         batchCode: parseInt(row.Filename),
+//       },
+//     });
+//     // console.log('goingon....', row.row);
+//     if (ExistingBatch) {
+//       await prisma.rewardCode.create({
+//         data: {
+//           id: cuid(),
+//           createdAt: specificDate,
+//           updatedAt: specificDate,
+//           code: row.Data,
+//           isClaimed: false,
+//           batchCodeId: parseInt(row.Filename),
+//         },
+//       });
+//     } else {
+//       await prisma.bATCH.create({
+//         data: {
+//           batchCode: parseInt(row.Filename),
+//           createdAt: specificDate,
+//           updatedAt: specificDate,
+//           rewardCode: {
+//             create: {
+//               code: row.Data,
+//             },
+//           },
+//         },
+//       });
+//     }
+//   }
+// };
 
 // const SeedCommand = async () => {
 //   const filePath =
@@ -81,7 +81,8 @@ const SeedCommand = async () => {
 //     } catch (error) {
 //       console.log(error);
 //     }
-//     console.log('---->>>>');
+//     console.log('---->>>>', row.row);
+
 //     await prisma.user.create({
 //       data: {
 //         // Map the CSV columns to the corresponding Prisma model fields
@@ -94,7 +95,7 @@ const SeedCommand = async () => {
 //           .substring(7)
 //           .toLocaleUpperCase()}`,
 //         name: row.Name,
-//         kyc: 'APPROVED',
+//         kyc: row.KYCStatus,
 //         date_of_birth: row.DOB,
 //         father_or_husband_name: row.FatherName,
 //         mobile_number: row.Mobile,
@@ -186,14 +187,19 @@ const SeedCommand = async () => {
 //         demat_account: row.DematAc_No,
 //       },
 //     });
+
+//     // await prisma.user.update({
+//     //   data: {},
+//     //   where: {},
+//     // });
 //   }
 //   await prisma.$disconnect();
 // };
 async function main() {
-  // await prisma.nominee.deleteMany();
-  // await prisma.document.deleteMany();
-  // await prisma.user.deleteMany();
-  SeedCommand();
+  await prisma.nominee.deleteMany();
+  await prisma.document.deleteMany();
+  await prisma.user.deleteMany();
+  // SeedCommand();
   console.log('Seeding completed!');
 }
 

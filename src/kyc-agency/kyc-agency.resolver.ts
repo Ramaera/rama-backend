@@ -7,6 +7,10 @@ import {
   GetAllUserofSpecificKycAgency,
   GetKycAgency,
 } from './dto/get-kyc-agency.input';
+import { UserEntity } from 'src/common/decorators/user.decorator';
+import { User } from '@prisma/client';
+import { UseGuards } from '@nestjs/common';
+import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
 
 @Resolver(() => KycAgency)
 export class KycAgencyResolver {
@@ -18,6 +22,16 @@ export class KycAgencyResolver {
     data: CreateKycAgencyCodeInput
   ) {
     return this.kycAgencyService.create(data);
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => AllKycAgency)
+  AgencyPayment(
+    // @Args('data')
+    // data: CreateKycAgencyCodeInput
+    @UserEntity() user: User
+  ) {
+    return this.kycAgencyService.agencyPayment(user.id);
   }
 
   @Query(() => [KycAgency], { name: 'AllKycAgency' })

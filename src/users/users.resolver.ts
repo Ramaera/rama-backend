@@ -15,6 +15,7 @@ import { KYCHANDLER, User } from './models/user.model';
 import { ChangePasswordInput } from './dto/change-password.input';
 import { UpdateUserInput, UpdateUserRoleInput } from './dto/update-user.input';
 import {
+  UpdateLicenseDetailsInput,
   UpdateNomineeInputByAdmin,
   UpdateSubKycStatus,
   UpdateUserInputByAdmin,
@@ -160,5 +161,12 @@ export class UsersResolver {
       return this.usersService.updateMembership(user.id, newUserData);
     }
     throw new Error('Unauthorized');
+  }
+
+  // *************************** Add  License Validity of Agency ***************************
+
+  @Mutation(() => User)
+  async UpdateLicenseDetails(@Args('data') data: UpdateLicenseDetailsInput) {
+    return this.usersService.updateLicenseDetails(data);
   }
 }

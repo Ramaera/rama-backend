@@ -121,6 +121,8 @@ enum Membership {
 }
 
 type Mutation {
+  AgencyPayment: AllKycAgency!
+  UpdateLicenseDetails(data: UpdateLicenseDetailsInput!): User!
   changePassword(data: ChangePasswordInput!): User!
   createDocument(data: CreateDocumentInput!): Document!
   createKycAgency(data: CreateKycAgencyCodeInput!): AllKycAgency!
@@ -235,6 +237,11 @@ input UpdateDocumentsInput {
 input UpdateKycAgencyInput {
   id: Int!
   userId: String
+}
+
+input UpdateLicenseDetailsInput {
+  id: String!
+  licenseValidityInYear: Int!
 }
 
 input UpdateShareholdingInput {

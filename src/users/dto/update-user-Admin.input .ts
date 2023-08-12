@@ -1,4 +1,4 @@
-import { InputType, Field, registerEnumType } from '@nestjs/graphql';
+import { InputType, Field, registerEnumType, Int } from '@nestjs/graphql';
 import { KYC, Membership } from '@prisma/client';
 import { NomineeInput } from './createNominee.input';
 import { UpdateDocumentsInput } from 'src/documents/dto/update-document';
@@ -113,3 +113,12 @@ export class UpdateSubKycStatus {
 registerEnumType(KYC, {
   name: 'KYC',
 });
+
+@InputType()
+export class UpdateLicenseDetailsInput {
+  @Field(() => String)
+  id: string;
+
+  @Field(() => Int)
+  licenseValidityInYear: number;
+}

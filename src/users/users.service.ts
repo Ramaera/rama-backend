@@ -11,6 +11,7 @@ import { NomineeInput } from './dto/createNominee.input';
 import { saveAs } from 'file-saver';
 
 import {
+  UpdateLicenseDetailsInput,
   UpdateSubKycStatus,
   UpdateUserInputByAdmin,
   UpdateUserMembershipAdmin,
@@ -315,5 +316,17 @@ export class UsersService {
     } catch (err) {
       console.log(err);
     }
+  }
+
+  // ***************************************
+  async updateLicenseDetails(payload: UpdateLicenseDetailsInput) {
+    await this.prisma.kycAgency.update({
+      where: {
+        id: payload.id,
+      },
+      data: {
+        licenseValidityInYear: payload.licenseValidityInYear,
+      },
+    });
   }
 }

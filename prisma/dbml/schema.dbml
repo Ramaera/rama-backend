@@ -34,6 +34,7 @@ Table KycAgency {
   updatedAt DateTime [default: `now()`, not null]
   id String [pk]
   agencyCode String [unique]
+  licenseValidityInYear Int
   userId String [unique, not null]
   user User
 }

@@ -39,12 +39,13 @@ model User {
 }
 
 model KycAgency {
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @default(now()) @updatedAt()
-  id         String   @id @default(cuid())
-  agencyCode String?  @unique
-  userId     String   @unique
-  user       User?    @relation(fields: [userId], references: [id])
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @default(now()) @updatedAt()
+  id                    String   @id @default(cuid())
+  agencyCode            String?  @unique
+  licenseValidityInYear Int?
+  userId                String   @unique
+  user                  User?    @relation(fields: [userId], references: [id])
 }
 
 model Document {

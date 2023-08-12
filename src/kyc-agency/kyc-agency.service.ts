@@ -49,6 +49,53 @@ export class KycAgencyService {
     return check;
   }
 
+  async agencyPayment(userId) {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        id: userId,
+      },
+    });
+    console.log(user.name, user.pw_id);
+    let agencyPwid = user.pw_id;
+    const agencyCodeOutput = await this.prisma.kycAgency.findFirst({
+      where: {
+        userId: userId,
+      },
+    });
+
+    let agencyCode = agencyCodeOutput.agencyCode;
+    console.log(user.name, user.pw_id, agencyCode);
+
+    const agencyUsers = await this.prisma.user.findMany({
+      where: {
+        OR: [
+          {
+            referralAgencyCode: agencyPwid,
+          },
+          {
+            referralAgencyCode: agencyCode,
+          },
+        ],
+      },
+      include: {
+        documents: true,
+      },
+    });
+    let KYCPayout = 0;
+    let HajipurPayout = 0;
+    let AgraPayout = 0;
+    // let AdvancePayout=0
+
+    agencyUsers.map((agencyUser) => {
+      agencyUser.kyc === 'APPROVED' ? (KYCPayout += 200) : (KYCPayout = 0);
+      agencyUser.documents.map((document) => {
+        document.title === 'payment_proof'
+          ? console.log('hii')
+          : console.log('noo');
+      });
+    });
+  }
+
   async findAllKycAgnecyuser(code: GetAllUserofSpecificKycAgency) {
     const listofagencyuser = await this.prisma.user.findMany({
       where: {
