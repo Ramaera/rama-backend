@@ -25,4 +25,7 @@ export class DocumentModal extends BaseModel {
 
   @Field(() => String, { nullable: true })
   status?: string;
+
+  @Field(() => String, { nullable: true })
+  utrNo?: string;
 }
