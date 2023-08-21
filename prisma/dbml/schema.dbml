@@ -12,9 +12,6 @@ Table User {
   father_or_husband_name String
   mobile_number String
   alternate_mobile_number String
-  shareHoldingType ShareHoldingType [not null]
-  documents Document [not null]
-  nominee Nominee
   kyc KYC [not null, default: 'NOT_INITIALIZED']
   role Role [not null]
   membership Membership [not null, default: 'BASIC']
@@ -25,8 +22,11 @@ Table User {
   private_key String [unique]
   pw_id String [unique]
   rm_id String [unique]
-  KycAgency KycAgency [not null]
-  SubKyc SubKyc [not null]
+  DSCDetails DSCDETAILS [not null]
+  documents Document [not null]
+  KycAgency KycAgency
+  nominee Nominee
+  shareHoldingType ShareHoldingType [not null]
 }
 
 Table KycAgency {
@@ -34,9 +34,9 @@ Table KycAgency {
   updatedAt DateTime [default: `now()`, not null]
   id String [pk]
   agencyCode String [unique]
-  licenseValidityInYear Int
   userId String [unique, not null]
-  user User
+  licenseValidityInYear Int
+  user User [not null]
 }
 
 Table Document {
@@ -46,29 +46,31 @@ Table Document {
   title String [not null]
   url String [not null]
   amount Int
-  user User
   userId String
   status STATUS [not null, default: 'PENDING']
+  utrNo String
+  user User
 }
 
-Table SubKyc {
+Table DSCDETAILS {
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [default: `now()`, not null]
   id String [pk]
-  fieldName String [not null]
-  fieldStatus KYC [not null, default: 'NOT_INITIALIZED']
-  user User
+  DscCreatedDate String
+  DscExpiryDate String
+  DSCStatus DSCSTATUS [not null, default: 'NOT_RECEIVED']
   userId String
+  user User
 }
 
 Table Nominee {
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
-  user User
   userId String [unique, not null]
   name String
   relationship String [not null]
   id String [pk]
+  user User [not null]
 }
 
 Table KycHandler {
@@ -85,19 +87,24 @@ Table ShareHoldingType {
   id String [pk]
   InvestmentType String [not null]
   allotedShare Int
-  user User
   userId String [not null]
+  user User [not null]
 }
 
 Enum Role {
-  AGENT
   ADMIN
   USER
+  AGENT
 }
 
 Enum Membership {
   BASIC
   ADVANCE
+}
+
+Enum DSCSTATUS {
+  NOT_RECEIVED
+  RECEIVED
 }
 
 Enum KYC {
@@ -116,11 +123,11 @@ Enum STATUS {
   REJECTED
 }
 
-Ref: KycAgency.userId > User.id
+Ref: KycAgency.userId - User.id
 
 Ref: Document.userId > User.id
 
-Ref: SubKyc.userId > User.id
+Ref: DSCDETAILS.userId > User.id
 
 Ref: Nominee.userId - User.id
 

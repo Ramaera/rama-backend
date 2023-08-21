@@ -32,6 +32,9 @@ export class UpdateUserInputByAdmin {
   date_of_birth?: string;
 
   @Field({ nullable: true })
+  utrNo?: string;
+
+  @Field({ nullable: true })
   demat_account?: string;
 
   @Field({ nullable: true })

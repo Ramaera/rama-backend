@@ -69,11 +69,13 @@ export class UsersService {
         alternate_mobile_number: newData.alternate_mobile_number,
         date_of_birth: newData.date_of_birth,
         demat_account: newData.demat_account,
+
         documents:
           (newData.url || newData.amount) && newData.documentId
             ? {
                 update: {
                   data: {
+                    utrNo: newData.utrNo,
                     url: newData.url,
                     amount: newData.amount,
                   },
@@ -197,15 +199,15 @@ export class UsersService {
 
   // *****************************************************
 
-  async updateSubKycStatus(newUserData: UpdateSubKycStatus) {
-    let subKycStatus = await this.prisma.subKyc.findFirst({
-      where: {
-        AND: [{ userId: newUserData.id }, { fieldName: newUserData.fieldName }],
-      },
-    });
-    subKycStatus.fieldStatus = newUserData.fieldStatus;
-    return subKycStatus;
-  }
+  // async updateSubKycStatus(newUserData: UpdateSubKycStatus) {
+  //   let subKycStatus = await this.prisma.subKyc.findFirst({
+  //     where: {
+  //       AND: [{ userId: newUserData.id }, { fieldName: newUserData.fieldName }],
+  //     },
+  //   });
+  //   subKycStatus.fieldStatus = newUserData.fieldStatus;
+  //   return subKycStatus;
+  // }
 
   // *****************************************************
   async getUser(userId: string) {
