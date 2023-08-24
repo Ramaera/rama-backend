@@ -707,8 +707,14 @@ async function main() {
   // await prisma.document.deleteMany();
   // await prisma.user.deleteMany();
   // await SeedCommand();
-  const check = await HashedPassword('Bhargav12');
-  console.log('------>>', check);
+  const check = await HashedPassword('12345678');
+  console.log('------>>', cuid());
+  console.log('------>>Password', check);
+  // console.log(
+  //   'RMID',
+  //   `RM-${(Math.random() + 1).toString(36).substring(7).toLocaleUpperCase()}`
+  // );
+
   console.log('Seeding completed!');
 }
 

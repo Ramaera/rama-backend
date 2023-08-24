@@ -62,6 +62,7 @@ type DocumentModal {
   updatedAt: DateTime!
   url: String
   userId: String!
+  utrNo: String
 }
 
 type EmptyModal {
@@ -99,8 +100,11 @@ type KycAgency {
   agencyCode: String
   createdAt: DateTime!
   id: String!
+  name: String
+  rm_id: String
+  role: Role!
   updatedAt: DateTime!
-  user: User
+  user: User!
 }
 
 type KycAgencyModel {
@@ -172,7 +176,7 @@ input PasswordRequestInput {
 type Query {
   AllKycAgency: [KycAgency!]!
   DeleteUser: User!
-  GetAllKycAgencyUser(agencyCode: String!): [KycAgency!]!
+  GetAllKycAgencyUser(agencyCode: String!): [User!]!
   getAllHajipurProjectUser: [User!]!
   getAllKycHandler: [KYCHANDLER!]!
   getAllUser: [User!]!
@@ -276,6 +280,7 @@ input UpdateUserInputByAdmin {
   nomineeName: String
   nomineeRelationship: String
   url: String
+  utrNo: String
 }
 
 input UpdateUserMembershipAdmin {
