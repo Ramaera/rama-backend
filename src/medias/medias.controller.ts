@@ -48,7 +48,7 @@ export class MediasController {
       }),
       fileFilter: imageFileFilter,
       limits: {
-        fileSize: 1024 * 1024 * 10, // 10MB file size limit
+        fileSize: 1024 * 1024 * 20, // 20MB file size limit
       },
     })
   )

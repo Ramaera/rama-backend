@@ -31,4 +31,22 @@ export class DocumentsService {
       },
     });
   }
+
+  async updatePaymentName() {
+    const users = this.prisma.user.findMany();
+
+    (await users).map(async (user) => {
+      const alldoc = await this.prisma.document.findMany({
+        where: {
+          userId: user.id,
+        },
+      });
+
+      alldoc.map((doc) => {
+        doc.title === 'hajipur_project_payment' ? console.log(doc.title) : '';
+      });
+    });
+
+    return 'XX';
+  }
 }

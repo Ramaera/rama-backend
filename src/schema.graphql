@@ -177,6 +177,7 @@ type Query {
   AllKycAgency: [KycAgency!]!
   DeleteUser: User!
   GetAllKycAgencyUser(agencyCode: String!): [User!]!
+  dataDocuments: [User!]!
   getAllHajipurProjectUser: [User!]!
   getAllKycHandler: [KYCHANDLER!]!
   getAllUser: [User!]!

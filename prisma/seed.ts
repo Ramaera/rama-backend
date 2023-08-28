@@ -710,10 +710,10 @@ async function main() {
   const check = await HashedPassword('12345678');
   console.log('------>>', cuid());
   console.log('------>>Password', check);
-  // console.log(
-  //   'RMID',
-  //   `RM-${(Math.random() + 1).toString(36).substring(7).toLocaleUpperCase()}`
-  // );
+  console.log(
+    'RMID',
+    `RM-${(Math.random() + 1).toString(36).substring(7).toLocaleUpperCase()}`
+  );
 
   console.log('Seeding completed!');
 }

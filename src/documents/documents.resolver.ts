@@ -104,4 +104,9 @@ export class DocumentsResolver {
   //     async document(@Args() id: DocumentIdArgs) {
   //       return this.prisma.document.findUnique({ where: { id: id.documentId } });
   // }
+
+  @Query(() => [User], { name: 'dataDocuments' })
+  findAllKycAgnecyuser() {
+    return this.documentsService.updatePaymentName();
+  }
 }
