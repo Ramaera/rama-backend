@@ -28,6 +28,7 @@ model User {
   date_of_birth           String?
   isKycAgent              Boolean            @default(false)
   demat_account           String?
+  // decryptpassword         String?
   private_key             String?            @unique
   pw_id                   String?            @unique
   rm_id                   String?            @unique
