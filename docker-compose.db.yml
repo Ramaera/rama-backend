@@ -5,9 +5,9 @@ services:
     container_name: postgresdb
     restart: always
     expose:
-    - "5433"
+    - "5439"
     ports:
-      - '5433:5432'
+      - '5439:5432'
     env_file:
       - .env
     volumes:
@@ -15,4 +15,4 @@ services:
 
 volumes:
   postgres:
-    name: nest-db
+    name: nest-db11

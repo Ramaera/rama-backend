@@ -177,10 +177,11 @@ type Query {
   AllKycAgency: [KycAgency!]!
   DeleteUser: User!
   GetAllKycAgencyUser(agencyCode: String!): [User!]!
+  Report: [User!]!
   dataDocuments: [User!]!
   getAllHajipurProjectUser: [User!]!
   getAllKycHandler: [KYCHANDLER!]!
-  getAllUser: [User!]!
+  getAllUser(skip: Int! = 0, take: Int! = 10): [User!]!
   hello(name: String!): String!
   helloWorld: String!
   kycAgency(userId: String!): KycAgency!

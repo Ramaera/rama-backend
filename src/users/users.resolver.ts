@@ -6,6 +6,7 @@ import {
   Mutation,
   Args,
   ResolveField,
+  Int,
 } from '@nestjs/graphql';
 import { ConflictException, UseGuards } from '@nestjs/common';
 import { UserEntity } from 'src/common/decorators/user.decorator';
@@ -45,8 +46,11 @@ export class UsersResolver {
   }
 
   @Query(() => [User])
-  async getAllUser() {
-    const _user = await this.usersService.getAllUser();
+  async getAllUser(
+    @Args({ name: 'take', type: () => Int, defaultValue: 10 }) take: number,
+    @Args({ name: 'skip', type: () => Int, defaultValue: 0 }) skip: number
+  ) {
+    const _user = await this.usersService.getAllUser({ take, skip });
 
     return _user;
   }

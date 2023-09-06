@@ -21,14 +21,12 @@ export class KycAgencyService {
           userId: data.userId,
         },
       });
-      console.log('checkAgencyCode', checkAgencyCode);
-
       if (checkAgencyCode) {
         throw new BadRequestException('Agency Code Already Exist');
       }
       const generatedAgencyCode = await this.prisma.kycAgency.create({
         data: {
-          agencyCode: `RIL${Math.floor(Math.random() * 90000) + 10000}`,
+          agencyCode: `RLI${Math.floor(Math.random() * 90000) + 10000}`,
           userId: data.userId,
         },
       });
@@ -39,13 +37,11 @@ export class KycAgencyService {
   }
 
   async findAll() {
-    console.log('clicked');
     const check = await this.prisma.kycAgency.findMany({
       include: {
         user: true,
       },
     });
-    console.log('---', check);
     return check;
   }
 
@@ -55,7 +51,7 @@ export class KycAgencyService {
         id: userId,
       },
     });
-    console.log(user.name, user.pw_id);
+
     let agencyPwid = user.pw_id;
     const agencyCodeOutput = await this.prisma.kycAgency.findFirst({
       where: {
@@ -64,8 +60,6 @@ export class KycAgencyService {
     });
 
     let agencyCode = agencyCodeOutput.agencyCode;
-    console.log(user.name, user.pw_id, agencyCode);
-
     const agencyUsers = await this.prisma.user.findMany({
       where: {
         OR: [
@@ -122,6 +116,128 @@ export class KycAgencyService {
       return agencyDetails;
     }
     return 'Not Found';
+  }
+
+  async findReport() {
+    // const checkreport = await this.prisma.kycAgency.findMany({});
+    let total = 0;
+
+    const doc = await this.prisma.document.findMany({
+      where: {
+        AND: [
+          {
+            title: { contains: 'agra' },
+            status: { not: 'REJECTED' },
+            user: {
+              referralAgencyCode: {
+                contains: 'RLI',
+              },
+            },
+          },
+        ],
+        OR: [
+          {
+            createdAt: {
+              gte: '2023-08-26T00:00:00.000Z',
+              lte: '2023-09-01T23:59:00.000Z',
+            },
+          },
+          {
+            updatedAt: {
+              gte: '2023-08-26T00:00:00.000Z',
+              lte: '2023-09-01T23:59:00.000Z',
+            },
+          },
+        ],
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    console.log('--->>>', doc.length);
+    let total_amount = 0;
+    doc.map(async (dd) => {
+      const user = await this.prisma.user.findFirst({
+        where: {
+          id: dd.userId,
+        },
+      });
+
+      const am = await this.prisma.document.findMany({
+        where: {
+          id: dd.id,
+        },
+      });
+      console.log('--->>', am.length, user.referralAgencyCode);
+      am.map((amount_total) => {
+        console.log(
+          '----->>Hajipur Details',
+          amount_total.amount,
+          amount_total.title,
+          user.referralAgencyCode,
+          user.pw_id
+        );
+      });
+
+      // total_amount += dd.amount;
+      // console.log(
+      //   '345678--->>>>',
+      //   total_amount,
+      //   dd.amount,
+      //   dd.title,
+      //   user.pw_id,
+      //   user.referralAgencyCode
+      // );
+    });
+
+    // checkreport.map(async (agency) => {
+    //   console.log(agency.agencyCode);
+
+    let totalUser;
+    // const checkusersList = await this.prisma.user.findMany({
+    //   where: {
+    //     referralAgencyCode: agency.agencyCode,
+    //   },
+    // });
+
+    // checkusersList.map(async (users) => {
+    //   const docwithpay = await this.prisma.document.findMany({
+    //     where: {
+    //       AND: [
+    //         {
+    //           title: { contains: 'hajipur' },
+    //           createdAt: {
+    //             gte: '2023-08-26T00:00:00.000Z',
+    //             lte: '2023-09-01T23:59:00.000Z',
+    //           },
+    //         },
+    //       ],
+    //     },
+    //   });
+    //   total += 1;
+    // });
+
+    // const checkuserinsideAGENCY = await this.prisma.user.findMany({
+    //   where: {
+    //     AND: [
+    //       {
+    //         referralAgencyCode: agency.agencyCode,
+    //         createdAt: {
+    //           gte: '2023-08-26T00:00:00.000Z',
+    //           lte: '2023-09-01T23:59:00.000Z',
+    //         },
+    //       },
+    //     ],
+    //   },
+    //   include: {
+    //     documents: true,
+    //   },
+    //   // });
+    // });
+    // console.log('total hajipur doc', total);
+
+    // console.log('---->>>', checkreport);
   }
 
   update(id: number, updateKycAgencyInput: UpdateKycAgencyInput) {
