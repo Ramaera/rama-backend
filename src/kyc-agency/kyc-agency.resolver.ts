@@ -61,6 +61,11 @@ export class KycAgencyResolver {
     return this.kycAgencyService.findAllKycAgnecyuser(code);
   }
 
+  @Query(() => [User], { name: 'Report' })
+  findReport() {
+    return this.kycAgencyService.findReport();
+  }
+
   @Mutation(() => KycAgency)
   removeKycAgency(@Args('id', { type: () => Int }) id: number) {
     return this.kycAgencyService.remove(id);

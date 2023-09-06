@@ -230,8 +230,10 @@ export class UsersService {
 
   // ##########get All User
 
-  async getAllUser() {
+  async getAllUser({ skip, take }) {
     const allUser = this.prisma.user.findMany({
+      take,
+      skip,
       include: {
         documents: true,
         nominee: true,
