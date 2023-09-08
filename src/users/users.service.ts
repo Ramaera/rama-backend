@@ -338,12 +338,12 @@ export class UsersService {
         OR: [
           {
             pw_id: {
-              contains: searchTerm, // Match in username
+              contains: searchTerm, // Match in PWID
             },
           },
           {
             name: {
-              contains: searchTerm, // Match in email
+              contains: searchTerm, // Match in Name
             },
           },
         ],

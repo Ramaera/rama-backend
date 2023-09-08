@@ -49,7 +49,7 @@ export class UsersResolver {
 
   @Query(() => [User])
   async getAllUser(
-    @Args({ name: 'take', type: () => Int, defaultValue: 3000 }) take: number,
+    @Args({ name: 'take', type: () => Int, defaultValue: 5000 }) take: number,
     @Args({ name: 'skip', type: () => Int, defaultValue: 0 }) skip: number
   ) {
     const _user = await this.usersService.getAllUser({ take, skip });
