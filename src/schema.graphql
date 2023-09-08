@@ -61,6 +61,7 @@ type DocumentModal {
   title: String
   updatedAt: DateTime!
   url: String
+  user: User!
   userId: String!
   utrNo: String
 }
@@ -179,15 +180,16 @@ type Query {
   GetAllKycAgencyUser(agencyCode: String!): [User!]!
   Report: [User!]!
   dataDocuments: [User!]!
-  getAllHajipurProjectUser: [User!]!
+  getAllHajipurProjectUser: [DocumentModal!]!
   getAllKycHandler: [KYCHANDLER!]!
-  getAllUser(skip: Int! = 0, take: Int! = 10): [User!]!
+  getAllUser(skip: Int! = 0, take: Int! = 3000): [User!]!
   hello(name: String!): String!
   helloWorld: String!
   kycAgency(userId: String!): KycAgency!
   me: User!
   myDocuments(userId: String!): [Document!]!
   myNominee(userId: String!): Nominee!
+  searchUsers(input: SearchInput!): [User!]!
   shareholding(id: Int!): Shareholding!
 }
 
@@ -203,6 +205,10 @@ enum STATUS {
   NOT_INITILAIZED
   PENDING
   REJECTED
+}
+
+input SearchInput {
+  searchTerm: String!
 }
 
 type Shareholding {

@@ -1,5 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { BaseModel } from 'src/common/models/base.model';
+import { User } from 'src/users/models/user.model';
 
 @ObjectType()
 export class DocumentModal extends BaseModel {
@@ -15,11 +16,15 @@ export class DocumentModal extends BaseModel {
   @Field(() => Date)
   updatedAt!: Date;
 
+  @Field(() => User)
+  user?: User | null;
+
   @Field(() => String, { nullable: true })
   title!: string;
 
   @Field(() => String, { nullable: true })
   url?: string;
+
   @Field(() => Number, { nullable: true })
   amount?: number;
 

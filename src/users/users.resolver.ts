@@ -28,6 +28,8 @@ import {
 import { NomineeInput, UpdatedData } from './dto/createNominee.input';
 import { Nominee } from './entities/nominee.entity';
 import { UserIdArgs } from './args/user-id.args';
+import { DocumentModal } from 'src/documents/models/document.models';
+import { SearchInput } from './dto/search-user.input';
 
 @Resolver(() => User)
 @UseGuards(GqlAuthGuard)
@@ -47,7 +49,7 @@ export class UsersResolver {
 
   @Query(() => [User])
   async getAllUser(
-    @Args({ name: 'take', type: () => Int, defaultValue: 100 }) take: number,
+    @Args({ name: 'take', type: () => Int, defaultValue: 3000 }) take: number,
     @Args({ name: 'skip', type: () => Int, defaultValue: 0 }) skip: number
   ) {
     const _user = await this.usersService.getAllUser({ take, skip });
@@ -59,6 +61,12 @@ export class UsersResolver {
   async getAllKycHandler() {
     const _kycHandler = await this.usersService.getKycHandler();
     return _kycHandler;
+  }
+
+  // *********************Search User ********************************
+  @Query(() => [User])
+  async searchUsers(@Args('input') input: SearchInput): Promise<User[]> {
+    return this.usersService.searchUsers(input.searchTerm);
   }
 
   // *********************************Update Details by Admin ********************
@@ -130,7 +138,7 @@ export class UsersResolver {
     return this.usersService.updateUserRole(newUserData);
   }
 
-  // *********************************Mutation command  about the Changed Password   ********************
+  // ********************************* Mutation command  about the Changed Password   ********************
 
   @Mutation(() => User)
   async changePassword(
@@ -141,13 +149,14 @@ export class UsersResolver {
     return this.usersService.changePassword(user, data);
   }
 
-  // *************************Nomineee Details  **************************************//
+  // ************************* Nomineee Details  **************************************//
   @Query(() => Nominee)
   myNominee(@Args() id: UserIdArgs) {
     return this.prisma.user.findUnique({ where: { id: id.userId } }).nominee();
   }
 
-  @Query(() => [User])
+  //  ************************** Get All Hajipur Project User **************************
+  @Query(() => [DocumentModal])
   async getAllHajipurProjectUser() {
     const _user = await this.usersService.getAllHajipurProjectUser();
     return _user;

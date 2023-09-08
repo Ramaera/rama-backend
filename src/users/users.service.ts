@@ -38,10 +38,9 @@ export class UsersService {
     return updated_user;
   }
 
-  // **************************************************************
+  // ***************************** Update User Role *****************
 
   async updateUserRole(newUserData: UpdateUserRoleInput) {
-    console.log('checl', newUserData.role);
     const updated_user = await this.prisma.user.update({
       data: {
         role: newUserData.role,
@@ -54,7 +53,7 @@ export class UsersService {
     return updated_user;
   }
 
-  // *****************************************************
+  // ********************************* Update User Data by Admin    ********************
   async updateDataByAdmin(newData: UpdateUserInputByAdmin) {
     const updated_details = this.prisma.user.update({
       where: {
@@ -107,11 +106,9 @@ export class UsersService {
       },
     });
     return updated_details;
-
-    // return newData;
   }
 
-  // *****************************************************
+  // **************************** Update User Kyc Status *************************
   async updateStatus(adminId: string, newUserData: UpdateUserStatusAdmin) {
     let user = await this.prisma.user.findFirst({
       where: {
@@ -152,7 +149,7 @@ export class UsersService {
     return user;
   }
 
-  // *****************************************************
+  // *************************** Update MemberShip of User ***********************
 
   async updateMembership(
     adminId: string,
@@ -209,7 +206,7 @@ export class UsersService {
   //   return subKycStatus;
   // }
 
-  // *****************************************************
+  // ***************************** Get User Details By Id    ************************
   async getUser(userId: string) {
     const user = await this.prisma.user.findFirst({
       where: { id: userId },
@@ -223,12 +220,12 @@ export class UsersService {
     return user;
   }
 
-  // *****************************************************
+  // ************************ Get All Kyc Handles *****************************
   async getKycHandler() {
     return await this.prisma.kycHandler.findMany({});
   }
 
-  // ##########get All User
+  // ########## Get All User #####################
 
   async getAllUser({ skip, take }) {
     const allUser = this.prisma.user.findMany({
@@ -244,21 +241,33 @@ export class UsersService {
     return allUser;
   }
 
-  // *************************
+  // ************************* Hajipur Project User ***********************
 
   async getAllHajipurProjectUser() {
-    const allUser = this.prisma.user.findMany({
+    // const allUser = await this.prisma.user.findUnique({
+    //   where: {
+    //     documents: {
+    //       some: {
+    //         title: {
+    //           contains: 'hajipur',
+    //         },
+    //       },
+    //     },
+    //   },
+    //   include: {
+    //     documents: true,
+    //   },
+    // });
+
+    const allUser = await this.prisma.document.findMany({
       where: {
-        documents: {
-          some: {
-            title: {
-              contains: 'Hajipur',
-            },
-          },
-        },
+        title: 'hajipur_project_payment',
+      },
+      include: {
+        user: true,
       },
     });
-
+    console.log('---->>', allUser.length);
     return allUser;
   }
 
@@ -320,6 +329,32 @@ export class UsersService {
     } catch (err) {
       console.log(err);
     }
+  }
+  // ***********************
+
+  async searchUsers(searchTerm: string): Promise<User[]> {
+    const result = await this.prisma.user.findMany({
+      where: {
+        OR: [
+          {
+            pw_id: {
+              contains: searchTerm, // Match in username
+            },
+          },
+          {
+            name: {
+              contains: searchTerm, // Match in email
+            },
+          },
+        ],
+      },
+      include: {
+        documents: true,
+        nominee: true,
+      },
+    });
+    console.log('---->>>>', result);
+    return result;
   }
 
   // ***************************************
