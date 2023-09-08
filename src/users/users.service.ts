@@ -61,7 +61,6 @@ export class UsersService {
       },
       data: {
         name: newData.name,
-        kyc: 'ONGOING',
         email: newData.email,
         father_or_husband_name: newData.father_or_husband_name,
         mobile_number: newData.mobile_number,
@@ -330,7 +329,7 @@ export class UsersService {
       console.log(err);
     }
   }
-  // ***********************
+  // **************************** Search Item ***************************
 
   async searchUsers(searchTerm: string): Promise<User[]> {
     const result = await this.prisma.user.findMany({
@@ -353,11 +352,10 @@ export class UsersService {
         nominee: true,
       },
     });
-    console.log('---->>>>', result);
     return result;
   }
 
-  // ***************************************
+  // ********************* Update License Validity ******************
   async updateLicenseDetails(payload: UpdateLicenseDetailsInput) {
     await this.prisma.kycAgency.update({
       where: {

@@ -119,7 +119,50 @@ export class KycAgencyService {
   }
 
   async findReport() {
-    // const checkreport = await this.prisma.kycAgency.findMany({});
+    const projectPaymentDocuments = await this.prisma.document.findMany({
+      where: {
+        AND: [
+          {
+            createdAt: {
+              gte: '2023-08-26T00:00:00.000Z',
+              lte: '2023-09-01T23:59:00.000Z',
+            },
+          },
+          {
+            title: {
+              contains: 'agra',
+            },
+          },
+          {
+            status: {
+              not: 'REJECTED',
+            },
+          },
+          {
+            user: {
+              referralAgencyCode: {
+                contains: 'RLI',
+              },
+            },
+          },
+        ],
+      },
+      include: {
+        user: true,
+      },
+    });
+    projectPaymentDocuments.map((projectPaymentDocument) => {
+      console.log(
+        projectPaymentDocument.user.pw_id,
+        projectPaymentDocument.title,
+        projectPaymentDocument.amount,
+        projectPaymentDocument.user.referralAgencyCode
+      );
+    });
+    return projectPaymentDocuments;
+  }
+
+  async findReport1() {
     let total = 0;
 
     const doc = await this.prisma.document.findMany({

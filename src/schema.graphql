@@ -182,7 +182,7 @@ type Query {
   dataDocuments: [User!]!
   getAllHajipurProjectUser: [DocumentModal!]!
   getAllKycHandler: [KYCHANDLER!]!
-  getAllUser(skip: Int! = 0, take: Int! = 3000): [User!]!
+  getAllUser(skip: Int! = 0, take: Int! = 5000): [User!]!
   hello(name: String!): String!
   helloWorld: String!
   kycAgency(userId: String!): KycAgency!
