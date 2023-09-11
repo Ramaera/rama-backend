@@ -34,7 +34,7 @@ import { UserCountDTO } from './models/countUsers.model';
 import { projectPaymentDTO } from './models/projectPayment.model';
 
 @Resolver(() => User)
-// @UseGuards(GqlAuthGuard)
+@UseGuards(GqlAuthGuard)
 export class UsersResolver {
   constructor(
     private usersService: UsersService,
