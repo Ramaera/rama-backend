@@ -240,34 +240,89 @@ export class UsersService {
     return allUser;
   }
 
-  // ************************* Hajipur Project User ***********************
+  // ************************* User Counts  ***********************
 
-  async getAllHajipurProjectUser() {
-    // const allUser = await this.prisma.user.findUnique({
-    //   where: {
-    //     documents: {
-    //       some: {
-    //         title: {
-    //           contains: 'hajipur',
-    //         },
-    //       },
-    //     },
-    //   },
-    //   include: {
-    //     documents: true,
-    //   },
-    // });
+  async getAllUsersCount() {
+    const totalSubscribers = await this.prisma.user.count({});
 
-    const allUser = await this.prisma.document.findMany({
+    const totalBasicSubscribers = await this.prisma.user.count({
       where: {
-        title: 'hajipur_project_payment',
-      },
-      include: {
-        user: true,
+        membership: 'BASIC',
       },
     });
-    console.log('---->>', allUser.length);
-    return allUser;
+    const totalAdvanceSubscribers = await this.prisma.user.count({
+      where: {
+        membership: 'ADVANCE',
+      },
+    });
+
+    const totalHajipurSubscribers = await this.prisma.user.count({
+      where: {
+        documents: {
+          some: {
+            title: {
+              contains: 'hajipur',
+            },
+          },
+        },
+      },
+    });
+    const totalAgraMartSubscribers = await this.prisma.user.count({
+      where: {
+        documents: {
+          some: {
+            title: {
+              contains: 'agra',
+            },
+          },
+        },
+      },
+    });
+    return {
+      totalSubscribers,
+      totalBasicSubscribers,
+      totalAdvanceSubscribers,
+      totalHajipurSubscribers,
+      totalAgraMartSubscribers,
+    };
+  }
+
+  // *********************** Amount Received *************************
+
+  async projectAmountReceived() {
+    const hajipurDocuments = await this.prisma.document.findMany({
+      where: {
+        title: {
+          contains: 'hajipur', // Case-insensitive search for "hajipur" in title
+        },
+      },
+      select: {
+        amount: true, // Select the "amount" field
+      },
+    });
+
+    const agraDocuments = await this.prisma.document.findMany({
+      where: {
+        title: {
+          contains: 'agra', // Case-insensitive search for "hajipur" in title
+        },
+      },
+      select: {
+        amount: true, // Select the "amount" field
+      },
+    });
+
+    // Calculate the sum of "amount" for the filtered documents
+    const totalHajipurAmount = hajipurDocuments.reduce(
+      (sum, document) => sum + document.amount,
+      0
+    );
+    const totalAgraAmount = agraDocuments.reduce(
+      (sum, document) => sum + document.amount,
+      0
+    );
+
+    return { totalHajipurAmount, totalAgraAmount };
   }
 
   // ###################### Update Nominee Details ##################
@@ -316,14 +371,6 @@ export class UsersService {
   async DeleteUser(user) {
     try {
       const getUser = await this.getUser(user.id);
-      // console.log(typeof getUser);
-      // var blob = new Blob(['Hello, world!'], {
-      //   type: 'text/csv;charset=utf-8',
-      // });
-      // var FileSaver = require('file-saver');
-      // console.log('---->>>', blob);
-      // FileSaver.saveAs(blob, 'hello_world.txt');
-
       return getUser;
     } catch (err) {
       console.log(err);
@@ -357,7 +404,7 @@ export class UsersService {
     return result;
   }
 
-  // ***************************
+  // *************************** Users By Membership  ***************
 
   async usersByMembership(searchTerm: Membership, { skip, take }) {
     const allUser = this.prisma.user.findMany({

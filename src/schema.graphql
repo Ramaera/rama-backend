@@ -181,9 +181,10 @@ type Query {
   Report: [User!]!
   allKycUser(input: SearchMembershipInput!, skip: Int! = 0, take: Int! = 5000): [User!]!
   dataDocuments: [User!]!
-  getAllHajipurProjectUser: [DocumentModal!]!
   getAllKycHandler: [KYCHANDLER!]!
   getAllUser(skip: Int! = 0, take: Int! = 5000): [User!]!
+  getAllUsersCount: UserCountDTO!
+  getProjectsPayment: projectPaymentDTO!
   hello(name: String!): String!
   helloWorld: String!
   kycAgency(userId: String!): KycAgency!
@@ -332,4 +333,17 @@ type User {
   rm_id: String
   role: Role!
   updatedAt: DateTime!
+}
+
+type UserCountDTO {
+  totalAdvanceSubscribers: Int
+  totalAgraSubscribers: Int
+  totalBasicSubscribers: Int
+  totalHajipurSubscribers: Int
+  totalSubscribers: Int
+}
+
+type projectPaymentDTO {
+  ProjectAgraAmountReceived: Int
+  ProjectHajipurAmountReceived: Int
 }

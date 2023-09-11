@@ -30,9 +30,11 @@ import { Nominee } from './entities/nominee.entity';
 import { UserIdArgs } from './args/user-id.args';
 import { DocumentModal } from 'src/documents/models/document.models';
 import { SearchInput, SearchMembershipInput } from './dto/search-user.input';
+import { UserCountDTO } from './models/countUsers.model';
+import { projectPaymentDTO } from './models/projectPayment.model';
 
 @Resolver(() => User)
-@UseGuards(GqlAuthGuard)
+// @UseGuards(GqlAuthGuard)
 export class UsersResolver {
   constructor(
     private usersService: UsersService,
@@ -155,11 +157,28 @@ export class UsersResolver {
     return this.prisma.user.findUnique({ where: { id: id.userId } }).nominee();
   }
 
-  //  ************************** Get All Hajipur Project User **************************
-  @Query(() => [DocumentModal])
-  async getAllHajipurProjectUser() {
-    const _user = await this.usersService.getAllHajipurProjectUser();
-    return _user;
+  //  ************************** Get All Users Count **************************
+  @Query(() => UserCountDTO)
+  async getAllUsersCount() {
+    const totalUser = await this.usersService.getAllUsersCount();
+    return {
+      totalSubscribers: totalUser.totalSubscribers,
+      totalBasicSubscribers: totalUser.totalBasicSubscribers,
+      totalAdvanceSubscribers: totalUser.totalAdvanceSubscribers,
+      totalHajipurSubscribers: totalUser.totalHajipurSubscribers,
+      totalAgraSubscribers: totalUser.totalAgraMartSubscribers,
+    };
+  }
+
+  // **************** Amount Received ***************************
+  @Query(() => projectPaymentDTO)
+  async getProjectsPayment() {
+    const totalpayment = await this.usersService.projectAmountReceived();
+
+    return {
+      ProjectHajipurAmountReceived: totalpayment.totalHajipurAmount,
+      ProjectAgraAmountReceived: totalpayment.totalAgraAmount,
+    };
   }
 
   // ******************************** Create Agency Code ***********************************
