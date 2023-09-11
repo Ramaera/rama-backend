@@ -119,30 +119,39 @@ export class KycAgencyService {
   }
 
   async findReport() {
+    const totallists = await this.prisma.user.findMany({
+      where: {
+        createdAt: {
+          gte: '2023-08-26T00:00:00.000Z',
+          lte: '2023-09-08T23:59:00.000Z',
+        },
+      },
+    });
+
+    totallists.map((total) => {
+      console.log(total.pw_id, total.membership, total.referralAgencyCode);
+    });
+    return totallists;
+  }
+
+  async findReport4() {
     const projectPaymentDocuments = await this.prisma.document.findMany({
       where: {
         AND: [
           {
             createdAt: {
               gte: '2023-08-26T00:00:00.000Z',
-              lte: '2023-09-01T23:59:00.000Z',
+              lte: '2023-09-08T23:59:00.000Z',
             },
           },
           {
             title: {
-              contains: 'agra',
+              contains: 'hajipur',
             },
           },
           {
             status: {
               not: 'REJECTED',
-            },
-          },
-          {
-            user: {
-              referralAgencyCode: {
-                contains: 'RLI',
-              },
             },
           },
         ],

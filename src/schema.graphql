@@ -179,6 +179,7 @@ type Query {
   DeleteUser: User!
   GetAllKycAgencyUser(agencyCode: String!): [User!]!
   Report: [User!]!
+  allKycUser(input: SearchMembershipInput!, skip: Int! = 0, take: Int! = 5000): [User!]!
   dataDocuments: [User!]!
   getAllHajipurProjectUser: [DocumentModal!]!
   getAllKycHandler: [KYCHANDLER!]!
@@ -209,6 +210,10 @@ enum STATUS {
 
 input SearchInput {
   searchTerm: String!
+}
+
+input SearchMembershipInput {
+  searchTerm: Membership!
 }
 
 type Shareholding {

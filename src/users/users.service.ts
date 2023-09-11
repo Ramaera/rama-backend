@@ -17,7 +17,7 @@ import {
   UpdateUserMembershipAdmin,
   UpdateUserStatusAdmin,
 } from './dto/update-user-Admin.input ';
-import { User } from '@prisma/client';
+import { Membership, User } from '@prisma/client';
 @Injectable()
 export class UsersService {
   constructor(
@@ -338,11 +338,13 @@ export class UsersService {
           {
             pw_id: {
               contains: searchTerm, // Match in PWID
+              mode: 'insensitive',
             },
           },
           {
             name: {
               contains: searchTerm, // Match in Name
+              mode: 'insensitive',
             },
           },
         ],
@@ -353,6 +355,25 @@ export class UsersService {
       },
     });
     return result;
+  }
+
+  // ***************************
+
+  async usersByMembership(searchTerm: Membership, { skip, take }) {
+    const allUser = this.prisma.user.findMany({
+      take,
+      skip,
+      where: {
+        membership: searchTerm,
+      },
+      include: {
+        documents: true,
+        nominee: true,
+        KycAgency: true,
+      },
+    });
+
+    return allUser;
   }
 
   // ********************* Update License Validity ******************

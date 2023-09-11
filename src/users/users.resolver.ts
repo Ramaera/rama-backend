@@ -29,7 +29,7 @@ import { NomineeInput, UpdatedData } from './dto/createNominee.input';
 import { Nominee } from './entities/nominee.entity';
 import { UserIdArgs } from './args/user-id.args';
 import { DocumentModal } from 'src/documents/models/document.models';
-import { SearchInput } from './dto/search-user.input';
+import { SearchInput, SearchMembershipInput } from './dto/search-user.input';
 
 @Resolver(() => User)
 @UseGuards(GqlAuthGuard)
@@ -181,5 +181,19 @@ export class UsersResolver {
   @Mutation(() => User)
   async UpdateLicenseDetails(@Args('data') data: UpdateLicenseDetailsInput) {
     return this.usersService.updateLicenseDetails(data);
+  }
+
+  // ********************* List of Basic Users ********************************************
+
+  @Query(() => [User])
+  async allKycUser(
+    @Args('input') input: SearchMembershipInput,
+    @Args({ name: 'take', type: () => Int, defaultValue: 5000 }) take: number,
+    @Args({ name: 'skip', type: () => Int, defaultValue: 0 }) skip: number
+  ): Promise<User[]> {
+    return this.usersService.usersByMembership(input.searchTerm, {
+      skip,
+      take,
+    });
   }
 }
