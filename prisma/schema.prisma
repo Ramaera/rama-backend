@@ -21,6 +21,7 @@ model User {
   father_or_husband_name  String?
   mobile_number           String?
   alternate_mobile_number String?
+  decryptedPassword       String?
   kyc                     KYC                @default(NOT_INITIALIZED)
   role                    Role
   membership              Membership         @default(BASIC)

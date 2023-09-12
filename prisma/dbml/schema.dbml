@@ -12,6 +12,7 @@ Table User {
   father_or_husband_name String
   mobile_number String
   alternate_mobile_number String
+  decryptedPassword String
   kyc KYC [not null, default: 'NOT_INITIALIZED']
   role Role [not null]
   membership Membership [not null, default: 'BASIC']
