@@ -534,7 +534,7 @@ const SeedCommand = async () => {
     //     },
     //     {
     //       userId: user.id,
-    //       title: 'hajipur_project_payment',
+    //       title: 'hajipur_project_payment_1',
     //       url: row.slip2,
     //       amount: parseInt(row.Enroll_Amount2),
     //       status:
@@ -546,7 +546,7 @@ const SeedCommand = async () => {
     //     },
     //     {
     //       userId: user.id,
-    //       title: 'hajipur_project_payment',
+    //       title: 'hajipur_project_payment_2',
     //       url: row.slip3,
     //       amount: parseInt(row.Enroll_Amount3),
     //       status:

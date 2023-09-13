@@ -28,6 +28,7 @@ Table User {
   KycAgency KycAgency
   nominee Nominee
   shareHoldingType ShareHoldingType [not null]
+  ProjectEnrolledStatus ProjectEnrolledStatus [not null]
 }
 
 Table KycAgency {
@@ -92,6 +93,19 @@ Table ShareHoldingType {
   user User [not null]
 }
 
+Table ProjectEnrolledStatus {
+  id String [pk]
+  projectName String
+  projectStatus PROJECTSTATUS
+  userId String
+  user User
+}
+
+Enum PROJECTSTATUS {
+  ENROLLED
+  NOT_ENROLLED
+}
+
 Enum Role {
   ADMIN
   USER
@@ -133,3 +147,5 @@ Ref: DSCDETAILS.userId > User.id
 Ref: Nominee.userId - User.id
 
 Ref: ShareHoldingType.userId > User.id
+
+Ref: ProjectEnrolledStatus.userId > User.id

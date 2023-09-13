@@ -66,15 +66,13 @@ export class MediasController {
   uploadSingle(@UploadedFile() file, @Headers() header) {
     const origin = header.host;
 
-    const url = `http://${origin}/documents/${file.filename}`;
+    const url = `https://${origin}/documents/${file.filename}`;
 
     const response = {
       originalname: file.originalname,
       filename: file.filename,
       url,
     };
-
-    console.log({ response });
     return response;
   }
   @Get(':name')

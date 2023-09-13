@@ -12,9 +12,9 @@ datasource db {
 }
 
 model User {
-  id                      String             @id @default(cuid())
-  createdAt               DateTime           @default(now())
-  updatedAt               DateTime           @updatedAt
+  id                      String                  @id @default(cuid())
+  createdAt               DateTime                @default(now())
+  updatedAt               DateTime                @updatedAt
   email                   String?
   password                String
   name                    String?
@@ -22,22 +22,23 @@ model User {
   mobile_number           String?
   alternate_mobile_number String?
   decryptedPassword       String?
-  kyc                     KYC                @default(NOT_INITIALIZED)
+  kyc                     KYC                     @default(NOT_INITIALIZED)
   role                    Role
-  membership              Membership         @default(BASIC)
+  membership              Membership              @default(BASIC)
   referralAgencyCode      String?
   date_of_birth           String?
-  isKycAgent              Boolean            @default(false)
+  isKycAgent              Boolean                 @default(false)
   demat_account           String?
   // decryptpassword         String?
-  private_key             String?            @unique
-  pw_id                   String?            @unique
-  rm_id                   String?            @unique
+  private_key             String?                 @unique
+  pw_id                   String?                 @unique
+  rm_id                   String?                 @unique
   DSCDetails              DSCDETAILS[]
   documents               Document[]
   KycAgency               KycAgency?
   nominee                 Nominee?
   shareHoldingType        ShareHoldingType[]
+  ProjectEnrolledStatus   ProjectEnrolledStatus[]
 }
 
 model KycAgency {
@@ -100,6 +101,19 @@ model ShareHoldingType {
   allotedShare   Int?
   userId         String
   user           User   @relation(fields: [userId], references: [id])
+}
+
+model ProjectEnrolledStatus {
+  id            String         @id @default(cuid())
+  projectName   String?
+  projectStatus PROJECTSTATUS?
+  userId        String?
+  user          User?          @relation(fields: [userId], references: [id])
+}
+
+enum PROJECTSTATUS {
+  ENROLLED
+  NOT_ENROLLED
 }
 
 enum Role {

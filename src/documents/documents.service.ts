@@ -8,10 +8,8 @@ import {
 @Injectable()
 export class DocumentsService {
   constructor(private prisma: PrismaService) {}
-  // *****************************************
-  // *******************************************
-  // **********Update Documents*****************
-  // *******************************************
+
+  // ********************************    Update Documents       ******************************
 
   async updateDocuments(data: UpdateDocumentsInput) {
     data.status = 'PENDING';
@@ -22,6 +20,8 @@ export class DocumentsService {
       },
     });
   }
+
+  // ********************************    Update Document Status By Admin       ******************************
 
   async updateDocumentStatusByAdmin(data: UpdateDocumentStatusByAdmin) {
     return this.prisma.document.update({

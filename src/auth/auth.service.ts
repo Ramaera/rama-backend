@@ -28,6 +28,7 @@ export class AuthService {
     const hashedPassword = await this.passwordService.hashPassword(
       payload.password
     );
+    // const
 
     try {
       const rm_id = `RM-${(Math.random() + 1)
@@ -39,7 +40,7 @@ export class AuthService {
           ...payload,
           password: hashedPassword,
           decryptedPassword: payload.password,
-          referralAgencyCode: payload.referralAgencyCode,
+          referralAgencyCode: payload.referralAgencyCode.toUpperCase(),
           pw_id: payload.pw_id.toUpperCase(),
           rm_id,
           role: 'USER',

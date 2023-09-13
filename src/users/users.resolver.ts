@@ -41,13 +41,15 @@ export class UsersResolver {
     private prisma: PrismaService
   ) {}
 
-  // *********************************Details about the User ********************
+  // ********************************* Details about the User  ********************
 
   @Query(() => User)
   async me(@UserEntity() user: User): Promise<User> {
     const _user = await this.usersService.getUser(user.id);
     return _user;
   }
+
+  // ********************************* Details about the  All User ********************
 
   @Query(() => [User])
   async getAllUser(
@@ -59,19 +61,21 @@ export class UsersResolver {
     return _user;
   }
 
+  // ****************** KYC Handler *************************
+
   @Query(() => [KYCHANDLER])
   async getAllKycHandler() {
     const _kycHandler = await this.usersService.getKycHandler();
     return _kycHandler;
   }
 
-  // *********************Search User ********************************
+  // ********************* Search User ********************************
   @Query(() => [User])
   async searchUsers(@Args('input') input: SearchInput): Promise<User[]> {
     return this.usersService.searchUsers(input.searchTerm);
   }
 
-  // *********************************Update Details by Admin ********************
+  // ********************************* Update Details by Admin ********************
 
   @UseGuards(GqlAuthGuard)
   @Mutation(() => User)
@@ -86,7 +90,7 @@ export class UsersResolver {
     throw new Error('Unauthorized');
   }
 
-  // *********************************Update Status by Admin ********************
+  // ********************************* Update Status by Admin ********************
 
   @UseGuards(GqlAuthGuard)
   @Mutation(() => User)
@@ -100,7 +104,7 @@ export class UsersResolver {
     throw new Error('Unauthorized');
   }
 
-  // *********************************Updated  User details********************
+  // ********************************* Updated  User details ********************
 
   @UseGuards(GqlAuthGuard)
   @Mutation(() => User)
@@ -111,7 +115,7 @@ export class UsersResolver {
     return this.usersService.updateUser(user.id, newUserData);
   }
 
-  // *********************************Updated  Nominee details********************
+  // ********************************* Updated  Nominee details ********************
 
   @UseGuards(GqlAuthGuard)
   @Mutation(() => Nominee)
@@ -122,7 +126,8 @@ export class UsersResolver {
     return this.usersService.upsertNominee(user.id, newNomineeData);
   }
 
-  // ****************** Remove a User ***************
+  // ******************************** Remove a User *********************************
+
   @UseGuards(GqlAuthGuard)
   @Query(() => User)
   async DeleteUser(
@@ -132,7 +137,7 @@ export class UsersResolver {
     return this.usersService.DeleteUser(user.id);
   }
 
-  // *************************Update User Role *******************
+  // ********************************* Update User Role *******************************
 
   @UseGuards(GqlAuthGuard)
   @Mutation(() => User)
@@ -140,7 +145,7 @@ export class UsersResolver {
     return this.usersService.updateUserRole(newUserData);
   }
 
-  // ********************************* Mutation command  about the Changed Password   ********************
+  // *****************************  Changed Password   *******************************
 
   @Mutation(() => User)
   async changePassword(
@@ -157,7 +162,8 @@ export class UsersResolver {
     return this.prisma.user.findUnique({ where: { id: id.userId } }).nominee();
   }
 
-  //  ************************** Get All Users Count **************************
+  //  ************************** Get All Users Count( With Basic Subscribers, Advance Subscribers, Hajipur Subscribers, Agra Subscribers) **************************
+
   @Query(() => UserCountDTO)
   async getAllUsersCount() {
     const totalUser = await this.usersService.getAllUsersCount();
@@ -170,7 +176,7 @@ export class UsersResolver {
     };
   }
 
-  // **************** Amount Received ***************************
+  // ******************************* Amount Received Per Project ***************************
   @Query(() => projectPaymentDTO)
   async getProjectsPayment() {
     const totalpayment = await this.usersService.projectAmountReceived();
@@ -202,7 +208,7 @@ export class UsersResolver {
     return this.usersService.updateLicenseDetails(data);
   }
 
-  // ********************* List of Basic Users ********************************************
+  // ********************************* List of As Per Subscribers Type ********************************************
 
   @Query(() => [User])
   async allKycUser(

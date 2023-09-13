@@ -72,8 +72,6 @@ export class DocumentsResolver {
     return this.documentsService.updateDocuments(data);
   }
   // ********************************************
-  // ********************************************
-  // ********************************************
 
   @UseGuards(GqlAuthGuard)
   @Mutation(() => Document)
@@ -98,12 +96,6 @@ export class DocumentsResolver {
       .findUnique({ where: { id: id.userId } })
       .documents();
   }
-
-  // Todo Need Authentication
-  // @Query(() => Document)
-  //     async document(@Args() id: DocumentIdArgs) {
-  //       return this.prisma.document.findUnique({ where: { id: id.documentId } });
-  // }
 
   @Query(() => [User], { name: 'dataDocuments' })
   findAllKycAgnecyuser() {
