@@ -28,7 +28,6 @@ export class AuthService {
     const hashedPassword = await this.passwordService.hashPassword(
       payload.password
     );
-    // const
 
     try {
       const rm_id = `RM-${(Math.random() + 1)
@@ -51,6 +50,7 @@ export class AuthService {
         userId: user.id,
       });
     } catch (e) {
+      console.log('--', e);
       if (
         e instanceof Prisma.PrismaClientKnownRequestError &&
         e.code === 'P2002'
@@ -78,27 +78,31 @@ export class AuthService {
   }
 
   async login(pw_id: string, password: string): Promise<Token> {
-    const user = await this.prisma.user.findUnique({
-      where: { pw_id },
-      include: { nominee: true },
-    });
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: { pw_id },
+        include: { nominee: true },
+      });
 
-    if (!user) {
-      throw new NotFoundException(`No user found for PW_Id: ${pw_id}`);
+      if (!user) {
+        throw new NotFoundException(`No user found for PW_Id: ${pw_id}`);
+      }
+
+      const passwordValid = await this.passwordService.validatePassword(
+        password,
+        user.password
+      );
+
+      if (!passwordValid) {
+        throw new BadRequestException('Invalid password');
+      }
+
+      return this.generateTokens({
+        userId: user.id,
+      });
+    } catch (e) {
+      throw new Error(e.message);
     }
-
-    const passwordValid = await this.passwordService.validatePassword(
-      password,
-      user.password
-    );
-
-    if (!passwordValid) {
-      throw new BadRequestException('Invalid password');
-    }
-
-    return this.generateTokens({
-      userId: user.id,
-    });
   }
 
   validateUser(userId: string): Promise<User> {

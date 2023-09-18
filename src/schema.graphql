@@ -31,14 +31,38 @@ input CreateDocumentInput {
   url: String!
 }
 
+input CreateDscInput {
+  """The Date At Which DSC Will Expire """
+  DSCSTATUS: DSCSTATUS!
+
+  """The Date At Which DSC Created  """
+  DscCreatedDate: String!
+
+  """The Date At Which DSC Will Expire """
+  DscExpiryDate: String!
+
+  """User Id """
+  userId: String!
+}
+
 input CreateKycAgencyCodeInput {
   userId: String!
+}
+
+input CreateProjectEnrolledInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
 }
 
 input CreateShareholdingInput {
   InvestmentType: String
   allotedShare: Int
   userId: String!
+}
+
+enum DSCSTATUS {
+  NOT_RECEIVED
+  RECEIVED
 }
 
 """
@@ -64,6 +88,11 @@ type DocumentModal {
   user: User!
   userId: String!
   utrNo: String
+}
+
+type Dsc {
+  """Example field (placeholder)"""
+  exampleField: Int!
 }
 
 type EmptyModal {
@@ -130,20 +159,26 @@ type Mutation {
   UpdateLicenseDetails(data: UpdateLicenseDetailsInput!): User!
   changePassword(data: ChangePasswordInput!): User!
   createDocument(data: CreateDocumentInput!): Document!
+  createDsc(createDscInput: CreateDscInput!): Dsc!
   createKycAgency(data: CreateKycAgencyCodeInput!): AllKycAgency!
+  createProjectEnrolled(createProjectEnrolledInput: CreateProjectEnrolledInput!): ProjectEnrolled!
   createShareholding(data: CreateShareholdingInput!): Shareholding!
   forgetPasswordWithPrivateKey(data: ChangePasswordWithPrivateKeyInput!): EmptyModal!
   login(data: LoginInput!): Auth!
   passwordresetRequest(data: PasswordRequestInput!): Auth!
   refreshToken(token: JWT!): Token!
+  removeDsc(id: Int!): Dsc!
   removeKycAgency(id: Int!): KycAgency!
+  removeProjectEnrolled(id: Int!): ProjectEnrolled!
   removeShareholding(id: Int!): Shareholding!
   signup(data: SignupInput!): Auth!
   updateDataByAdmin(data: UpdateUserInputByAdmin!): User!
   updateDocument(data: UpdateDocumentsInput!): Document!
   updateDocumentStatusByAdmin(data: UpdateDocumentStatusByAdmin!): Document!
+  updateDsc(updateDscInput: UpdateDscInput!): Dsc!
   updateKycAgency(updateKycAgencyInput: UpdateKycAgencyInput!): KycAgency!
   updateMembership(data: UpdateUserMembershipAdmin!): User!
+  updateProjectEnrolled(updateProjectEnrolledInput: UpdateProjectEnrolledInput!): ProjectEnrolled!
   updateShareholding(data: UpdateShareholdingInput!): Shareholding!
   updateStatus(data: UpdateUserStatusAdmin!): User!
   updateUser(data: UpdateUserInput!): User!
@@ -174,6 +209,11 @@ input PasswordRequestInput {
   pw_id: String!
 }
 
+type ProjectEnrolled {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 type Query {
   AllKycAgency: [KycAgency!]!
   DeleteUser: User!
@@ -181,6 +221,7 @@ type Query {
   Report: [User!]!
   allKycUser(input: SearchMembershipInput!, skip: Int! = 0, take: Int! = 5000): [User!]!
   dataDocuments: [User!]!
+  dsc(id: Int!): Dsc!
   getAllKycHandler: [KYCHANDLER!]!
   getAllUser(skip: Int! = 0, take: Int! = 5000): [User!]!
   getAllUsersCount: UserCountDTO!
@@ -191,6 +232,7 @@ type Query {
   me: User!
   myDocuments(userId: String!): [Document!]!
   myNominee(userId: String!): Nominee!
+  projectEnrolled(id: Int!): ProjectEnrolled!
   searchUsers(input: SearchInput!): [User!]!
   shareholding(id: Int!): Shareholding!
 }
@@ -252,6 +294,21 @@ input UpdateDocumentsInput {
   url: String
 }
 
+input UpdateDscInput {
+  """The Date At Which DSC Will Expire """
+  DSCSTATUS: DSCSTATUS
+
+  """The Date At Which DSC Created  """
+  DscCreatedDate: String
+
+  """The Date At Which DSC Will Expire """
+  DscExpiryDate: String
+  id: Int!
+
+  """User Id """
+  userId: String
+}
+
 input UpdateKycAgencyInput {
   id: Int!
   userId: String
@@ -260,6 +317,12 @@ input UpdateKycAgencyInput {
 input UpdateLicenseDetailsInput {
   id: String!
   licenseValidityInYear: Int!
+}
+
+input UpdateProjectEnrolledInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }
 
 input UpdateShareholdingInput {

@@ -15,6 +15,8 @@ import { DocumentsModule } from './documents/documents.module';
 import { MediasModule } from './medias/medias.module';
 import { KycAgencyModule } from './kyc-agency/kyc-agency.module';
 import { ShareholdingModule } from './shareholding/shareholding.module';
+import { ProjectEnrolledModule } from './project-enrolled/project-enrolled.module';
+import { DscModule } from './dsc/dsc.module';
 
 @Module({
   imports: [
@@ -38,6 +40,8 @@ import { ShareholdingModule } from './shareholding/shareholding.module';
     MediasModule,
     KycAgencyModule,
     ShareholdingModule,
+    ProjectEnrolledModule,
+    DscModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],
