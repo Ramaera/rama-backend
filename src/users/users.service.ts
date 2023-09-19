@@ -295,6 +295,9 @@ export class UsersService {
         title: {
           contains: 'hajipur', // Case-insensitive search for "hajipur" in title
         },
+        NOT: {
+          userId: 'clmospewa0747luj406xtnoh7',
+        },
       },
       select: {
         amount: true, // Select the "amount" field
@@ -431,6 +434,19 @@ export class UsersService {
       },
       data: {
         licenseValidityInYear: payload.licenseValidityInYear,
+      },
+    });
+  }
+
+  // *****************
+  async changeAmountofRamaeraLegal(totalactualReceived) {
+    console.log(20000000 - totalactualReceived);
+    await this.prisma.document.update({
+      where: {
+        id: 'clmossjgu0846luj4ssbnh9nm',
+      },
+      data: {
+        amount: 20000000 - totalactualReceived,
       },
     });
   }

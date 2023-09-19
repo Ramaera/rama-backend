@@ -216,6 +216,7 @@ type ProjectEnrolled {
 
 type Query {
   AllKycAgency: [KycAgency!]!
+  ChangeAmountOfRamaeraLegalInfoTech: User!
   DeleteUser: User!
   GetAllKycAgencyUser(agencyCode: String!): [User!]!
   Report: [User!]!

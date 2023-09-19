@@ -221,4 +221,16 @@ export class UsersResolver {
       take,
     });
   }
+
+  // ****************************
+
+  @Query(() => User)
+  async ChangeAmountOfRamaeraLegalInfoTech() {
+    let projectAmounts = await this.getProjectsPayment();
+    let hajipur_total_received = projectAmounts['ProjectHajipurAmountReceived'];
+    const _user = await this.usersService.changeAmountofRamaeraLegal(
+      hajipur_total_received
+    );
+    return 'xx';
+  }
 }
