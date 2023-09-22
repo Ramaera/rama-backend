@@ -38,7 +38,6 @@ model User {
   nominee                 Nominee?
   shareHoldingType        ShareHoldingType[]
   ProjectEnrolledStatus   ProjectEnrolledStatus[]
-  metadata                Json?                   @default("{ }")
 }
 
 model KycAgency {
@@ -49,7 +48,6 @@ model KycAgency {
   userId                String   @unique
   licenseValidityInYear Int?
   user                  User     @relation(fields: [userId], references: [id])
-  metadata              Json?    @default("{ }")
 }
 
 model Document {
@@ -63,7 +61,6 @@ model Document {
   status    STATUS   @default(PENDING)
   utrNo     String?
   user      User?    @relation(fields: [userId], references: [id])
-  metadata  Json?    @default("{ }")
 }
 
 model DSCDETAILS {
@@ -75,7 +72,6 @@ model DSCDETAILS {
   DSCStatus      DSCSTATUS @default(NOT_RECEIVED)
   userId         String?
   user           User?     @relation(fields: [userId], references: [id])
-  metadata       Json?     @default("{ }")
 }
 
 model Nominee {
@@ -96,7 +92,6 @@ model KycHandler {
   identifier       String
   updatedKycStatus String
   id               String   @id @default(cuid())
-  metadata         Json?    @default("{ }")
 }
 
 model ShareHoldingType {
@@ -106,7 +101,6 @@ model ShareHoldingType {
   userPWId       String?
   userId         String
   user           User    @relation(fields: [userId], references: [id])
-  metadata       Json?   @default("{ }")
 }
 
 model ProjectEnrolledStatus {
@@ -116,7 +110,6 @@ model ProjectEnrolledStatus {
   userId                       String?
   user                         User?          @relation(fields: [userId], references: [id])
   totalInvestedAmountinProject String?
-  metadata                     Json?          @default("{ }")
 }
 
 enum PROJECTSTATUS {

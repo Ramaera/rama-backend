@@ -16,7 +16,7 @@ export class ProjectEnrolledService {
         documents: {
           some: {
             title: {
-              startsWith: 'agra_project_payment',
+              startsWith: 'hajipur_project_payment',
             },
             status: 'APPROVED',
           },
@@ -32,7 +32,7 @@ export class ProjectEnrolledService {
     const upcomingPayments = upcomingEntries.map(async (user) => {
       const userDocuments = user.documents.filter(
         (document) =>
-          document.title.startsWith('agra_project_payment') &&
+          document.title.startsWith('hajipur_project_payment') &&
           document.status === 'APPROVED'
       );
 
@@ -45,7 +45,7 @@ export class ProjectEnrolledService {
 
         const projectEnrolled = await this.prisma.projectEnrolledStatus.create({
           data: {
-            projectName: 'Agra_Mart_Project',
+            projectName: 'Hajipur_Spice_Project',
             projectStatus: 'ENROLLED',
             userId: user.id,
             totalInvestedAmountinProject: totalPayment.toString(),

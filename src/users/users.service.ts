@@ -67,7 +67,6 @@ export class UsersService {
         alternate_mobile_number: newData.alternate_mobile_number,
         date_of_birth: newData.date_of_birth,
         demat_account: newData.demat_account,
-
         documents:
           (newData.url || newData.amount) && newData.documentId
             ? {
@@ -213,6 +212,7 @@ export class UsersService {
         nominee: true,
         documents: true,
         KycAgency: true,
+        ProjectEnrolledStatus: true,
       },
     });
 
