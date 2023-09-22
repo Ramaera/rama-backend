@@ -15,10 +15,10 @@ export class ShareholdingResolver {
     return this.shareholdingService.create(createShareholdingInput);
   }
 
-  @Query(() => [Shareholding], { name: 'shareholding' })
-  findAll() {
-    return this.shareholdingService.findAll();
-  }
+  // @Query('getInvestment')
+  // findAll() {
+  //   return this.shareholdingService.findAll();
+  // }
 
   @Query(() => Shareholding, { name: 'shareholding' })
   findOne(@Args('id', { type: () => Int }) id: number) {

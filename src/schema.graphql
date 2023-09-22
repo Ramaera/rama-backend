@@ -49,15 +49,11 @@ input CreateKycAgencyCodeInput {
   userId: String!
 }
 
-input CreateProjectEnrolledInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
 input CreateShareholdingInput {
   InvestmentType: String
   allotedShare: Int
   userId: String!
+  userPWId: String!
 }
 
 enum DSCSTATUS {
@@ -161,7 +157,7 @@ type Mutation {
   createDocument(data: CreateDocumentInput!): Document!
   createDsc(createDscInput: CreateDscInput!): Dsc!
   createKycAgency(data: CreateKycAgencyCodeInput!): AllKycAgency!
-  createProjectEnrolled(createProjectEnrolledInput: CreateProjectEnrolledInput!): ProjectEnrolled!
+  createProjectEnrolled(projectData: projectDataInput!): ProjectEnrolled!
   createShareholding(data: CreateShareholdingInput!): Shareholding!
   forgetPasswordWithPrivateKey(data: ChangePasswordWithPrivateKeyInput!): EmptyModal!
   login(data: LoginInput!): Auth!
@@ -175,7 +171,6 @@ type Mutation {
   updateDataByAdmin(data: UpdateUserInputByAdmin!): User!
   updateDocument(data: UpdateDocumentsInput!): Document!
   updateDocumentStatusByAdmin(data: UpdateDocumentStatusByAdmin!): Document!
-  updateDsc(updateDscInput: UpdateDscInput!): Dsc!
   updateKycAgency(updateKycAgencyInput: UpdateKycAgencyInput!): KycAgency!
   updateMembership(data: UpdateUserMembershipAdmin!): User!
   updateProjectEnrolled(updateProjectEnrolledInput: UpdateProjectEnrolledInput!): ProjectEnrolled!
@@ -205,22 +200,40 @@ type NomineeModel {
   updatedAt: DateTime!
 }
 
+enum PROJECT_PAYMENT {
+  AGRA
+  HAJIPUR
+}
+
 input PasswordRequestInput {
   pw_id: String!
 }
 
 type ProjectEnrolled {
+  projects: [Projects!]
+
   """Example field (placeholder)"""
-  exampleField: Int!
+  userId: String!
+  userName: String
+}
+
+type Projects {
+  """Example field (placeholder)"""
+  projectName: String
+
+  """Example field (placeholder)"""
+  totalInvestedAmount: String
 }
 
 type Query {
   AllKycAgency: [KycAgency!]!
   ChangeAmountOfRamaeraLegalInfoTech: User!
   DeleteUser: User!
+  FeedProjectEnrolled: ProjectEnrolled!
   GetAllKycAgencyUser(agencyCode: String!): [User!]!
   Report: [User!]!
   allKycUser(input: SearchMembershipInput!, skip: Int! = 0, take: Int! = 5000): [User!]!
+  allprojectEnrolleds: [ProjectEnrolled!]!
   dataDocuments: [User!]!
   dsc(id: Int!): Dsc!
   getAllKycHandler: [KYCHANDLER!]!
@@ -295,21 +308,6 @@ input UpdateDocumentsInput {
   url: String
 }
 
-input UpdateDscInput {
-  """The Date At Which DSC Will Expire """
-  DSCSTATUS: DSCSTATUS
-
-  """The Date At Which DSC Created  """
-  DscCreatedDate: String
-
-  """The Date At Which DSC Will Expire """
-  DscExpiryDate: String
-  id: Int!
-
-  """User Id """
-  userId: String
-}
-
 input UpdateKycAgencyInput {
   id: Int!
   userId: String
@@ -331,6 +329,7 @@ input UpdateShareholdingInput {
   allotedShare: Int
   id: String!
   userId: String
+  userPWId: String
 }
 
 input UpdateUserInput {
@@ -405,6 +404,14 @@ type UserCountDTO {
   totalBasicSubscribers: Int
   totalHajipurSubscribers: Int
   totalSubscribers: Int
+}
+
+input projectDataInput {
+  """Project Payment Name Just Select Hajupir , Agra ETC"""
+  project_payment_name: PROJECT_PAYMENT!
+
+  """ This is User Id"""
+  userId: String!
 }
 
 type projectPaymentDTO {

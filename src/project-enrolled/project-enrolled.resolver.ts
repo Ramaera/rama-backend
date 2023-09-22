@@ -1,19 +1,33 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { ProjectEnrolledService } from './project-enrolled.service';
 import { ProjectEnrolled } from './entities/project-enrolled.entity';
-import { CreateProjectEnrolledInput } from './dto/create-project-enrolled.input';
+import {
+  CreateProjectEnrolledInput,
+  projectDataInput,
+} from './dto/create-project-enrolled.input';
 import { UpdateProjectEnrolledInput } from './dto/update-project-enrolled.input';
 
 @Resolver(() => ProjectEnrolled)
 export class ProjectEnrolledResolver {
-  constructor(private readonly projectEnrolledService: ProjectEnrolledService) {}
+  constructor(
+    private readonly projectEnrolledService: ProjectEnrolledService
+  ) {}
 
-  @Mutation(() => ProjectEnrolled)
-  createProjectEnrolled(@Args('createProjectEnrolledInput') createProjectEnrolledInput: CreateProjectEnrolledInput) {
-    return this.projectEnrolledService.create(createProjectEnrolledInput);
+  @Query(() => ProjectEnrolled)
+  FeedProjectEnrolled() {
+    // createProjectEnrolledInput: CreateProjectEnrolledInput // @Args('createProjectEnrolledInput')
+    return this.projectEnrolledService.create();
   }
 
-  @Query(() => [ProjectEnrolled], { name: 'projectEnrolled' })
+  @Mutation(() => ProjectEnrolled)
+  createProjectEnrolled(
+    @Args('projectData')
+    projectData: projectDataInput
+  ) {
+    return this.projectEnrolledService.createlive(projectData);
+  }
+
+  @Query(() => [ProjectEnrolled], { name: 'allprojectEnrolleds' })
   findAll() {
     return this.projectEnrolledService.findAll();
   }
@@ -24,8 +38,14 @@ export class ProjectEnrolledResolver {
   }
 
   @Mutation(() => ProjectEnrolled)
-  updateProjectEnrolled(@Args('updateProjectEnrolledInput') updateProjectEnrolledInput: UpdateProjectEnrolledInput) {
-    return this.projectEnrolledService.update(updateProjectEnrolledInput.id, updateProjectEnrolledInput);
+  updateProjectEnrolled(
+    @Args('updateProjectEnrolledInput')
+    updateProjectEnrolledInput: UpdateProjectEnrolledInput
+  ) {
+    return this.projectEnrolledService.update(
+      updateProjectEnrolledInput.id,
+      updateProjectEnrolledInput
+    );
   }
 
   @Mutation(() => ProjectEnrolled)

@@ -10,16 +10,27 @@ export class ShareholdingService {
     const createShareholding = this.prisma.shareHoldingType.create({
       data: {
         InvestmentType: inputData.InvestmentType,
-        userId: inputData.userId,
+        userPWId: inputData.userPWId,
         allotedShare: inputData.allotedShare,
+        userId: inputData.userId,
       },
     });
     return createShareholding;
   }
 
-  findAll() {
-    return `This action returns all shareholding`;
-  }
+  // async findAll(): Promise<any[]> {
+  //   const result = await this.prisma.shareHoldingType.groupBy({
+  //     by: ['userPWId'],
+  //     _count: {
+  //       InvestmentType: true,
+  //     },
+  //   });
+
+  //   return result.map((item) => ({
+  //     userPWId: item.userPWId,
+  //     investmentTypeCount: item._count.InvestmentType,
+  //   }));
+  // }
 
   findOne(id: number) {
     return `This action returns a #${id} shareholding`;

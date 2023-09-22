@@ -38,6 +38,7 @@ model User {
   nominee                 Nominee?
   shareHoldingType        ShareHoldingType[]
   ProjectEnrolledStatus   ProjectEnrolledStatus[]
+  metadata                Json?                   @default("{ }")
 }
 
 model KycAgency {
@@ -48,6 +49,7 @@ model KycAgency {
   userId                String   @unique
   licenseValidityInYear Int?
   user                  User     @relation(fields: [userId], references: [id])
+  metadata              Json?    @default("{ }")
 }
 
 model Document {
@@ -61,6 +63,7 @@ model Document {
   status    STATUS   @default(PENDING)
   utrNo     String?
   user      User?    @relation(fields: [userId], references: [id])
+  metadata  Json?    @default("{ }")
 }
 
 model DSCDETAILS {
@@ -72,6 +75,7 @@ model DSCDETAILS {
   DSCStatus      DSCSTATUS @default(NOT_RECEIVED)
   userId         String?
   user           User?     @relation(fields: [userId], references: [id])
+  metadata       Json?     @default("{ }")
 }
 
 model Nominee {
@@ -92,22 +96,27 @@ model KycHandler {
   identifier       String
   updatedKycStatus String
   id               String   @id @default(cuid())
+  metadata         Json?    @default("{ }")
 }
 
 model ShareHoldingType {
-  id             String @id @default(cuid())
+  id             String  @id @default(cuid())
   InvestmentType String
   allotedShare   Int?
+  userPWId       String?
   userId         String
-  user           User   @relation(fields: [userId], references: [id])
+  user           User    @relation(fields: [userId], references: [id])
+  metadata       Json?   @default("{ }")
 }
 
 model ProjectEnrolledStatus {
-  id            String         @id @default(cuid())
-  projectName   String?
-  projectStatus PROJECTSTATUS?
-  userId        String?
-  user          User?          @relation(fields: [userId], references: [id])
+  id                           String         @id @default(cuid())
+  projectName                  String?
+  projectStatus                PROJECTSTATUS?
+  userId                       String?
+  user                         User?          @relation(fields: [userId], references: [id])
+  totalInvestedAmountinProject String?
+  metadata                     Json?          @default("{ }")
 }
 
 enum PROJECTSTATUS {

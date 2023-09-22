@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Role } from '@prisma/client';
 const prisma = new PrismaClient();
 import csv from 'csv-parser';
 import fs from 'fs';
@@ -60,22 +60,13 @@ const specificDate = new Date(specificISOString);
 // };
 
 const SeedCommand = async () => {
-  const totalHajipurSubscribers = await prisma.user.findMany({
+  const allKYCUser = prisma.user.findMany({
     where: {
-      documents: {
-        some: {
-          title: {
-            contains: 'hajipur',
-          },
-        },
-      },
+      referralAgencyCode: 'RLI962727' || 'PW715043',
     },
   });
-totalHajipurSubscribers.map((hajipurSubscribers)=>{
-  const check=
-
-})
 };
+
 // const SeedCommand = async () => {
 //   const filePath =
 //     '/Users/apple/Documents/ramaera_dashboard/rama-backend/prisma/AgraMart Project KYC Users(20-24Aug).csv';
@@ -583,7 +574,8 @@ async function main() {
   // await prisma.nominee.deleteMany();
   // await prisma.document.deleteMany();
   // await prisma.user.deleteMany();
-  await SeedCommand();
+  const check = await SeedCommand();
+  console.log('--->', check);
   // const check = await HashedPassword('garmej1976');
   console.log('Seeding completed!');
 }

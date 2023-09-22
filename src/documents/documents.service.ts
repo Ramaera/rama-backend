@@ -49,4 +49,13 @@ export class DocumentsService {
 
     return 'XX';
   }
+
+  async updateProjectEnrollementStatus(userId) {
+    this.prisma.projectEnrolledStatus.create({
+      data: {
+        id: userId,
+        projectName: '',
+      },
+    });
+  }
 }

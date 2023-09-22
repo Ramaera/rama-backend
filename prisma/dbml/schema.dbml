@@ -29,6 +29,7 @@ Table User {
   nominee Nominee
   shareHoldingType ShareHoldingType [not null]
   ProjectEnrolledStatus ProjectEnrolledStatus [not null]
+  metadata Json [default: '{ }']
 }
 
 Table KycAgency {
@@ -39,6 +40,7 @@ Table KycAgency {
   userId String [unique, not null]
   licenseValidityInYear Int
   user User [not null]
+  metadata Json [default: '{ }']
 }
 
 Table Document {
@@ -52,6 +54,7 @@ Table Document {
   status STATUS [not null, default: 'PENDING']
   utrNo String
   user User
+  metadata Json [default: '{ }']
 }
 
 Table DSCDETAILS {
@@ -63,6 +66,7 @@ Table DSCDETAILS {
   DSCStatus DSCSTATUS [not null, default: 'NOT_RECEIVED']
   userId String
   user User
+  metadata Json [default: '{ }']
 }
 
 Table Nominee {
@@ -83,14 +87,17 @@ Table KycHandler {
   identifier String [not null]
   updatedKycStatus String [not null]
   id String [pk]
+  metadata Json [default: '{ }']
 }
 
 Table ShareHoldingType {
   id String [pk]
   InvestmentType String [not null]
   allotedShare Int
+  userPWId String
   userId String [not null]
   user User [not null]
+  metadata Json [default: '{ }']
 }
 
 Table ProjectEnrolledStatus {
@@ -99,6 +106,8 @@ Table ProjectEnrolledStatus {
   projectStatus PROJECTSTATUS
   userId String
   user User
+  totalInvestedAmountinProject String
+  metadata Json [default: '{ }']
 }
 
 Enum PROJECTSTATUS {

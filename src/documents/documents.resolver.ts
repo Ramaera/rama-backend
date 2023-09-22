@@ -30,11 +30,7 @@ export class DocumentsResolver {
     private prisma: PrismaService
   ) {}
 
-  // ******************************************************
-  // ******************************************************
-  // **************Create Documents************************
-  // ******************************************************
-  // ******************************************************
+  // ******************************* Upload Documents ************************
 
   @UseGuards(GqlAuthGuard) // Gql Authentication Guards
   @Mutation(() => Document) // Mutation  --> Document Object Types (title , url)
@@ -55,23 +51,17 @@ export class DocumentsResolver {
     return newDocument;
   }
 
-  // ***************************************
-  // ****************************************
-  // ********Update Documents********************
-  // ********************************************
-  // *********************************************
+  // ******************************* Update Documents *********************************
 
   @UseGuards(GqlAuthGuard)
   @Mutation(() => Document)
   async updateDocument(
-    @UserEntity()
-    user: User,
     @Args('data')
     data: UpdateDocumentsInput
   ) {
     return this.documentsService.updateDocuments(data);
   }
-  // ********************************************
+  // ********************** Update Document Status By Admin *****************************
 
   @UseGuards(GqlAuthGuard)
   @Mutation(() => Document)
@@ -89,6 +79,8 @@ export class DocumentsResolver {
       console.log('UNAUTHORIZED');
     }
   }
+
+  // ********************** Individual User Document ***************************************
 
   @Query(() => [Document])
   myDocuments(@Args() id: UserIdArgs) {

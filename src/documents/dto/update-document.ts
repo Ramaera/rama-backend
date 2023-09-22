@@ -1,5 +1,5 @@
 import { InputType, Field, registerEnumType } from '@nestjs/graphql';
-import { STATUS } from '@prisma/client';
+import { PROJECTSTATUS, STATUS } from '@prisma/client';
 
 @InputType()
 export class UpdateDocumentsInput {
@@ -17,6 +17,18 @@ export class UpdateDocumentsInput {
 }
 
 @InputType()
+export class ProjectEnrollmentStatusInput {
+  @Field()
+  id: string;
+
+  @Field({ nullable: true })
+  projectName?: string;
+
+  @Field(() => PROJECTSTATUS, { nullable: true })
+  projectStatus?: PROJECTSTATUS;
+}
+
+@InputType()
 export class UpdateDocumentStatusByAdmin {
   @Field()
   id: string;
@@ -27,4 +39,8 @@ export class UpdateDocumentStatusByAdmin {
 
 registerEnumType(STATUS, {
   name: 'STATUS',
+});
+
+registerEnumType(PROJECTSTATUS, {
+  name: 'PROJECTSTATUS',
 });

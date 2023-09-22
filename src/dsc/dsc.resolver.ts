@@ -23,10 +23,10 @@ export class DscResolver {
     return this.dscService.findOne(id);
   }
 
-  @Mutation(() => Dsc)
-  updateDsc(@Args('updateDscInput') updateDscInput: UpdateDscInput) {
-    return this.dscService.update(updateDscInput.id, updateDscInput);
-  }
+  // @Mutation(() => Dsc)
+  // updateDsc(@Args('updateDscInput') updateDscInput: UpdateDscInput) {
+  //   return this.dscService.update(updateDscInput.id, updateDscInput);
+  // }
 
   @Mutation(() => Dsc)
   removeDsc(@Args('id', { type: () => Int }) id: number) {

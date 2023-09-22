@@ -73,7 +73,7 @@
     "file-saver": "^2.0.5",
     "fs": "^0.0.1-security",
     "graphql": "^15.7.2",
-    "graphql-scalars": "1.17.0",
+    "graphql-scalars": "^1.22.2",
     "graphql-subscriptions": "2.0.0",
     "moment": "^2.29.4",
     "nestjs-prisma": "0.17.0",

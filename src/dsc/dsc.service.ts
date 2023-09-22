@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateDscInput } from './dto/create-dsc.input';
 import { UpdateDscInput } from './dto/update-dsc.input';
 import { PrismaService } from 'nestjs-prisma';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class DscService {
@@ -26,9 +27,16 @@ export class DscService {
     return `This action returns a #${id} dsc`;
   }
 
-  update(id: number, updateDscInput: UpdateDscInput) {
-    return `This action updates a #${id} dsc`;
-  }
+  // update(id: string, updateDscInput: UpdateDscInput) {
+  //   return this.prisma.dSCDETAILS.update({
+  //     where: {
+  //       id,
+  //     },
+  //     data: {
+  //       metadata: updateDscInput.metaData as Prisma.JsonArray,
+  //     },
+  //   });
+  // }
 
   remove(id: number) {
     return `This action removes a #${id} dsc`;

@@ -6,8 +6,14 @@ export class CreateShareholdingInput {
   userId: string;
 
   @Field(() => String)
+  userPWId: string;
+
+  @Field(() => String)
   InvestmentType?: string;
 
   @Field(() => Number)
   allotedShare?: number;
+
+  // @Field(() => JSON)
+  // metadata?: JSON;
 }
