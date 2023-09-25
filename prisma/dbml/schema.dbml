@@ -87,6 +87,8 @@ Table KycHandler {
 
 Table ShareHoldingType {
   id String [pk]
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime [default: `now()`]
   InvestmentType String [not null]
   allotedShare Int
   userPWId String
@@ -95,11 +97,13 @@ Table ShareHoldingType {
 }
 
 Table ProjectEnrolledStatus {
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime [default: `now()`]
   id String [pk]
   projectName String
   projectStatus PROJECTSTATUS
-  userId String
-  user User
+  userId String [not null]
+  user User [not null]
   totalInvestedAmountinProject String
 }
 

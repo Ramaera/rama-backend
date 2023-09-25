@@ -86,9 +86,18 @@ type DocumentModal {
   utrNo: String
 }
 
-type Dsc {
-  """Example field (placeholder)"""
-  exampleField: Int!
+type DscOutputDataField {
+  """The Date At Which DSC Created  """
+  DscCreatedDate: String!
+
+  """The Date At Which DSC Will Expire """
+  DscExpiryDate: String!
+
+  """Dsc Status"""
+  dscStatus: DSCSTATUS
+
+  """User Id """
+  userId: String!
 }
 
 type EmptyModal {
@@ -155,7 +164,7 @@ type Mutation {
   UpdateLicenseDetails(data: UpdateLicenseDetailsInput!): User!
   changePassword(data: ChangePasswordInput!): User!
   createDocument(data: CreateDocumentInput!): Document!
-  createDsc(createDscInput: CreateDscInput!): Dsc!
+  createDsc(createDscInput: CreateDscInput!): DscOutputDataField!
   createKycAgency(data: CreateKycAgencyCodeInput!): AllKycAgency!
   createProjectEnrolled(projectData: projectDataInput!): ProjectEnrolled!
   createShareholding(data: CreateShareholdingInput!): Shareholding!
@@ -163,7 +172,7 @@ type Mutation {
   login(data: LoginInput!): Auth!
   passwordresetRequest(data: PasswordRequestInput!): Auth!
   refreshToken(token: JWT!): Token!
-  removeDsc(id: Int!): Dsc!
+  removeDsc(id: Int!): DscOutputDataField!
   removeKycAgency(id: Int!): KycAgency!
   removeProjectEnrolled(id: Int!): ProjectEnrolled!
   removeShareholding(id: Int!): Shareholding!
@@ -211,17 +220,32 @@ input PasswordRequestInput {
 
 type ProjectEnrolled {
   projects: [Projects!]
+  user: User
 
   """Example field (placeholder)"""
-  userId: String!
+  userId: String
   userName: String
 }
 
-type Projects {
-  """Example field (placeholder)"""
+type ProjectEnrolledForAllUser {
+  createdAt: DateTime!
+
+  """Project Name"""
   projectName: String
 
-  """Example field (placeholder)"""
+  """Project Status"""
+  projectStatus: String
+
+  """Project Name"""
+  totalInvestedAmountinProject: String
+  updatedAt: DateTime!
+}
+
+type Projects {
+  """Project Name"""
+  projectName: String
+
+  """Total amount Invested """
   totalInvestedAmount: String
 }
 
@@ -235,7 +259,7 @@ type Query {
   allKycUser(input: SearchMembershipInput!, skip: Int! = 0, take: Int! = 5000): [User!]!
   allprojectEnrolleds: [ProjectEnrolled!]!
   dataDocuments: [User!]!
-  dsc(id: Int!): Dsc!
+  dsc(id: Int!): DscOutputDataField!
   getAllKycHandler: [KYCHANDLER!]!
   getAllUser(skip: Int! = 0, take: Int! = 5000): [User!]!
   getAllUsersCount: UserCountDTO!
@@ -376,6 +400,8 @@ input UpdateUserStatusAdmin {
 }
 
 type User {
+  DSCDetails: [DscOutputDataField!]
+  ProjectEnrolledStatus: [ProjectEnrolledForAllUser!]
   alternate_mobile_number: String
   createdAt: DateTime!
   date_of_birth: String

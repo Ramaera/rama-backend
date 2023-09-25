@@ -12,6 +12,12 @@ import { DocumentModal } from 'src/documents/models/document.models';
 import { NomineeModel } from './nominee.model';
 import { KycAgencyModel } from './kycAgency.model';
 import { AllKycAgency } from 'src/kyc-agency/entities/kyc-agency.entity';
+import { DscModule } from 'src/dsc/dsc.module';
+import { DscOutputDataField } from 'src/dsc/entities/dsc.entity';
+import {
+  ProjectEnrolled,
+  ProjectEnrolledForAllUser,
+} from 'src/project-enrolled/entities/project-enrolled.entity';
 
 registerEnumType(Role, {
   name: 'Role',
@@ -61,6 +67,12 @@ export class User extends BaseModel {
 
   @Field(() => [DocumentModal])
   documents?: DocumentModal[] | null;
+
+  @Field(() => [DscOutputDataField])
+  DSCDetails?: DscOutputDataField[] | null;
+
+  @Field(() => [ProjectEnrolledForAllUser])
+  ProjectEnrolledStatus?: ProjectEnrolledForAllUser[];
 
   @Field(() => NomineeModel)
   nominee?: NomineeModel;

@@ -95,20 +95,24 @@ model KycHandler {
 }
 
 model ShareHoldingType {
-  id             String  @id @default(cuid())
+  id             String    @id @default(cuid())
+  createdAt      DateTime? @default(now())
+  updatedAt      DateTime? @default(now()) @updatedAt
   InvestmentType String
   allotedShare   Int?
   userPWId       String?
   userId         String
-  user           User    @relation(fields: [userId], references: [id])
+  user           User      @relation(fields: [userId], references: [id])
 }
 
 model ProjectEnrolledStatus {
+  createdAt                    DateTime?      @default(now())
+  updatedAt                    DateTime?      @default(now()) @updatedAt
   id                           String         @id @default(cuid())
   projectName                  String?
   projectStatus                PROJECTSTATUS?
-  userId                       String?
-  user                         User?          @relation(fields: [userId], references: [id])
+  userId                       String
+  user                         User           @relation(fields: [userId], references: [id])
   totalInvestedAmountinProject String?
 }
 

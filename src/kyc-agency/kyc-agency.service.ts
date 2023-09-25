@@ -122,8 +122,8 @@ export class KycAgencyService {
     const totallists = await this.prisma.user.findMany({
       where: {
         createdAt: {
-          gte: '2023-09-08T00:00:00.000Z',
-          lte: '2023-09-15T23:59:00.000Z',
+          gte: '2023-09-16T00:00:00.000Z',
+          lte: '2023-09-22T23:59:00.000Z',
         },
       },
     });
@@ -140,8 +140,8 @@ export class KycAgencyService {
         AND: [
           {
             createdAt: {
-              gte: '2023-09-08T00:00:00.000Z',
-              lte: '2023-09-15T23:59:00.000Z',
+              gte: '2023-09-16T00:00:00.000Z',
+              lte: '2023-09-22T23:59:00.000Z',
             },
             url: {
               contains: 'kycramaerabackend.ramaera.com',
@@ -149,7 +149,7 @@ export class KycAgencyService {
           },
           {
             title: {
-              contains: 'agra',
+              contains: 'hajipur',
             },
           },
           {
@@ -239,16 +239,6 @@ export class KycAgencyService {
           user.pw_id
         );
       });
-
-      // total_amount += dd.amount;
-      // console.log(
-      //   '345678--->>>>',
-      //   total_amount,
-      //   dd.amount,
-      //   dd.title,
-      //   user.pw_id,
-      //   user.referralAgencyCode
-      // );
     });
 
     // checkreport.map(async (agency) => {

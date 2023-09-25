@@ -1,30 +1,61 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { ObjectType, Field } from '@nestjs/graphql';
+import { User } from 'src/users/models/user.model';
 
 @ObjectType()
-export class Projects {
+class Projects {
   @Field(() => String, {
-    description: 'Example field (placeholder)',
+    description: 'Project Name',
     nullable: true,
   })
-  projectName: string;
+  projectName?: string;
 
   @Field(() => String, {
-    description: 'Example field (placeholder)',
+    description: 'Total amount Invested ',
     nullable: true,
   })
-  totalInvestedAmount: string;
+  totalInvestedAmount?: string;
 }
 
 @ObjectType()
 export class ProjectEnrolled {
   @Field(() => String, { description: 'Example field (placeholder)' })
-  userId: number;
+  userId?: String;
+
+  @Field(() => User)
+  user?: User | null;
 
   @Field(() => String, {
     nullable: true,
   })
-  userName: string;
+  userName?: string;
 
   @Field(() => [Projects], { nullable: true })
   projects?: Projects[];
+}
+
+@ObjectType()
+export class ProjectEnrolledForAllUser {
+  @Field(() => Date)
+  createdAt!: Date;
+
+  @Field(() => Date)
+  updatedAt!: Date;
+
+  @Field(() => String, {
+    description: 'Project Name',
+    nullable: true,
+  })
+  projectName?: string;
+
+  @Field(() => String, {
+    description: 'Project Status',
+    nullable: true,
+  })
+  projectStatus?: string;
+
+  @Field(() => String, {
+    description: 'Project Name',
+    nullable: true,
+  })
+  totalInvestedAmountinProject?: string;
 }

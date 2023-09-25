@@ -227,15 +227,19 @@ export class UsersService {
   // ########## Get All User #####################
 
   async getAllUser({ skip, take }) {
-    const allUser = this.prisma.user.findMany({
+    const allUser = await this.prisma.user.findMany({
       take,
       skip,
       include: {
         documents: true,
         nominee: true,
         KycAgency: true,
+        DSCDetails: true,
+        ProjectEnrolledStatus: true,
       },
     });
+
+    console.log('--->>', allUser[5].DSCDetails);
 
     return allUser;
   }
@@ -420,6 +424,8 @@ export class UsersService {
         documents: true,
         nominee: true,
         KycAgency: true,
+        DSCDetails: true,
+        ProjectEnrolledStatus: true,
       },
     });
 

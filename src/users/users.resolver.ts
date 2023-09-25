@@ -32,6 +32,7 @@ import { DocumentModal } from 'src/documents/models/document.models';
 import { SearchInput, SearchMembershipInput } from './dto/search-user.input';
 import { UserCountDTO } from './models/countUsers.model';
 import { projectPaymentDTO } from './models/projectPayment.model';
+import { ProjectEnrolled } from 'src/project-enrolled/entities/project-enrolled.entity';
 
 @Resolver(() => User)
 @UseGuards(GqlAuthGuard)
