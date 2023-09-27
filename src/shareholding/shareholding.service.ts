@@ -6,16 +6,24 @@ import { PrismaService } from 'nestjs-prisma';
 @Injectable()
 export class ShareholdingService {
   constructor(private prisma: PrismaService) {}
-  create(inputData: CreateShareholdingInput) {
-    const createShareholding = this.prisma.shareHoldingType.create({
-      data: {
-        InvestmentType: inputData.InvestmentType,
-        userPWId: inputData.userPWId,
-        allotedShare: inputData.allotedShare,
-        userId: inputData.userId,
+  async create(inputData: CreateShareholdingInput) {
+    const CheckUserExist = await this.prisma.user.findUnique({
+      where: {
+        pw_id: inputData.userPWId,
       },
     });
-    return createShareholding;
+    if (CheckUserExist) {
+      const createShareholding = this.prisma.shareHoldingType.create({
+        data: {
+          InvestmentType: inputData.InvestmentType,
+          userPWId: inputData.userPWId,
+          allotedShare: inputData.allotedShare,
+          userId: CheckUserExist.id,
+        },
+      });
+
+      return createShareholding;
+    }
   }
 
   // async findAll(): Promise<any[]> {

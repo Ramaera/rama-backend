@@ -22,6 +22,9 @@ model User {
   mobile_number           String?
   alternate_mobile_number String?
   decryptedPassword       String?
+  Address                 String?
+  panCardNumber           String?
+  aadharCardNumber        String?                 @unique
   kyc                     KYC                     @default(NOT_INITIALIZED)
   role                    Role
   membership              Membership              @default(BASIC)

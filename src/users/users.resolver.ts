@@ -45,7 +45,7 @@ export class UsersResolver {
   // ********************************* Details about the User  ********************
 
   @Query(() => User)
-  async me(@UserEntity() user: User): Promise<User> {
+  async me(@UserEntity() user: User) {
     const _user = await this.usersService.getUser(user.id);
     return _user;
   }
@@ -216,7 +216,7 @@ export class UsersResolver {
     @Args('input') input: SearchMembershipInput,
     @Args({ name: 'take', type: () => Int, defaultValue: 5000 }) take: number,
     @Args({ name: 'skip', type: () => Int, defaultValue: 0 }) skip: number
-  ): Promise<User[]> {
+  ) {
     return this.usersService.usersByMembership(input.searchTerm, {
       skip,
       take,

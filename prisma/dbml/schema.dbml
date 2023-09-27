@@ -13,6 +13,9 @@ Table User {
   mobile_number String
   alternate_mobile_number String
   decryptedPassword String
+  Address String
+  panCardNumber String
+  aadharCardNumber String [unique]
   kyc KYC [not null, default: 'NOT_INITIALIZED']
   role Role [not null]
   membership Membership [not null, default: 'BASIC']

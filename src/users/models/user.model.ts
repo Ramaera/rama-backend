@@ -65,6 +65,15 @@ export class User extends BaseModel {
   @Field(() => String, { nullable: true })
   alternate_mobile_number?: string | null;
 
+  @Field(() => String, { nullable: true })
+  aadharCardNumber?: string | null;
+
+  @Field(() => String, { nullable: true })
+  panCardNumber?: string | null;
+
+  @Field(() => String, { nullable: true })
+  Address?: string | null;
+
   @Field(() => [DocumentModal])
   documents?: DocumentModal[] | null;
 

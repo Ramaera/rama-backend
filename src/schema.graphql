@@ -52,7 +52,7 @@ input CreateKycAgencyCodeInput {
 input CreateShareholdingInput {
   InvestmentType: String
   allotedShare: Int
-  userId: String!
+  userId: String
   userPWId: String!
 }
 

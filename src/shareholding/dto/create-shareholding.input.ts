@@ -3,7 +3,7 @@ import { InputType, Int, Field } from '@nestjs/graphql';
 @InputType()
 export class CreateShareholdingInput {
   @Field(() => String)
-  userId: string;
+  userId?: string;
 
   @Field(() => String)
   userPWId: string;

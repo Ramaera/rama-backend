@@ -24,6 +24,15 @@ export class UpdateUserInput {
   alternate_mobile_number?: string;
 
   @Field({ nullable: true })
+  aadharCardNumber?: string | null;
+
+  @Field({ nullable: true })
+  panCardNumber?: string | null;
+
+  @Field({ nullable: true })
+  Address?: string | null;
+
+  @Field({ nullable: true })
   date_of_birth?: string;
 
   @Field({ nullable: true })

@@ -60,11 +60,8 @@ const specificDate = new Date(specificISOString);
 // };
 
 const SeedCommand = async () => {
-  const allKYCUser = prisma.user.findMany({
-    where: {
-      referralAgencyCode: 'RLI962727' || 'PW715043',
-    },
-  });
+  const check = await HashedPassword('Janki@321');
+  console.log('password ', check);
 };
 
 // const SeedCommand = async () => {

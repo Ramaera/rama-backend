@@ -17,6 +17,9 @@ export class SignupInput {
   @Field()
   name?: string;
 
+  @Field()
+  aadharCardNumber?: string;
+
   @Field({ nullable: true })
   mobile?: string;
 
