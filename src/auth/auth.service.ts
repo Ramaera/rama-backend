@@ -113,7 +113,7 @@ export class AuthService {
     const id = this.jwtService.decode(token)['userId'];
     return this.prisma.user.findUnique({
       where: { id },
-      include: { nominee: true, documents: true },
+      include: { nominee: true, documents: true, DSCDetails: true },
     });
   }
 

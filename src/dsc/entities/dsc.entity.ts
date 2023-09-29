@@ -2,21 +2,21 @@ import { ObjectType, Field, Int, registerEnumType } from '@nestjs/graphql';
 import { DSCSTATUS } from '@prisma/client';
 
 registerEnumType(DSCSTATUS, {
-  name: 'DSCSTATIS',
+  name: 'DSCSTATUS',
   description: 'User DSC Status',
 });
 
 @ObjectType()
 export class DscOutputDataField {
   @Field(() => DSCSTATUS, { description: 'Dsc Status' })
-  dscStatus?: DSCSTATUS;
+  DSCStatus?: DSCSTATUS;
 
   @Field(() => String, { description: 'User Id ' })
   userId: string;
 
-  @Field(() => String, { description: 'The Date At Which DSC Created  ' })
+  @Field(() => String, { description: 'The Date At Which DSC Created' })
   DscCreatedDate: string;
 
-  @Field(() => String, { description: 'The Date At Which DSC Will Expire ' })
+  @Field(() => String, { description: 'The Date At Which DSC Will Expire' })
   DscExpiryDate: string;
 }
