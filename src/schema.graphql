@@ -87,14 +87,14 @@ type DocumentModal {
 }
 
 type DscOutputDataField {
-  """Dsc Status"""
-  DSCStatus: DSCSTATUS
-
-  """The Date At Which DSC Created"""
+  """The Date At Which DSC Created  """
   DscCreatedDate: String!
 
-  """The Date At Which DSC Will Expire"""
+  """The Date At Which DSC Will Expire """
   DscExpiryDate: String!
+
+  """Dsc Status"""
+  dscStatus: DSCSTATUS
 
   """User Id """
   userId: String!

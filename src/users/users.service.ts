@@ -213,7 +213,6 @@ export class UsersService {
         documents: true,
         KycAgency: true,
         ProjectEnrolledStatus: true,
-        DSCDetails: true,
       },
     });
 
