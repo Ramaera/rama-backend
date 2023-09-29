@@ -45,6 +45,11 @@ input CreateDscInput {
   userId: String!
 }
 
+input CreateEnrollmentPaymentInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 input CreateKycAgencyCodeInput {
   userId: String!
 }
@@ -87,14 +92,14 @@ type DocumentModal {
 }
 
 type DscOutputDataField {
+  """Dsc Status"""
+  DSCStatus: DSCSTATUS
+
   """The Date At Which DSC Created  """
   DscCreatedDate: String!
 
   """The Date At Which DSC Will Expire """
   DscExpiryDate: String!
-
-  """Dsc Status"""
-  dscStatus: DSCSTATUS
 
   """User Id """
   userId: String!
@@ -102,6 +107,11 @@ type DscOutputDataField {
 
 type EmptyModal {
   message: String
+}
+
+type EnrollmentPayment {
+  """Example field (placeholder)"""
+  exampleField: Int!
 }
 
 """
@@ -165,6 +175,7 @@ type Mutation {
   changePassword(data: ChangePasswordInput!): User!
   createDocument(data: CreateDocumentInput!): Document!
   createDsc(createDscInput: CreateDscInput!): DscOutputDataField!
+  createEnrollmentPayment(createEnrollmentPaymentInput: CreateEnrollmentPaymentInput!): EnrollmentPayment!
   createKycAgency(data: CreateKycAgencyCodeInput!): AllKycAgency!
   createProjectEnrolled(projectData: projectDataInput!): ProjectEnrolled!
   createShareholding(data: CreateShareholdingInput!): Shareholding!
@@ -173,6 +184,7 @@ type Mutation {
   passwordresetRequest(data: PasswordRequestInput!): Auth!
   refreshToken(token: JWT!): Token!
   removeDsc(id: Int!): DscOutputDataField!
+  removeEnrollmentPayment(id: Int!): EnrollmentPayment!
   removeKycAgency(id: Int!): KycAgency!
   removeProjectEnrolled(id: Int!): ProjectEnrolled!
   removeShareholding(id: Int!): Shareholding!
@@ -180,6 +192,7 @@ type Mutation {
   updateDataByAdmin(data: UpdateUserInputByAdmin!): User!
   updateDocument(data: UpdateDocumentsInput!): Document!
   updateDocumentStatusByAdmin(data: UpdateDocumentStatusByAdmin!): Document!
+  updateEnrollmentPayment(updateEnrollmentPaymentInput: UpdateEnrollmentPaymentInput!): EnrollmentPayment!
   updateKycAgency(updateKycAgencyInput: UpdateKycAgencyInput!): KycAgency!
   updateMembership(data: UpdateUserMembershipAdmin!): User!
   updateProjectEnrolled(updateProjectEnrolledInput: UpdateProjectEnrolledInput!): ProjectEnrolled!
@@ -256,10 +269,13 @@ type Query {
   FeedProjectEnrolled: ProjectEnrolled!
   GetAllKycAgencyUser(agencyCode: String!): [User!]!
   Report: [User!]!
+  Total_Approved_Subscribers_in_a_month(month: Int!, year: Int!): [EnrollmentPayment!]!
+  Total_Subscribers_enrolled_in_a_month(month: Int!, year: Int!): [EnrollmentPayment!]!
   allKycUser(input: SearchMembershipInput!, skip: Int! = 0, take: Int! = 5000): [User!]!
   allprojectEnrolleds: [ProjectEnrolled!]!
   dataDocuments: [User!]!
   dsc(id: Int!): DscOutputDataField!
+  enrollmentPayment(id: Int!): EnrollmentPayment!
   getAllKycHandler: [KYCHANDLER!]!
   getAllUser(skip: Int! = 0, take: Int! = 5000): [User!]!
   getAllUsersCount: UserCountDTO!
@@ -303,6 +319,7 @@ type Shareholding {
 }
 
 input SignupInput {
+  aadharCardNumber: String
   email: String
   membership: Membership
   mobile: String
@@ -332,6 +349,12 @@ input UpdateDocumentsInput {
   url: String
 }
 
+input UpdateEnrollmentPaymentInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
 input UpdateKycAgencyInput {
   id: Int!
   userId: String
@@ -357,6 +380,8 @@ input UpdateShareholdingInput {
 }
 
 input UpdateUserInput {
+  Address: String
+  aadharCardNumber: String
   alternate_mobile_number: String
   date_of_birth: String
   demat_account: String
@@ -364,6 +389,7 @@ input UpdateUserInput {
   father_or_husband_name: String
   mobile_number: String
   name: String
+  panCardNumber: String
 }
 
 input UpdateUserInputByAdmin {
@@ -400,8 +426,10 @@ input UpdateUserStatusAdmin {
 }
 
 type User {
+  Address: String
   DSCDetails: [DscOutputDataField!]
   ProjectEnrolledStatus: [ProjectEnrolledForAllUser!]
+  aadharCardNumber: String
   alternate_mobile_number: String
   createdAt: DateTime!
   date_of_birth: String
@@ -416,6 +444,7 @@ type User {
   mobile_number: String
   name: String
   nominee: NomineeModel
+  panCardNumber: String
   private_key: String
   pw_id: String
   referralAgencyCode: String

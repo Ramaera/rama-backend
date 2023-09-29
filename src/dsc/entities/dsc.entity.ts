@@ -9,7 +9,7 @@ registerEnumType(DSCSTATUS, {
 @ObjectType()
 export class DscOutputDataField {
   @Field(() => DSCSTATUS, { description: 'Dsc Status' })
-  dscStatus?: DSCSTATUS;
+  DSCStatus?: DSCSTATUS;
 
   @Field(() => String, { description: 'User Id ' })
   userId: string;
