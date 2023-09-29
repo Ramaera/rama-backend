@@ -118,10 +118,6 @@ export class UsersService {
       throw new Error('User not found');
     }
     user.kyc = newUserData.kyc;
-
-    if (user.kyc === 'APPROVED') {
-      user.kycApprovalDate = new Date();
-    }
     const userPayload = {
       ...user,
     };
@@ -216,7 +212,6 @@ export class UsersService {
         nominee: true,
         documents: true,
         KycAgency: true,
-        DSCDetails: true,
         ProjectEnrolledStatus: true,
       },
     });
@@ -243,6 +238,8 @@ export class UsersService {
         ProjectEnrolledStatus: true,
       },
     });
+
+    console.log('--->>', allUser[5].DSCDetails);
 
     return allUser;
   }

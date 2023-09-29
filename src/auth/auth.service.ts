@@ -81,10 +81,9 @@ export class AuthService {
     try {
       const user = await this.prisma.user.findUnique({
         where: { pw_id },
-        include: { nominee: true, DSCDetails: true },
+        include: { nominee: true },
       });
 
-      console.log('--->>>', user);
       if (!user) {
         throw new NotFoundException(`No user found for PW_Id: ${pw_id}`);
       }
@@ -114,7 +113,7 @@ export class AuthService {
     const id = this.jwtService.decode(token)['userId'];
     return this.prisma.user.findUnique({
       where: { id },
-      include: { nominee: true, documents: true, DSCDetails: true },
+      include: { nominee: true, documents: true },
     });
   }
 

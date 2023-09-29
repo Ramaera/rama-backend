@@ -26,7 +26,6 @@ Table User {
   private_key String [unique]
   pw_id String [unique]
   rm_id String [unique]
-  kycApprovalDate DateTime
   DSCDetails DSCDETAILS [not null]
   documents Document [not null]
   KycAgency KycAgency
@@ -52,7 +51,6 @@ Table Document {
   title String [not null]
   url String [not null]
   amount Int
-  documentApprovalDate DateTime
   userId String
   status STATUS [not null, default: 'PENDING']
   utrNo String

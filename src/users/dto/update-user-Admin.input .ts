@@ -3,7 +3,6 @@ import { KYC, Membership } from '@prisma/client';
 import { NomineeInput } from './createNominee.input';
 import { UpdateDocumentsInput } from 'src/documents/dto/update-document';
 import { NomineeModel } from '../models/nominee.model';
-import { DateTime } from 'graphql-scalars/typings/mocks';
 
 // ***************************************************************
 // *******************Update User Details Input*******************

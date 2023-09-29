@@ -35,7 +35,6 @@ model User {
   private_key             String?                 @unique
   pw_id                   String?                 @unique
   rm_id                   String?                 @unique
-  kycApprovalDate         DateTime?
   DSCDetails              DSCDETAILS[]
   documents               Document[]
   KycAgency               KycAgency?
@@ -55,17 +54,16 @@ model KycAgency {
 }
 
 model Document {
-  createdAt            DateTime  @default(now())
-  updatedAt            DateTime  @default(now()) @updatedAt
-  id                   String    @id @default(cuid())
-  title                String
-  url                  String
-  amount               Int?
-  documentApprovalDate DateTime?
-  userId               String?
-  status               STATUS    @default(PENDING)
-  utrNo                String?
-  user                 User?     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  id        String   @id @default(cuid())
+  title     String
+  url       String
+  amount    Int?
+  userId    String?
+  status    STATUS   @default(PENDING)
+  utrNo     String?
+  user      User?    @relation(fields: [userId], references: [id])
 }
 
 model DSCDETAILS {

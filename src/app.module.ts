@@ -17,7 +17,6 @@ import { KycAgencyModule } from './kyc-agency/kyc-agency.module';
 import { ShareholdingModule } from './shareholding/shareholding.module';
 import { ProjectEnrolledModule } from './project-enrolled/project-enrolled.module';
 import { DscModule } from './dsc/dsc.module';
-import { EnrollmentPaymentModule } from './enrollment-payment/enrollment-payment.module';
 
 @Module({
   imports: [
@@ -43,7 +42,6 @@ import { EnrollmentPaymentModule } from './enrollment-payment/enrollment-payment
     ShareholdingModule,
     ProjectEnrolledModule,
     DscModule,
-    EnrollmentPaymentModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],
