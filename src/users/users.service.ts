@@ -212,6 +212,7 @@ export class UsersService {
         nominee: true,
         documents: true,
         KycAgency: true,
+        DSCDetails: true,
         ProjectEnrolledStatus: true,
       },
     });

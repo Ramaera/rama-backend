@@ -81,7 +81,7 @@ export class AuthService {
     try {
       const user = await this.prisma.user.findUnique({
         where: { pw_id },
-        include: { nominee: true },
+        include: { nominee: true, DSCDetails: true },
       });
 
       if (!user) {
@@ -96,6 +96,8 @@ export class AuthService {
       if (!passwordValid) {
         throw new BadRequestException('Invalid password');
       }
+
+      console.log('user', user);
 
       return this.generateTokens({
         userId: user.id,
@@ -113,7 +115,7 @@ export class AuthService {
     const id = this.jwtService.decode(token)['userId'];
     return this.prisma.user.findUnique({
       where: { id },
-      include: { nominee: true, documents: true },
+      include: { nominee: true, documents: true, DSCDetails: true },
     });
   }
 

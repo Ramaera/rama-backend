@@ -122,8 +122,8 @@ export class KycAgencyService {
     const totallists = await this.prisma.user.findMany({
       where: {
         createdAt: {
-          gte: '2023-09-16T00:00:00.000Z',
-          lte: '2023-09-22T23:59:00.000Z',
+          gte: '2023-09-23T00:00:00.000Z',
+          lte: '2023-09-29T23:59:00.000Z',
         },
       },
     });
@@ -140,19 +140,15 @@ export class KycAgencyService {
         AND: [
           {
             createdAt: {
-              gte: '2023-09-16T00:00:00.000Z',
-              lte: '2023-09-22T23:59:00.000Z',
+              gte: '2023-09-23T00:00:00.000Z',
+              lte: '2023-09-29T23:59:00.000Z',
             },
             url: {
               contains: 'kycramaerabackend.ramaera.com',
             },
-          },
-          {
             title: {
-              contains: 'hajipur',
+              contains: 'agra',
             },
-          },
-          {
             status: {
               not: 'REJECTED',
             },
