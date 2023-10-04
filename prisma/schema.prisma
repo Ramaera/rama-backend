@@ -54,16 +54,17 @@ model KycAgency {
 }
 
 model Document {
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  id        String   @id @default(cuid())
-  title     String
-  url       String
-  amount    Int?
-  userId    String?
-  status    STATUS   @default(PENDING)
-  utrNo     String?
-  user      User?    @relation(fields: [userId], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now()) @updatedAt
+  id           String   @id @default(cuid())
+  title        String
+  url          String
+  amount       Int?
+  approvalDate String?
+  userId       String?
+  status       STATUS   @default(PENDING)
+  utrNo        String?
+  user         User?    @relation(fields: [userId], references: [id])
 }
 
 model DSCDETAILS {

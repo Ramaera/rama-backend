@@ -258,7 +258,6 @@ type Query {
   Report: [User!]!
   allKycUser(input: SearchMembershipInput!, skip: Int! = 0, take: Int! = 5000): [User!]!
   allprojectEnrolleds: [ProjectEnrolled!]!
-  dataDocuments: [User!]!
   dsc(id: Int!): DscOutputDataField!
   getAllKycHandler: [KYCHANDLER!]!
   getAllUser(skip: Int! = 0, take: Int! = 5000): [User!]!
@@ -322,6 +321,7 @@ type Token {
 }
 
 input UpdateDocumentStatusByAdmin {
+  approvalDate: String
   id: String!
   status: STATUS!
 }

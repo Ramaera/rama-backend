@@ -35,6 +35,9 @@ export class UpdateDocumentStatusByAdmin {
 
   @Field(() => STATUS)
   status: STATUS;
+
+  @Field(() => String, { nullable: true })
+  approvalDate?: string;
 }
 
 registerEnumType(STATUS, {

@@ -24,31 +24,39 @@ export class DocumentsService {
   // ********************************    Update Document Status By Admin       ******************************
 
   async updateDocumentStatusByAdmin(data: UpdateDocumentStatusByAdmin) {
+    if (data.status === 'APPROVED') {
+      data.approvalDate = new Date().toLocaleString();
+    }
+
+    const documentPayload = {
+      ...data,
+    };
+
     return this.prisma.document.update({
-      data,
+      data: { ...documentPayload },
       where: {
         id: data.id,
       },
     });
   }
 
-  async updatePaymentName() {
-    const users = this.prisma.user.findMany();
+  // async updatePaymentName() {
+  //   const users = this.prisma.user.findMany();
 
-    (await users).map(async (user) => {
-      const alldoc = await this.prisma.document.findMany({
-        where: {
-          userId: user.id,
-        },
-      });
+  //   (await users).map(async (user) => {
+  //     const alldoc = await this.prisma.document.findMany({
+  //       where: {
+  //         userId: user.id,
+  //       },
+  //     });
 
-      alldoc.map((doc) => {
-        doc.title === 'hajipur_project_payment' ? console.log(doc.title) : '';
-      });
-    });
+  //     alldoc.map((doc) => {
+  //       doc.title === 'hajipur_project_payment' ? console.log(doc.title) : '';
+  //     });
+  //   });
 
-    return 'XX';
-  }
+  //   return 'XX';
+  // }
 
   // async updateProjectEnrollementStatus(userId) {
   //   this.prisma.projectEnrolledStatus.create({

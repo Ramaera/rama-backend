@@ -89,8 +89,8 @@ export class DocumentsResolver {
       .documents();
   }
 
-  @Query(() => [User], { name: 'dataDocuments' })
-  findAllKycAgnecyuser() {
-    return this.documentsService.updatePaymentName();
-  }
+  // @Query(() => [User], { name: 'dataDocuments' })
+  // findAllKycAgnecyuser() {
+  //   return this.documentsService.updatePaymentName();
+  // }
 }
