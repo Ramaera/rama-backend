@@ -97,8 +97,6 @@ export class AuthService {
         throw new BadRequestException('Invalid password');
       }
 
-      console.log('user', user);
-
       return this.generateTokens({
         userId: user.id,
       });

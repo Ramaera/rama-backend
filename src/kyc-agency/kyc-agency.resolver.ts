@@ -8,7 +8,6 @@ import {
   GetKycAgency,
 } from './dto/get-kyc-agency.input';
 import { UserEntity } from 'src/common/decorators/user.decorator';
-// import { User } from '@prisma/client';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
 
@@ -26,20 +25,48 @@ export class KycAgencyResolver {
     return this.kycAgencyService.create(data);
   }
 
-  @UseGuards(GqlAuthGuard)
-  @Mutation(() => AllKycAgency)
-  AgencyPayment(
-    // @Args('data')
-    // data: CreateKycAgencyCodeInput
-    @UserEntity() user: User
-  ) {
-    return this.kycAgencyService.agencyPayment(user.id);
-  }
+  // @UseGuards(GqlAuthGuard)
+  // @Mutation(() => AllKycAgency)
+  // AgencyPayment(
+  //   // @Args('data')
+  //   // data: CreateKycAgencyCodeInput
+  //   @UserEntity() user: User
+  // ) {
+  //   return this.kycAgencyService.agencyPayment(user.id);
+  // }
+
+  // @Query(() => [KycAgency], { name: 'kycVivek' })
+  // findAllVivek() {
+  //   return this.kycAgencyService.findVivek();
+  // }
 
   @Query(() => [KycAgency], { name: 'AllKycAgency' })
   findAll() {
     return this.kycAgencyService.findAll();
   }
+
+  @Query(() => KycAgency, { name: 'findAgency' })
+  findAgency(@Args('AgencyCode', { type: () => String }) AgencyCode: string) {
+    return this.kycAgencyService.findAgency(AgencyCode);
+  }
+
+  // @Query(() => [KycAgency], { name: 'TotalRegsiteredKYC' })
+  // async findAllRegistered(
+  //   @Args('month', { type: () => Int }) month: number,
+  //   @Args('agencyCode', { type: () => String }) agencyCode: string
+  // ) {
+  //   const totalFinalApprovedInAgencyInSpecificMonth =
+  //     await this.kycAgencyService.totalKycInaMonthByAgencyCode(
+  //       month,
+  //       agencyCode
+  //     );
+  //   return {
+  //     totalFinalBASICApprovedInAgencyInSpecificMonth:
+  //       totalFinalApprovedInAgencyInSpecificMonth.kycFinalBASICApproval,
+  //     totalFinalADVANCEApprovedInAgencyInSpecificMonth:
+  //       totalFinalApprovedInAgencyInSpecificMonth.kycFinalADVANCEApproval,
+  //   };
+  // }
 
   @Query(() => KycAgency, { name: 'kycAgency' })
   findOne(@Args() id: GetKycAgency) {
@@ -65,6 +92,14 @@ export class KycAgencyResolver {
   findReport() {
     return this.kycAgencyService.findReport();
   }
+
+  // @Query(() => [User], { name: 'AgencyKycPayment' })
+  // findAgencyKycPayment(
+  //   @Args('month', { type: () => Int }) month: number,
+  //   @Args('agencyCode', { type: () => String }) agencyCode: string
+  // ) {
+  //   return this.kycAgencyService.AgencyKYCPaymentInAMonth(month, agencyCode);
+  // }
 
   @Mutation(() => KycAgency)
   removeKycAgency(@Args('id', { type: () => Int }) id: number) {
