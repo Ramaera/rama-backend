@@ -93,6 +93,14 @@ export class KycAgencyResolver {
     return this.kycAgencyService.findReport();
   }
 
+  @Query(() => [User], { name: 'AgencyPayment' })
+  findAgencyPaymentt(
+    @Args('month', { type: () => Int }) month: number,
+    @Args('agencyCode', { type: () => String }) agencyCode: string
+  ) {
+    return this.kycAgencyService.findAgencyPayment(month, agencyCode);
+  }
+
   // @Query(() => [User], { name: 'AgencyKycPayment' })
   // findAgencyKycPayment(
   //   @Args('month', { type: () => Int }) month: number,

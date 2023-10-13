@@ -160,7 +160,6 @@ enum Membership {
 }
 
 type Mutation {
-  AgencyPayment: AllKycAgency!
   UpdateLicenseDetails(data: UpdateLicenseDetailsInput!): User!
   changePassword(data: ChangePasswordInput!): User!
   createDocument(data: CreateDocumentInput!): Document!
@@ -250,14 +249,13 @@ type Projects {
 }
 
 type Query {
-  AgencyKycPayment: [User!]!
+  AgencyPayment(agencyCode: String!, month: Int!): [User!]!
   AllKycAgency: [KycAgency!]!
   ChangeAmountOfRamaeraLegalInfoTech: User!
   DeleteUser: User!
   FeedProjectEnrolled: ProjectEnrolled!
   GetAllKycAgencyUser(agencyCode: String!): [User!]!
   Report: [User!]!
-  TotalRegsiteredKYC(agencyCode: String!, month: Int!): [KycAgency!]!
   allKycUser(input: SearchMembershipInput!, skip: Int! = 0, take: Int! = 5000): [User!]!
   allprojectEnrolleds: [ProjectEnrolled!]!
   dsc(id: Int!): DscOutputDataField!
@@ -269,7 +267,6 @@ type Query {
   hello(name: String!): String!
   helloWorld: String!
   kycAgency(userId: String!): KycAgency!
-  kycVivek: [KycAgency!]!
   me: User!
   myDocuments(userId: String!): [Document!]!
   myNominee(userId: String!): Nominee!

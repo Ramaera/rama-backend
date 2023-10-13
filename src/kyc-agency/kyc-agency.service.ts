@@ -259,6 +259,71 @@ export class KycAgencyService {
   //   return { kycFinalBASICApproval, kycFinalADVANCEApproval };
   // }
 
+  async findAgencyPayment(month, AgencyCode) {
+    const getData = getMonthDates(month);
+
+    const basicprojectDocument = await this.prisma.document.findMany({
+      where: {
+        // approvalDate: {
+        //   gte: getData.startDate.toLocaleString(),
+        //   lte: getData.endDate.toLocaleString(),
+        // },
+        title: {
+          contains: 'hajipur',
+        },
+        status: 'APPROVED',
+        user: {
+          referralAgencyCode: AgencyCode,
+          membership: 'BASIC',
+          documents: {
+            some: {
+              title: {
+                contains: 'demat_document',
+              },
+              status: 'APPROVED',
+            },
+          },
+        },
+      },
+    });
+
+    const advanceprojectDocument = await this.prisma.document.findMany({
+      where: {
+        // approvalDate: {
+        //   gte: getData.startDate.toLocaleString(),
+        //   lte: getData.endDate.toLocaleString(),
+        // },
+        title: {
+          contains: 'hajipur',
+        },
+        status: 'APPROVED',
+        user: {
+          referralAgencyCode: AgencyCode,
+          membership: 'ADVANCE',
+          DSCDetails: {
+            some: {
+              DSCStatus: 'RECEIVED',
+            },
+          },
+        },
+      },
+    });
+
+    let basicHajipurAmount;
+    basicprojectDocument.map((data) => {
+      basicHajipurAmount += data.amount;
+    });
+
+    let advanceHajipurAmount;
+    advanceprojectDocument.map((data) => {
+      basicHajipurAmount += data.amount;
+    });
+
+    // basicprojectDocument.map((data) => {
+    //   console.log('-->>>', data.user.pw_id, data.user.membership);
+    // });
+  }
+
   async totalKycInaMonthByAgencyCode(month, agencyCode) {
     const getData = getMonthDates(month);
 
@@ -381,11 +446,11 @@ export class KycAgencyService {
       },
     });
 
-    kycFinalBASICApproval.map((userKyc) => {
-      userKyc.documents.map((document) => {
-        document.title.includes('hajipur');
-      });
-    });
+    // kycFinalBASICApproval.map((userKyc) => {
+    //   userKyc.documents.map((document) => {
+    //     document.title.includes('hajipur');
+    //   });
+    // });
     // Total Advance Kyc Joined in A  Specific Month
     const kycFinalADVANCEApproval = await this.prisma.user.findMany({
       where: {
