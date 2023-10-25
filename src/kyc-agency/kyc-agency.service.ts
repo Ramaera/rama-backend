@@ -11,18 +11,16 @@ import { prisma } from '@prisma/client';
 import { get } from 'http';
 // import { getKycAgency } from './dto/get-kyc-agency.input';
 
-function getMonthDates(monthNumber) {
+function getMonthDates(year, monthNumber) {
   // Get the current year
   const currentYear = new Date().getFullYear();
 
   // Calculate the first day of the specified month
-  const startDate = new Date(
-    Date.UTC(currentYear, monthNumber - 1, 1, 0, 0, 0)
-  );
+  const startDate = new Date(Date.UTC(year, monthNumber - 1, 1, 0, 0, 0));
 
   // Calculate the last day of the month by going to the first day of the next month and subtracting one day
   const nextMonth = (monthNumber % 12) + 1;
-  const nextYear = nextMonth === 1 ? currentYear + 1 : currentYear;
+  const nextYear = nextMonth === 1 ? year + 1 : year;
   const endDate = new Date(Date.UTC(nextYear, nextMonth - 1, 1, 0, 0, 0) - 1);
 
   return {
@@ -62,6 +60,8 @@ function parseCustomDate(dateString) {
 export class KycAgencyService {
   constructor(private prisma: PrismaService) {}
 
+  // ******************* FindAgency **********************
+
   async findAgency(agencyCode) {
     try {
       console.log('Before');
@@ -82,6 +82,8 @@ export class KycAgencyService {
       throw new Error(error.message);
     }
   }
+
+  // ***************** Create Agency Code ******************
 
   async create(data: CreateKycAgencyCodeInput) {
     try {
@@ -105,6 +107,7 @@ export class KycAgencyService {
     }
   }
 
+  // **************** Find All Agency Code *********************
   async findAll() {
     const check = await this.prisma.kycAgency.findMany({
       include: {
@@ -259,15 +262,66 @@ export class KycAgencyService {
   //   return { kycFinalBASICApproval, kycFinalADVANCEApproval };
   // }
 
-  async findAgencyPayment(month, AgencyCode) {
-    const getData = getMonthDates(month);
+  //  * ******************* FInd Agency Payment **************************
 
-    const basicprojectDocument = await this.prisma.document.findMany({
+  async findAgencyPayment(month, year, AgencyCode) {
+    const getLocalDateData = getMonthDates(month, year);
+
+    let basicKYCAmount = 0;
+    let advanceKYCAmount = 0;
+    let kycAmount = 0;
+    let hajipurProjectAmount = 0;
+    let agraProjectAmount = 0;
+
+    const BasicKycApprovedUser = await this.prisma.user.findMany({
       where: {
-        // approvalDate: {
-        //   gte: getData.startDate.toLocaleString(),
-        //   lte: getData.endDate.toLocaleString(),
-        // },
+        referralAgencyCode: AgencyCode,
+        membership: 'BASIC',
+        documents: {
+          some: {
+            status: 'APPROVED',
+            title: 'demat_document',
+            approvalDate: {
+              gte: getLocalDateData.startDate.toLocaleString(),
+              lte: getLocalDateData.endDate.toLocaleString(),
+            },
+          },
+        },
+      },
+    });
+
+    basicKYCAmount = BasicKycApprovedUser.length * 200;
+
+    const AdvanceKYCApprovedUser = await this.prisma.user.findMany({
+      where: {
+        referralAgencyCode: AgencyCode,
+        membership: 'ADVANCE',
+        documents: {
+          some: {
+            status: 'APPROVED',
+            title: 'demat_document',
+            approvalDate: {
+              gte: getLocalDateData.startDate.toLocaleString(),
+              lte: getLocalDateData.endDate.toLocaleString(),
+            },
+          },
+        },
+        DSCDetails: {
+          some: {
+            DSCStatus: 'RECEIVED',
+          },
+        },
+      },
+    });
+
+    advanceKYCAmount = AdvanceKYCApprovedUser.length * 200;
+
+    const basicHajipurprojectDocument = await this.prisma.document.findMany({
+      where: {
+        approvalDate: {
+          gte: getLocalDateData.startDate.toLocaleString(),
+          lte: getLocalDateData.endDate.toLocaleString(),
+        },
         title: {
           contains: 'hajipur',
         },
@@ -285,14 +339,17 @@ export class KycAgencyService {
           },
         },
       },
+      include: {
+        user: true,
+      },
     });
 
-    const advanceprojectDocument = await this.prisma.document.findMany({
+    const advanceHajipurprojectDocument = await this.prisma.document.findMany({
       where: {
-        // approvalDate: {
-        //   gte: getData.startDate.toLocaleString(),
-        //   lte: getData.endDate.toLocaleString(),
-        // },
+        approvalDate: {
+          gte: getLocalDateData.startDate.toLocaleString(),
+          lte: getLocalDateData.endDate.toLocaleString(),
+        },
         title: {
           contains: 'hajipur',
         },
@@ -307,25 +364,106 @@ export class KycAgencyService {
           },
         },
       },
+      include: {
+        user: true,
+      },
     });
 
-    let basicHajipurAmount;
-    basicprojectDocument.map((data) => {
-      basicHajipurAmount += data.amount;
+    const basicAgraprojectDocument = await this.prisma.document.findMany({
+      where: {
+        approvalDate: {
+          gte: getLocalDateData.startDate.toLocaleString(),
+          lte: getLocalDateData.endDate.toLocaleString(),
+        },
+        title: {
+          contains: 'agra',
+        },
+        status: 'APPROVED',
+        user: {
+          referralAgencyCode: AgencyCode,
+          membership: 'BASIC',
+          documents: {
+            some: {
+              title: {
+                contains: 'demat_document',
+              },
+              status: 'APPROVED',
+            },
+          },
+        },
+      },
+      include: {
+        user: true,
+      },
     });
 
-    let advanceHajipurAmount;
-    advanceprojectDocument.map((data) => {
-      basicHajipurAmount += data.amount;
+    const advanceAgraprojectDocument = await this.prisma.document.findMany({
+      where: {
+        approvalDate: {
+          gte: getLocalDateData.startDate.toLocaleString(),
+          lte: getLocalDateData.endDate.toLocaleString(),
+        },
+        title: {
+          contains: 'agra',
+        },
+        status: 'APPROVED',
+        user: {
+          referralAgencyCode: AgencyCode,
+          membership: 'ADVANCE',
+          documents: {
+            some: {
+              title: {
+                contains: 'demat_document',
+              },
+              status: 'APPROVED',
+            },
+          },
+        },
+      },
+      include: {
+        user: true,
+      },
     });
 
-    // basicprojectDocument.map((data) => {
-    //   console.log('-->>>', data.user.pw_id, data.user.membership);
-    // });
+    let basicHajipurAmount = 0;
+    basicHajipurprojectDocument.map((data) => {
+      basicHajipurAmount += data?.amount;
+    });
+
+    let advanceHajipurAmount = 0;
+    advanceHajipurprojectDocument.map((data) => {
+      advanceHajipurAmount += data?.amount;
+    });
+
+    let basicAgraAmount = 0;
+    basicAgraprojectDocument.map((data) => {
+      basicAgraAmount += data?.amount;
+    });
+
+    let advanceAgraAmount = 0;
+    advanceAgraprojectDocument.map((data) => {
+      advanceAgraAmount += data?.amount;
+    });
+
+    hajipurProjectAmount =
+      basicHajipurAmount * 0.01 + advanceHajipurAmount * 0.01;
+    agraProjectAmount = basicAgraAmount * 0.1 + advanceAgraAmount * 0.1;
+    kycAmount = basicKYCAmount + advanceKYCAmount;
+
+    return {
+      hajipurProjectAmount,
+      agraProjectAmount,
+      kycAmount,
+      BasicKycApprovedUser,
+      basicAgraprojectDocument,
+      advanceAgraprojectDocument,
+      basicHajipurprojectDocument,
+      advanceHajipurprojectDocument,
+    };
   }
 
-  async totalKycInaMonthByAgencyCode(month, agencyCode) {
-    const getData = getMonthDates(month);
+  async totalKycInaMonthByAgencyCode(month, year, agencyCode) {
+    const getData = getMonthDates(month, year);
 
     // Total BASIC Kyc Joined in A  Specific Month
 
@@ -369,24 +507,26 @@ export class KycAgencyService {
     // });
 
     //   Totak Kyc Approved in specifc Month (include Previous Month Not Approved KYC (without Demat))
-    // const kycApprovedWithDemat = await this.prisma.user.findMany({
-    //   where: {
-    //     AND: [
-    //       {
-    //         documents: {
-    //           some: {
-    //             approvalDate: {
-    //               gte: getData.startDate.toLocaleString(),
-    //               lte: getData.startDate.toLocaleString(),
-    //             },
-    //             title: 'demat_document',
-    //             status: 'APPROVED',
-    //           },
-    //         },
-    //       },
-    //     ],
-    //   },
-    // });
+    const kycApprovedWithDemat = await this.prisma.user.findMany({
+      where: {
+        AND: [
+          {
+            documents: {
+              some: {
+                approvalDate: {
+                  gte: getData.startDate.toLocaleString(),
+                  lte: getData.startDate.toLocaleString(),
+                },
+                title: 'demat_document',
+                status: 'APPROVED',
+              },
+            },
+          },
+        ],
+      },
+    });
+
+    kycApprovedWithDemat.map((user) => {});
 
     //   Totak Kyc Joined & Pending in specifc Month
     // const kycJoinedAndPendingWithDemat = await this.prisma.user.findMany({
@@ -424,27 +564,27 @@ export class KycAgencyService {
     // });
 
     //  Total Kyc Approved in a Month
-    const kycFinalBASICApproval = await this.prisma.user.findMany({
-      where: {
-        kyc: 'APPROVED',
-        membership: 'BASIC',
-        referralAgencyCode: agencyCode,
-        documents: {
-          some: {
-            title: {
-              contains: 'demat_document',
-            },
-            approvalDate: {
-              gte: getData.startDate.toLocaleString(),
-              lte: getData.endDate.toLocaleString(),
-            },
-          },
-        },
-      },
-      include: {
-        documents: true,
-      },
-    });
+    // const kycFinalBASICApproval = await this.prisma.user.findMany({
+    //   where: {
+    //     kyc: 'APPROVED',
+    //     membership: 'BASIC',
+    //     referralAgencyCode: agencyCode,
+    //     documents: {
+    //       some: {
+    //         title: {
+    //           contains: 'demat_document',
+    //         },
+    //         approvalDate: {
+    //           gte: getData.startDate.toLocaleString(),
+    //           lte: getData.endDate.toLocaleString(),
+    //         },
+    //       },
+    //     },
+    //   },
+    //   include: {
+    //     documents: true,
+    //   },
+    // });
 
     // kycFinalBASICApproval.map((userKyc) => {
     //   userKyc.documents.map((document) => {
@@ -452,28 +592,28 @@ export class KycAgencyService {
     //   });
     // });
     // Total Advance Kyc Joined in A  Specific Month
-    const kycFinalADVANCEApproval = await this.prisma.user.findMany({
-      where: {
-        kyc: 'APPROVED',
-        membership: 'ADVANCE',
-        referralAgencyCode: agencyCode,
-        documents: {
-          some: {
-            title: {
-              contains: 'demat_document',
-            },
-            approvalDate: {
-              gte: getData.startDate.toLocaleString(),
-              lte: getData.endDate.toLocaleString(),
-            },
-          },
-        },
-      },
-      include: {
-        documents: true,
-      },
-    });
-    return { kycFinalBASICApproval, kycFinalADVANCEApproval };
+    // const kycFinalADVANCEApproval = await this.prisma.user.findMany({
+    //   where: {
+    //     kyc: 'APPROVED',
+    //     membership: 'ADVANCE',
+    //     referralAgencyCode: agencyCode,
+    //     documents: {
+    //       some: {
+    //         title: {
+    //           contains: 'demat_document',
+    //         },
+    //         approvalDate: {
+    //           gte: getData.startDate.toLocaleString(),
+    //           lte: getData.endDate.toLocaleString(),
+    //         },
+    //       },
+    //     },
+    //   },
+    //   include: {
+    //     documents: true,
+    //   },
+    // });
+    // return { kycFinalBASICApproval, kycFinalADVANCEApproval };
   }
 
   // async agencyPayment(userId: string) {

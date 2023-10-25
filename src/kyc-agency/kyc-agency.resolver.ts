@@ -1,6 +1,10 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { KycAgencyService } from './kyc-agency.service';
-import { AllKycAgency, KycAgency } from './entities/kyc-agency.entity';
+import {
+  AllKycAgency,
+  KYCAGENYCPAYMENT,
+  KycAgency,
+} from './entities/kyc-agency.entity';
 import { CreateKycAgencyCodeInput } from './dto/create-kyc-agency.input';
 import { UpdateKycAgencyInput } from './dto/update-kyc-agency.input';
 import {
@@ -93,12 +97,13 @@ export class KycAgencyResolver {
     return this.kycAgencyService.findReport();
   }
 
-  @Query(() => [User], { name: 'AgencyPayment' })
+  @Query(() => KYCAGENYCPAYMENT, { name: 'AgencyPayment' })
   findAgencyPaymentt(
     @Args('month', { type: () => Int }) month: number,
+    @Args('month', { type: () => Int }) year: number,
     @Args('agencyCode', { type: () => String }) agencyCode: string
   ) {
-    return this.kycAgencyService.findAgencyPayment(month, agencyCode);
+    return this.kycAgencyService.findAgencyPayment(month, year, agencyCode);
   }
 
   // @Query(() => [User], { name: 'AgencyKycPayment' })

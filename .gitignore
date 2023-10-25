@@ -8,6 +8,7 @@ coverage/
 prisma/migrations/dev/
 prisma/migrations/
 .env
+queriesAsRequired.js
 
 docker-compose-db.yml
 

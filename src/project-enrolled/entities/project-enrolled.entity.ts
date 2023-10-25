@@ -2,7 +2,7 @@ import { ObjectType, Field } from '@nestjs/graphql';
 import { User } from 'src/users/models/user.model';
 
 @ObjectType()
-class Projects {
+export class Projects {
   @Field(() => String, {
     description: 'Project Name',
     nullable: true,
@@ -13,7 +13,7 @@ class Projects {
     description: 'Total amount Invested ',
     nullable: true,
   })
-  totalInvestedAmount?: string;
+  totalInvestedAmountinProject?: string;
 }
 
 @ObjectType()

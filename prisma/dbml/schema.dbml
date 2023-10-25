@@ -41,6 +41,7 @@ Table KycAgency {
   agencyCode String [unique]
   userId String [unique, not null]
   licenseValidityInYear Int
+  AgencyIncome AgencyIncome [not null]
   user User [not null]
 }
 
@@ -95,6 +96,7 @@ Table ShareHoldingType {
   updatedAt DateTime [default: `now()`]
   InvestmentType String [not null]
   allotedShare Int
+  status String
   userPWId String
   userId String [not null]
   user User [not null]
@@ -109,6 +111,15 @@ Table ProjectEnrolledStatus {
   userId String [not null]
   user User [not null]
   totalInvestedAmountinProject String
+}
+
+Table AgencyIncome {
+  id String [pk]
+  AgencyId String [not null]
+  userId String [not null]
+  month String [not null]
+  totalEarning Int [not null]
+  KycAgency KycAgency [not null]
 }
 
 Enum PROJECTSTATUS {
@@ -159,3 +170,5 @@ Ref: Nominee.userId - User.id
 Ref: ShareHoldingType.userId > User.id
 
 Ref: ProjectEnrolledStatus.userId > User.id
+
+Ref: AgencyIncome.AgencyId > KycAgency.id

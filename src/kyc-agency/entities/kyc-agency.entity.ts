@@ -4,6 +4,7 @@ import {
   registerEnumType,
   HideField,
   Field,
+  Int,
 } from '@nestjs/graphql';
 import { IsEmail } from 'class-validator';
 import { BaseModel } from 'src/common/models/base.model';
@@ -56,4 +57,34 @@ export class KycAgency extends BaseModel {
 
   @Field(() => User)
   user: User;
+}
+
+@ObjectType()
+export class KYCAGENYCPAYMENT {
+  @Field(() => Int, { nullable: true })
+  hajipurProjectAmount: number;
+
+  @Field(() => Int, { nullable: true })
+  agraProjectAmount: number;
+
+  @Field(() => Int, { nullable: true })
+  kycAmount: number;
+
+  @Field(() => [User], { nullable: true })
+  BasicKycApprovedUser: User[];
+
+  @Field(() => [User], { nullable: true })
+  AdvanceKycApprovedUser: User[];
+
+  @Field(() => [DocumentModal], { nullable: true })
+  basicAgraprojectDocument: DocumentModal[];
+
+  @Field(() => [DocumentModal], { nullable: true })
+  advanceAgraprojectDocument: DocumentModal[];
+
+  @Field(() => [DocumentModal], { nullable: true })
+  basicHajipurprojectDocument: DocumentModal[];
+
+  @Field(() => [DocumentModal], { nullable: true })
+  advanceHajipurprojectDocument: DocumentModal[];
 }

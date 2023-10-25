@@ -1,6 +1,7 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { ProjectEnrolledService } from './project-enrolled.service';
-import { ProjectEnrolled } from './entities/project-enrolled.entity';
+import { ProjectEnrolled, Projects } from './entities/project-enrolled.entity';
+// import {Projects }
 import {
   CreateProjectEnrolledInput,
   projectDataInput,
@@ -32,8 +33,8 @@ export class ProjectEnrolledResolver {
     return this.projectEnrolledService.findAll();
   }
 
-  @Query(() => ProjectEnrolled, { name: 'projectEnrolled' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  @Query(() => [Projects], { name: 'projectEnrolled' })
+  findOne(@Args('id', { type: () => String }) id: string) {
     return this.projectEnrolledService.findOne(id);
   }
 

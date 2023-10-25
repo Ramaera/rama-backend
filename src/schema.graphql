@@ -119,6 +119,18 @@ enum KYC {
   SUBMITTED
 }
 
+type KYCAGENYCPAYMENT {
+  AdvanceKycApprovedUser: [User!]
+  BasicKycApprovedUser: [User!]
+  advanceAgraprojectDocument: [DocumentModal!]
+  advanceHajipurprojectDocument: [DocumentModal!]
+  agraProjectAmount: Int
+  basicAgraprojectDocument: [DocumentModal!]
+  basicHajipurprojectDocument: [DocumentModal!]
+  hajipurProjectAmount: Int
+  kycAmount: Int
+}
+
 type KYCHANDLER {
   """Identifies the date and time when the object was created."""
   createdAt: DateTime!
@@ -245,11 +257,11 @@ type Projects {
   projectName: String
 
   """Total amount Invested """
-  totalInvestedAmount: String
+  totalInvestedAmountinProject: String
 }
 
 type Query {
-  AgencyPayment(agencyCode: String!, month: Int!): [User!]!
+  AgencyPayment(agencyCode: String!, month: Int!): KYCAGENYCPAYMENT!
   AllKycAgency: [KycAgency!]!
   ChangeAmountOfRamaeraLegalInfoTech: User!
   DeleteUser: User!
@@ -270,7 +282,7 @@ type Query {
   me: User!
   myDocuments(userId: String!): [Document!]!
   myNominee(userId: String!): Nominee!
-  projectEnrolled(id: Int!): ProjectEnrolled!
+  projectEnrolled(id: String!): [Projects!]!
   searchUsers(input: SearchInput!): [User!]!
   shareholding(id: Int!): Shareholding!
 }
