@@ -20,8 +20,8 @@ export class ShareholdingResolver {
   //   return this.shareholdingService.findAll();
   // }
 
-  @Query(() => Shareholding, { name: 'shareholding' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  @Query(() => [Shareholding], { name: 'shareholding' })
+  findOne(@Args('id', { type: () => String }) id: string) {
     return this.shareholdingService.findOne(id);
   }
 

@@ -1,6 +1,6 @@
 import { PrismaClient, Role } from '@prisma/client';
 const prisma = new PrismaClient();
-import csv from 'csv-parser';
+import csv from 'papaparse';
 import fs from 'fs';
 // import { PasswordService } from 'src/auth/password.service';
 import { PasswordService } from 'src/auth/password.service';
@@ -828,26 +828,38 @@ function getMonthDates(monthNumber) {
 // // };
 
 const SeedCommand = async () => {
-  const checkData = await prisma.document.findMany({
-    where: {
-      status: 'APPROVED',
-      title: {
-        contains: 'agra',
-      },
-      amount: null,
-    },
-    include: {
-      user: true,
-    },
-  });
-  checkData.map((data) => {
-    console.log(data.user.pw_id);
-  });
+  // const filePath = 'prisma/HajipurNotAlloted.csv';
+  // const csvData = fs.readFileSync(filePath, 'utf8');
+  // const parsedData = csv.parse(csvData, {
+  //   header: true,
+  // });
+  // for (const row of parsedData.data) {
+  //   console.log(row.PWID);
+  //   const checkMembership = await prisma.user.findFirst({
+  //     where: {
+  //       pw_id: row.PWID.toLocaleUpperCase(),
+  //     },
+  //   });
+  //   // console.log('AnkitChecking', row.PWID);
+  //   if (checkMembership) {
+  //     console.log('I am Available', row.PWID);
+  //     const createShareHoldingData = await prisma.shareHoldingType.create({
+  //       data: {
+  //         userPWId: row.PWID.toLocaleUpperCase(),
+  //         InvestmentType: 'HAJIPUR_PROJECT_SHARE',
+  //         // allotedShare: parseInt(row.Share),
+  //         status: 'NOT_ALLOTED_YET',
+  //         userId: checkMembership.id,
+  //       },
+  //     });
+  //   }
+  // }
 };
 
 async function main() {
-  const check = await SeedCommand();
-  console.log('--->', check);
+  // const check = await SeedCommand();
+
+  // console.log('--->', check);
   // const check = await HashedPassword('garmej1976');
   console.log('Seeding completed!');
 }

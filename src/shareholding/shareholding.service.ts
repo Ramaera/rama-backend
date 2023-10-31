@@ -40,8 +40,12 @@ export class ShareholdingService {
   //   }));
   // }
 
-  findOne(id: number) {
-    return `This action returns a #${id} shareholding`;
+  async findOne(id: string) {
+    return await this.prisma.shareHoldingType.findMany({
+      where: {
+        userId: id,
+      },
+    });
   }
 
   update(id: string, input: UpdateShareholdingInput) {

@@ -33,7 +33,6 @@ import { DscModule } from './dsc/dsc.module';
 
       useClass: GqlConfigService,
     }),
-
     AuthModule,
     UsersModule,
     DocumentsModule,

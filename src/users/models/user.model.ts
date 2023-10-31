@@ -18,6 +18,7 @@ import {
   ProjectEnrolled,
   ProjectEnrolledForAllUser,
 } from 'src/project-enrolled/entities/project-enrolled.entity';
+import { Shareholding } from 'src/shareholding/entities/shareholding.entity';
 
 registerEnumType(Role, {
   name: 'Role',
@@ -82,6 +83,9 @@ export class User extends BaseModel {
 
   @Field(() => [ProjectEnrolledForAllUser])
   ProjectEnrolledStatus?: ProjectEnrolledForAllUser[];
+
+  @Field(() => [Shareholding])
+  shareHoldingType?: Shareholding[];
 
   @Field(() => NomineeModel)
   nominee?: NomineeModel;

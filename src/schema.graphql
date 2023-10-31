@@ -261,7 +261,7 @@ type Projects {
 }
 
 type Query {
-  AgencyPayment(agencyCode: String!, month: Int!): KYCAGENYCPAYMENT!
+  AgencyPayment(agencyCode: String!, month: Int!, year: Int!): KYCAGENYCPAYMENT!
   AllKycAgency: [KycAgency!]!
   ChangeAmountOfRamaeraLegalInfoTech: User!
   DeleteUser: User!
@@ -284,7 +284,7 @@ type Query {
   myNominee(userId: String!): Nominee!
   projectEnrolled(id: String!): [Projects!]!
   searchUsers(input: SearchInput!): [User!]!
-  shareholding(id: Int!): Shareholding!
+  shareholding(id: String!): [Shareholding!]!
 }
 
 """User role"""
@@ -310,8 +310,14 @@ input SearchMembershipInput {
 }
 
 type Shareholding {
-  """Example field (placeholder)"""
+  """InvestMent TYPE"""
   InvestmentType: String!
+
+  """alloted Share"""
+  allotedShare: String
+
+  """Status"""
+  status: String!
 }
 
 input SignupInput {
@@ -441,6 +447,7 @@ type User {
   referralAgencyCode: String
   rm_id: String
   role: Role!
+  shareHoldingType: [Shareholding!]
   updatedAt: DateTime!
 }
 

@@ -214,6 +214,7 @@ export class UsersService {
         KycAgency: true,
         DSCDetails: true,
         ProjectEnrolledStatus: true,
+        shareHoldingType: true,
       },
     });
 

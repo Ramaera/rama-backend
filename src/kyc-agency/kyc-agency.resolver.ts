@@ -29,21 +29,6 @@ export class KycAgencyResolver {
     return this.kycAgencyService.create(data);
   }
 
-  // @UseGuards(GqlAuthGuard)
-  // @Mutation(() => AllKycAgency)
-  // AgencyPayment(
-  //   // @Args('data')
-  //   // data: CreateKycAgencyCodeInput
-  //   @UserEntity() user: User
-  // ) {
-  //   return this.kycAgencyService.agencyPayment(user.id);
-  // }
-
-  // @Query(() => [KycAgency], { name: 'kycVivek' })
-  // findAllVivek() {
-  //   return this.kycAgencyService.findVivek();
-  // }
-
   @Query(() => [KycAgency], { name: 'AllKycAgency' })
   findAll() {
     return this.kycAgencyService.findAll();
@@ -53,24 +38,6 @@ export class KycAgencyResolver {
   findAgency(@Args('AgencyCode', { type: () => String }) AgencyCode: string) {
     return this.kycAgencyService.findAgency(AgencyCode);
   }
-
-  // @Query(() => [KycAgency], { name: 'TotalRegsiteredKYC' })
-  // async findAllRegistered(
-  //   @Args('month', { type: () => Int }) month: number,
-  //   @Args('agencyCode', { type: () => String }) agencyCode: string
-  // ) {
-  //   const totalFinalApprovedInAgencyInSpecificMonth =
-  //     await this.kycAgencyService.totalKycInaMonthByAgencyCode(
-  //       month,
-  //       agencyCode
-  //     );
-  //   return {
-  //     totalFinalBASICApprovedInAgencyInSpecificMonth:
-  //       totalFinalApprovedInAgencyInSpecificMonth.kycFinalBASICApproval,
-  //     totalFinalADVANCEApprovedInAgencyInSpecificMonth:
-  //       totalFinalApprovedInAgencyInSpecificMonth.kycFinalADVANCEApproval,
-  //   };
-  // }
 
   @Query(() => KycAgency, { name: 'kycAgency' })
   findOne(@Args() id: GetKycAgency) {
@@ -100,8 +67,8 @@ export class KycAgencyResolver {
   @Query(() => KYCAGENYCPAYMENT, { name: 'AgencyPayment' })
   findAgencyPaymentt(
     @Args('month', { type: () => Int }) month: number,
-    @Args('month', { type: () => Int }) year: number,
-    @Args('agencyCode', { type: () => String }) agencyCode: string
+    @Args('agencyCode', { type: () => String }) agencyCode: string,
+    @Args('year', { type: () => Int }) year: number
   ) {
     return this.kycAgencyService.findAgencyPayment(month, year, agencyCode);
   }

@@ -47,6 +47,7 @@ export class UsersResolver {
   @Query(() => User)
   async me(@UserEntity() user: User) {
     const _user = await this.usersService.getUser(user.id);
+    console.log('_user', _user);
     return _user;
   }
 
