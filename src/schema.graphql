@@ -155,7 +155,7 @@ type KycAgency {
 }
 
 type KycAgencyModel {
-  agencyCode: String!
+  agencyCode: String
   createdAt: DateTime
   id: String!
   updatedAt: DateTime
@@ -173,6 +173,7 @@ enum Membership {
 
 type Mutation {
   UpdateLicenseDetails(data: UpdateLicenseDetailsInput!): User!
+  VerifyReferralId(data: SponserDetails!): User!
   changePassword(data: ChangePasswordInput!): User!
   createDocument(data: CreateDocumentInput!): Document!
   createDsc(createDscInput: CreateDscInput!): DscOutputDataField!
@@ -329,6 +330,10 @@ input SignupInput {
   password: String!
   pw_id: String!
   referralAgencyCode: String
+}
+
+input SponserDetails {
+  ReferralCode: String!
 }
 
 type Token {

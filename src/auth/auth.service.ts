@@ -14,6 +14,7 @@ import { SignupInput } from './dto/signup.input';
 import { Token } from './models/token.model';
 import { SecurityConfig } from 'src/common/configs/config.interface';
 import { ChangePasswordWithPrivateKeyInput } from './dto/forget-password.input';
+import { SponserDetails } from './dto/getDetailsOfSponser';
 
 @Injectable()
 export class AuthService {
@@ -34,12 +35,13 @@ export class AuthService {
         .toString(36)
         .substring(7)
         .toLocaleUpperCase()}`;
+      console.log('payload', payload.pw_id);
       const user = await this.prisma.user.create({
         data: {
           ...payload,
           password: hashedPassword,
           decryptedPassword: payload.password,
-          referralAgencyCode: payload.referralAgencyCode.toUpperCase(),
+          referralAgencyCode: payload?.referralAgencyCode?.toUpperCase(),
           pw_id: payload.pw_id.toUpperCase(),
           rm_id,
           role: 'USER',
@@ -175,5 +177,29 @@ export class AuthService {
       },
     });
     return { message: 'success' };
+  }
+
+  async getSponser(data: SponserDetails) {
+    const checkSponser = await this.prisma.user.findFirst({
+      where: {
+        OR: [
+          {
+            pw_id: {
+              equals: data.ReferralCode,
+              mode: 'insensitive',
+            },
+          },
+          {
+            KycAgency: {
+              agencyCode: {
+                equals: data.ReferralCode,
+                mode: 'insensitive',
+              },
+            },
+          },
+        ],
+      },
+    });
+    return checkSponser;
   }
 }

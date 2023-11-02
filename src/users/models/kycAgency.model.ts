@@ -11,6 +11,6 @@ export class KycAgencyModel {
   @Field(() => Date)
   updatedAt?: Date;
 
-  @Field(() => String, { nullable: false })
+  @Field(() => String, { nullable: true })
   agencyCode?: string;
 }

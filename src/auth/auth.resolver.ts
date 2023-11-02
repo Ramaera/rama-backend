@@ -16,6 +16,7 @@ import { PasswordRequestInput } from './dto/passwordRequest.input';
 import { ChangePasswordWithPrivateKeyInput } from './dto/forget-password.input';
 import { EmptyModal } from 'src/common/models/empty.model';
 import { UserEntity } from 'src/common/decorators/user.decorator';
+import { SponserDetails } from './dto/getDetailsOfSponser';
 @Resolver(() => Auth)
 export class AuthResolver {
   constructor(private readonly auth: AuthService) {}
@@ -67,5 +68,10 @@ export class AuthResolver {
   @ResolveField('user', () => User)
   async user(@Parent() auth: Auth) {
     return await this.auth.getUserFromToken(auth.accessToken);
+  }
+
+  @Mutation(() => User)
+  async VerifyReferralId(@Args('data') payload: SponserDetails) {
+    return this.auth.getSponser(payload);
   }
 }

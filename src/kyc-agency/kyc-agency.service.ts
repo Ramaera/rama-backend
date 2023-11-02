@@ -124,8 +124,6 @@ export class KycAgencyService {
 
   async findAgencyPayment(month: number, year: number, AgencyCode: string) {
     const getLocalDateData = getMonthDates(month, year);
-
-    console.log('getData', getLocalDateData);
     let basicKYCAmount = 0;
     let advanceKYCAmount = 0;
     let kycAmount = 0;

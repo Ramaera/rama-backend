@@ -23,7 +23,7 @@ export class SignupInput {
   @Field({ nullable: true })
   mobile?: string;
 
-  @Field()
+  @Field(() => String)
   pw_id: string;
 
   @Field()
