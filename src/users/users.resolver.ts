@@ -214,7 +214,7 @@ export class UsersResolver {
   @Query(() => [User])
   async allKycUser(
     @Args('input') input: SearchMembershipInput,
-    @Args({ name: 'take', type: () => Int, defaultValue: 5000 }) take: number,
+    @Args({ name: 'take', type: () => Int, defaultValue: 100 }) take: number,
     @Args({ name: 'skip', type: () => Int, defaultValue: 0 }) skip: number
   ) {
     return this.usersService.usersByMembership(input.searchTerm, {

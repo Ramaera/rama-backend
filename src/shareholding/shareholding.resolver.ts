@@ -3,6 +3,7 @@ import { ShareholdingService } from './shareholding.service';
 import { Shareholding } from './entities/shareholding.entity';
 import { CreateShareholdingInput } from './dto/create-shareholding.input';
 import { UpdateShareholdingInput } from './dto/update-shareholding.input';
+import { SearchInvestmentType } from './dto/search-shareholding.input';
 
 @Resolver(() => Shareholding)
 export class ShareholdingResolver {
@@ -15,10 +16,17 @@ export class ShareholdingResolver {
     return this.shareholdingService.create(createShareholdingInput);
   }
 
-  // @Query('getInvestment')
-  // findAll() {
-  //   return this.shareholdingService.findAll();
-  // }
+  @Query(() => [Shareholding], { name: 'searchShareHolding' })
+  findAll(
+    @Args('input') input: SearchInvestmentType,
+    @Args({ name: 'take', type: () => Int, defaultValue: 100 }) take: number,
+    @Args({ name: 'skip', type: () => Int, defaultValue: 0 }) skip: number
+  ) {
+    return this.shareholdingService.findAll(input, {
+      skip,
+      take,
+    });
+  }
 
   @Query(() => [Shareholding], { name: 'shareholding' })
   findOne(@Args('id', { type: () => String }) id: string) {

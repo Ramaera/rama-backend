@@ -1,4 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { User } from 'src/users/models/user.model';
 
 @ObjectType()
 export class Shareholding {
@@ -11,6 +12,6 @@ export class Shareholding {
   @Field(() => String, { description: 'Status' })
   status: string;
 
-  // @Field(() => String, { description: 'InvestMent TYPE' })
-  // allotedShare: string;
+  @Field(() => User)
+  user?: User;
 }

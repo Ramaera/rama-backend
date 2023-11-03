@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateShareholdingInput } from './dto/create-shareholding.input';
 import { UpdateShareholdingInput } from './dto/update-shareholding.input';
 import { PrismaService } from 'nestjs-prisma';
+import { SearchInvestmentType } from './dto/search-shareholding.input';
 
 @Injectable()
 export class ShareholdingService {
@@ -26,19 +27,22 @@ export class ShareholdingService {
     }
   }
 
-  // async findAll(): Promise<any[]> {
-  //   const result = await this.prisma.shareHoldingType.groupBy({
-  //     by: ['userPWId'],
-  //     _count: {
-  //       InvestmentType: true,
-  //     },
-  //   });
-
-  //   return result.map((item) => ({
-  //     userPWId: item.userPWId,
-  //     investmentTypeCount: item._count.InvestmentType,
-  //   }));
-  // }
+  async findAll(searchTerm: SearchInvestmentType, { skip, take }) {
+    const ShareHolderData = this.prisma.shareHoldingType.findMany({
+      take,
+      skip,
+      where: {
+        InvestmentType: {
+          contains: searchTerm.searchTerm,
+          mode: 'insensitive',
+        },
+      },
+      include: {
+        user: true,
+      },
+    });
+    return ShareHolderData;
+  }
 
   async findOne(id: string) {
     return await this.prisma.shareHoldingType.findMany({

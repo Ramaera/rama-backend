@@ -269,7 +269,7 @@ type Query {
   FeedProjectEnrolled: ProjectEnrolled!
   GetAllKycAgencyUser(agencyCode: String!): [User!]!
   Report: [User!]!
-  allKycUser(input: SearchMembershipInput!, skip: Int! = 0, take: Int! = 5000): [User!]!
+  allKycUser(input: SearchMembershipInput!, skip: Int! = 0, take: Int! = 100): [User!]!
   allprojectEnrolleds: [ProjectEnrolled!]!
   dsc(id: Int!): DscOutputDataField!
   findAgency(AgencyCode: String!): KycAgency!
@@ -284,6 +284,7 @@ type Query {
   myDocuments(userId: String!): [Document!]!
   myNominee(userId: String!): Nominee!
   projectEnrolled(id: String!): [Projects!]!
+  searchShareHolding(input: SearchInvestmentType!, skip: Int! = 0, take: Int! = 100): [Shareholding!]!
   searchUsers(input: SearchInput!): [User!]!
   shareholding(id: String!): [Shareholding!]!
 }
@@ -306,6 +307,10 @@ input SearchInput {
   searchTerm: String!
 }
 
+input SearchInvestmentType {
+  searchTerm: String!
+}
+
 input SearchMembershipInput {
   searchTerm: Membership!
 }
@@ -319,6 +324,7 @@ type Shareholding {
 
   """Status"""
   status: String!
+  user: User!
 }
 
 input SignupInput {

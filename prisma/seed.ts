@@ -34,7 +34,6 @@ function getMonthDates(monthNumber) {
 }
 
 const SeedCommand = async () => {
-
   // const BasicKycApprovedUser = await prisma.user.findMany({
   //   where: {
   //     membership: 'BASIC',
@@ -51,13 +50,37 @@ const SeedCommand = async () => {
   //   },
   // });
 
-  
-const BasicUserApprovedInOctober=
+  const userDetails = await prisma.user.findMany({});
 
+  userDetails.map(async (user) => {
+    const Referralid = await user.referralAgencyCode;
+    const checkReferralAgency = await prisma.user.findFirst({
+      where: {
+        OR: [
+          {
+            pw_id: {
+              equals: Referralid,
+              mode: 'insensitive',
+            },
+          },
+          {
+            KycAgency: {
+              agencyCode: {
+                equals: Referralid,
+                mode: 'insensitive',
+              },
+            },
+          },
+        ],
+      },
+    });
+    if (checkReferralAgency.isKycAgent) {
+    }
+  });
 };
 
 async function main() {
-  // const check = await SeedCommand();
+  const check = await SeedCommand();
 
   console.log('Seeding completed!');
 }
