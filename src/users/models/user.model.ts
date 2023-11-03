@@ -127,3 +127,12 @@ export class KYCHANDLER extends BaseModel {
   @Field(() => KYC, { nullable: true })
   updatedKycStatus?: KYC;
 }
+
+@ObjectType()
+export class Sponser extends BaseModel {
+  @Field(() => User, { nullable: true })
+  SponserDetails: User;
+
+  @Field(() => String, { nullable: true })
+  agencyCode: string | null;
+}

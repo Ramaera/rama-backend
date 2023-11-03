@@ -15,6 +15,7 @@ import { Token } from './models/token.model';
 import { SecurityConfig } from 'src/common/configs/config.interface';
 import { ChangePasswordWithPrivateKeyInput } from './dto/forget-password.input';
 import { SponserDetails } from './dto/getDetailsOfSponser';
+import { Sponser } from 'src/users/models/user.model';
 
 @Injectable()
 export class AuthService {
@@ -180,7 +181,7 @@ export class AuthService {
   }
 
   async getSponser(data: SponserDetails) {
-    const checkSponser = await this.prisma.user.findFirst({
+    const SponserDetails = await this.prisma.user.findFirst({
       where: {
         OR: [
           {
@@ -199,7 +200,13 @@ export class AuthService {
           },
         ],
       },
+      include: {
+        KycAgency: true,
+      },
     });
-    return checkSponser;
+    const agencyCode = SponserDetails?.KycAgency?.agencyCode
+      ? SponserDetails?.KycAgency?.agencyCode
+      : 'Null';
+    return { SponserDetails, agencyCode };
   }
 }

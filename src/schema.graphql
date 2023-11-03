@@ -173,7 +173,6 @@ enum Membership {
 
 type Mutation {
   UpdateLicenseDetails(data: UpdateLicenseDetailsInput!): User!
-  VerifyReferralId(data: SponserDetails!): User!
   changePassword(data: ChangePasswordInput!): User!
   createDocument(data: CreateDocumentInput!): Document!
   createDsc(createDscInput: CreateDscInput!): DscOutputDataField!
@@ -181,6 +180,7 @@ type Mutation {
   createProjectEnrolled(projectData: projectDataInput!): ProjectEnrolled!
   createShareholding(data: CreateShareholdingInput!): Shareholding!
   forgetPasswordWithPrivateKey(data: ChangePasswordWithPrivateKeyInput!): EmptyModal!
+  getSponserDetails(data: SponserDetails!): Sponser!
   login(data: LoginInput!): Auth!
   passwordresetRequest(data: PasswordRequestInput!): Auth!
   refreshToken(token: JWT!): Token!
@@ -330,6 +330,18 @@ input SignupInput {
   password: String!
   pw_id: String!
   referralAgencyCode: String
+}
+
+type Sponser {
+  SponserDetails: User
+  agencyCode: String
+
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  id: ID!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
 }
 
 input SponserDetails {

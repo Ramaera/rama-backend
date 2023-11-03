@@ -11,7 +11,7 @@ import { Token } from './models/token.model';
 import { LoginInput } from './dto/login.input';
 import { SignupInput } from './dto/signup.input';
 import { RefreshTokenInput } from './dto/refresh-token.input';
-import { User } from 'src/users/models/user.model';
+import { Sponser, User } from 'src/users/models/user.model';
 import { PasswordRequestInput } from './dto/passwordRequest.input';
 import { ChangePasswordWithPrivateKeyInput } from './dto/forget-password.input';
 import { EmptyModal } from 'src/common/models/empty.model';
@@ -70,8 +70,8 @@ export class AuthResolver {
     return await this.auth.getUserFromToken(auth.accessToken);
   }
 
-  @Mutation(() => User)
-  async VerifyReferralId(@Args('data') payload: SponserDetails) {
+  @Mutation(() => Sponser)
+  async getSponserDetails(@Args('data') payload: SponserDetails) {
     return this.auth.getSponser(payload);
   }
 }
