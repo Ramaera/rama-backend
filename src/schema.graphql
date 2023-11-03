@@ -269,6 +269,7 @@ type Query {
   FeedProjectEnrolled: ProjectEnrolled!
   GetAllKycAgencyUser(agencyCode: String!): [User!]!
   Report: [User!]!
+  TotalShareholders(skip: Int! = 0, take: Int! = 100): [Shareholding!]!
   allKycUser(input: SearchMembershipInput!, skip: Int! = 0, take: Int! = 100): [User!]!
   allprojectEnrolleds: [ProjectEnrolled!]!
   dsc(id: Int!): DscOutputDataField!
@@ -308,7 +309,8 @@ input SearchInput {
 }
 
 input SearchInvestmentType {
-  searchTerm: String!
+  searchMembership: Membership
+  searchProject: String
 }
 
 input SearchMembershipInput {
@@ -324,7 +326,7 @@ type Shareholding {
 
   """Status"""
   status: String!
-  user: User!
+  user: User
 }
 
 input SignupInput {

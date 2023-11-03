@@ -27,21 +27,42 @@ export class ShareholdingService {
     }
   }
 
-  async findAll(searchTerm: SearchInvestmentType, { skip, take }) {
-    const ShareHolderData = this.prisma.shareHoldingType.findMany({
-      take,
-      skip,
-      where: {
-        InvestmentType: {
-          contains: searchTerm.searchTerm,
-          mode: 'insensitive',
+  async findAll(searchData: SearchInvestmentType, { skip, take }) {
+    if (searchData.searchProject) {
+      const ShareHolderData = this.prisma.shareHoldingType.findMany({
+        take,
+        skip,
+        where: {
+          InvestmentType: {
+            contains: searchData.searchProject,
+            mode: 'insensitive',
+          },
         },
-      },
-      include: {
-        user: true,
-      },
-    });
-    return ShareHolderData;
+        include: {
+          user: true,
+        },
+      });
+      return ShareHolderData;
+    }
+    if (searchData.searchMembership) {
+      const ShareHolderData = this.prisma.shareHoldingType.findMany({
+        take,
+        skip,
+        where: {
+          user: {
+            membership: searchData.searchMembership,
+          },
+        },
+        include: {
+          user: true,
+        },
+      });
+      return ShareHolderData;
+    }
+  }
+
+  findShareholders({ take, skip }) {
+    return this.prisma.shareHoldingType.findMany({ take, skip });
   }
 
   async findOne(id: string) {

@@ -4,5 +4,12 @@ import { Membership } from '@prisma/client';
 @InputType()
 export class SearchInvestmentType {
   @Field()
-  searchTerm: string;
+  searchProject?: string;
+
+  @Field(() => Membership)
+  searchMembership?: Membership;
 }
+
+registerEnumType(Membership, {
+  name: 'Membership',
+});

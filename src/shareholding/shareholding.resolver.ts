@@ -28,6 +28,14 @@ export class ShareholdingResolver {
     });
   }
 
+  @Query(() => [Shareholding], { name: 'TotalShareholders' })
+  findAllShareHolder(
+    @Args({ name: 'take', type: () => Int, defaultValue: 100 }) take: number,
+    @Args({ name: 'skip', type: () => Int, defaultValue: 0 }) skip: number
+  ) {
+    return this.shareholdingService.findShareholders({ take, skip });
+  }
+
   @Query(() => [Shareholding], { name: 'shareholding' })
   findOne(@Args('id', { type: () => String }) id: string) {
     return this.shareholdingService.findOne(id);
