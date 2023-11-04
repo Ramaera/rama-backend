@@ -300,17 +300,15 @@ export class UsersService {
 
     const TotalBasicShareHolder = await this.prisma.shareHoldingType.count({
       where: {
-        InvestmentType: {
-          contains: 'common',
-          mode: 'insensitive',
+        user: {
+          membership: 'BASIC',
         },
       },
     });
     const TotalAdvanceShareHolder = await this.prisma.shareHoldingType.count({
       where: {
-        InvestmentType: {
-          contains: 'advance',
-          mode: 'insensitive',
+        user: {
+          membership: 'ADVANCE',
         },
       },
     });
