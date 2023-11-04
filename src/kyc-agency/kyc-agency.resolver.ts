@@ -21,6 +21,8 @@ import { User } from 'src/users/models/user.model';
 export class KycAgencyResolver {
   constructor(private readonly kycAgencyService: KycAgencyService) {}
 
+  // ********************* Create Kyc Agency *********************
+
   @Mutation(() => AllKycAgency)
   createKycAgency(
     @Args('data')
@@ -29,10 +31,14 @@ export class KycAgencyResolver {
     return this.kycAgencyService.create(data);
   }
 
+  // ********************* Get All Kyc Agency *********************
+
   @Query(() => [KycAgency], { name: 'AllKycAgency' })
   findAll() {
     return this.kycAgencyService.findAll();
   }
+
+  //  **************** Find a Particular Agency ********************
 
   @Query(() => KycAgency, { name: 'findAgency' })
   findAgency(@Args('AgencyCode', { type: () => String }) AgencyCode: string) {
@@ -73,13 +79,14 @@ export class KycAgencyResolver {
     return this.kycAgencyService.findAgencyPayment(month, year, agencyCode);
   }
 
-  // @Query(() => [User], { name: 'AgencyKycPayment' })
-  // findAgencyKycPayment(
-  //   @Args('month', { type: () => Int }) month: number,
-  //   @Args('agencyCode', { type: () => String }) agencyCode: string
-  // ) {
-  //   return this.kycAgencyService.AgencyKYCPaymentInAMonth(month, agencyCode);
-  // }
+  // ************** Verify Referral id ************************
+
+  @Query(() => User)
+  verifyReferralId(
+    @Args('referralCode', { type: () => String }) referralCode: string
+  ) {
+    return this.kycAgencyService.findReferralDetails(referralCode);
+  }
 
   @Mutation(() => KycAgency)
   removeKycAgency(@Args('id', { type: () => Int }) id: number) {

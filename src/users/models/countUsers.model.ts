@@ -17,3 +17,18 @@ export class UserCountDTO {
   @Field(() => Int)
   totalAgraSubscribers?: number;
 }
+
+@ObjectType()
+export class ShareHolderCountDTO {
+  @Field(() => Int)
+  TotalShareholders?: number;
+
+  @Field(() => Int)
+  TotalBasicShareHolder?: number;
+
+  @Field(() => Int)
+  TotalAdvanceShareHolder?: number;
+
+  @Field(() => Int)
+  TotalHajipurShareHolder?: number;
+}

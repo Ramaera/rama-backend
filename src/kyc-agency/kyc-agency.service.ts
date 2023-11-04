@@ -522,6 +522,24 @@ export class KycAgencyService {
     return `This action removes a #${id} kycAgency`;
   }
 
+  async findReferralDetails(referralCode) {
+    const UserDetails = await this.prisma.user.findFirst({
+      where: {
+        OR: [
+          {
+            pw_id: referralCode.toUpperCase(),
+          },
+          {
+            KycAgency: {
+              agencyCode: referralCode.toUpperCase(),
+            },
+          },
+        ],
+      },
+    });
+    return UserDetails;
+  }
+
   // async AgencyKYCPaymentInAMonth(month, AgencyCode) {
   //   const getDate = getMonthDates(month);
   //   // let AgencyCode = 'RLI715838';

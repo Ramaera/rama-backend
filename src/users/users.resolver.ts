@@ -30,7 +30,7 @@ import { Nominee } from './entities/nominee.entity';
 import { UserIdArgs } from './args/user-id.args';
 import { DocumentModal } from 'src/documents/models/document.models';
 import { SearchInput, SearchMembershipInput } from './dto/search-user.input';
-import { UserCountDTO } from './models/countUsers.model';
+import { ShareHolderCountDTO, UserCountDTO } from './models/countUsers.model';
 import { projectPaymentDTO } from './models/projectPayment.model';
 import { ProjectEnrolled } from 'src/project-enrolled/entities/project-enrolled.entity';
 
@@ -174,6 +174,19 @@ export class UsersResolver {
       totalAdvanceSubscribers: totalUser.totalAdvanceSubscribers,
       totalHajipurSubscribers: totalUser.totalHajipurSubscribers,
       totalAgraSubscribers: totalUser.totalAgraMartSubscribers,
+    };
+  }
+
+  //  ************************** Get All Users Count( With Basic Subscribers, Advance Subscribers, Hajipur Subscribers, Agra Subscribers) **************************
+
+  @Query(() => ShareHolderCountDTO)
+  async getAllShareHoldersCount() {
+    const allShareholders = await this.usersService.getAllShareHoldersCount();
+    return {
+      TotalShareholders: allShareholders.TotalShareholders,
+      TotalBasicShareHolder: allShareholders.TotalBasicShareHolder,
+      TotalAdvanceShareHolder: allShareholders.TotalAdvanceShareHolder,
+      TotalHajipurShareHolder: allShareholders.TotalHajipurShareHolder,
     };
   }
 

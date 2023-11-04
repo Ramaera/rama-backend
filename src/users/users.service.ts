@@ -293,6 +293,45 @@ export class UsersService {
     };
   }
 
+  // ************************* shareHolders Counts  ***********************
+
+  async getAllShareHoldersCount() {
+    const TotalShareholders = await this.prisma.shareHoldingType.count({});
+
+    const TotalBasicShareHolder = await this.prisma.shareHoldingType.count({
+      where: {
+        InvestmentType: {
+          contains: 'common',
+          mode: 'insensitive',
+        },
+      },
+    });
+    const TotalAdvanceShareHolder = await this.prisma.shareHoldingType.count({
+      where: {
+        InvestmentType: {
+          contains: 'advance',
+          mode: 'insensitive',
+        },
+      },
+    });
+
+    const TotalHajipurShareHolder = await this.prisma.shareHoldingType.count({
+      where: {
+        InvestmentType: {
+          contains: 'hajipur',
+          mode: 'insensitive',
+        },
+      },
+    });
+
+    return {
+      TotalShareholders,
+      TotalBasicShareHolder,
+      TotalAdvanceShareHolder,
+      TotalHajipurShareHolder,
+    };
+  }
+
   // *********************** Amount Received *************************
 
   async projectAmountReceived() {
