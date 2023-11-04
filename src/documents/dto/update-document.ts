@@ -1,5 +1,6 @@
 import { InputType, Field, registerEnumType } from '@nestjs/graphql';
 import { PROJECTSTATUS, STATUS } from '@prisma/client';
+import { DateTime } from 'graphql-scalars/typings/mocks';
 
 @InputType()
 export class UpdateDocumentsInput {
@@ -38,6 +39,9 @@ export class UpdateDocumentStatusByAdmin {
 
   @Field(() => String, { nullable: true })
   approvalDate?: string;
+
+  @Field(() => Date, { nullable: true })
+  approvalDocumentDate?: Date;
 }
 
 registerEnumType(STATUS, {

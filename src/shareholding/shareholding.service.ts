@@ -62,7 +62,11 @@ export class ShareholdingService {
   }
 
   findShareholders({ take, skip }) {
-    return this.prisma.shareHoldingType.findMany({ take, skip });
+    return this.prisma.shareHoldingType.findMany({
+      take,
+      skip,
+      include: { user: true },
+    });
   }
 
   async findOne(id: string) {

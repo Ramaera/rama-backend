@@ -34,49 +34,69 @@ function getMonthDates(monthNumber) {
 }
 
 const SeedCommand = async () => {
-  // const BasicKycApprovedUser = await prisma.user.findMany({
-  //   where: {
-  //     membership: 'BASIC',
-  //     documents: {
-  //       some: {
-  //         status: 'APPROVED',
-  //         title: 'demat_document',
-  //         approvalDate: {
-  //           gte: getLocalDateData.startDate,
-  //           lte: getLocalDateData.endDate,
+  // const userDetails = await prisma.user.findMany({});
+  // userDetails.map(async (user) => {
+  //   const Referralid = await user.referralAgencyCode;
+  //   if (Referralid != 'NULL' && Referralid?.toUpperCase().includes('PW')) {
+  //     const checkReferralAgency = await prisma.user.findFirst({
+  //       where: {
+  //         pw_id: {
+  //           equals: Referralid,
+  //           mode: 'insensitive',
   //         },
   //       },
-  //     },
-  //   },
+  //       include: {
+  //         KycAgency: true,
+  //       },
+  //     });
+  //     // console.log(Referralid, 'Referralid');
+  //     // console.log(checkReferralAgency);
+  //     // console.log(
+  //     //   'checkReferralAgency.isKycAgent',
+  //     //   checkReferralAgency.isKycAgent
+  //     // );
+
+  //     if (checkReferralAgency === null) {
+  //       console.log('agency Code', Referralid, 'user pwid', user.pw_id);
+  //     }
+
+  //     // if (
+  //     //   checkReferralAgency.isKycAgent &&
+  //     //   checkReferralAgency.KycAgency.agencyCode
+  //     // ) {
+  //     //   const UpdateReferralCode = await prisma.user.update({
+  //     //     where: {
+  //     //       id: user.id,
+  //     //     },
+  //     //     data: {
+  //     //       referralAgencyCode: checkReferralAgency.KycAgency.agencyCode,
+  //     //     },
+  //     //   });
+  //     // }
+  //   }
   // });
 
-  const userDetails = await prisma.user.findMany({});
-
-  userDetails.map(async (user) => {
-    const Referralid = await user.referralAgencyCode;
-    const checkReferralAgency = await prisma.user.findFirst({
-      where: {
-        OR: [
-          {
-            pw_id: {
-              equals: Referralid,
-              mode: 'insensitive',
-            },
-          },
-          {
-            KycAgency: {
-              agencyCode: {
-                equals: Referralid,
-                mode: 'insensitive',
-              },
-            },
-          },
-        ],
+  const userDocuments = await prisma.document.findMany({
+    where: {
+      approvalDate: {
+        not: {
+          equals: null,
+        },
       },
-    });
-    if (checkReferralAgency.isKycAgent) {
-    }
+    },
   });
+
+  userDocuments.map(
+    async (date) =>
+      await prisma.document.update({
+        where: {
+          id: date.id,
+        },
+        data: {
+          approvalDocumentDate: new Date(date.approvalDate),
+        },
+      })
+  );
 };
 
 async function main() {

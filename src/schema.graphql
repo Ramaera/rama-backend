@@ -366,6 +366,7 @@ type Token {
 
 input UpdateDocumentStatusByAdmin {
   approvalDate: String
+  approvalDocumentDate: DateTime
   id: String!
   status: STATUS!
 }

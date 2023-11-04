@@ -25,7 +25,8 @@ export class DocumentsService {
 
   async updateDocumentStatusByAdmin(data: UpdateDocumentStatusByAdmin) {
     if (data.status === 'APPROVED') {
-      data.approvalDate = new Date().toLocaleDateString();
+      // data.approvalDate = new Date().toLocaleDateString();
+      data.approvalDocumentDate = new Date();
     }
 
     const documentPayload = {

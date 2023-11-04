@@ -52,6 +52,7 @@ Table Document {
   title String [not null]
   url String [not null]
   amount Int
+  approvalDocumentDate DateTime
   approvalDate String
   userId String
   status STATUS [not null, default: 'PENDING']
