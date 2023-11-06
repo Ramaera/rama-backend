@@ -77,7 +77,6 @@
     "graphql": "^15.7.2",
     "graphql-scalars": "^1.22.2",
     "graphql-subscriptions": "2.0.0",
-    "moment": "^2.29.4",
     "nestjs-prisma": "0.17.0",
     "nestjs-prisma-graphql-crud-gen": "^1.0.3",
     "papaparse": "^5.4.1",

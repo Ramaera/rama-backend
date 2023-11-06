@@ -5,6 +5,24 @@ import {
   UpdateDocumentsInput,
 } from './dto/update-document';
 
+const DateInGmt530 = () => {
+  // Create a new Date object for the current date and time
+  const currentDate = new Date();
+
+  // Get the current time in milliseconds since January 1, 1970
+  const currentTimeInMilliseconds = currentDate.getTime();
+
+  // Calculate the offset in milliseconds for GMT+5:30 (5 hours and 30 minutes)
+  const offsetInMilliseconds = 5.5 * 60 * 60 * 1000;
+
+  // Apply the offset to the current time
+  const newDateWithOffset = new Date(
+    currentTimeInMilliseconds + offsetInMilliseconds
+  );
+
+  return newDateWithOffset;
+};
+
 @Injectable()
 export class DocumentsService {
   constructor(private prisma: PrismaService) {}
@@ -25,8 +43,7 @@ export class DocumentsService {
 
   async updateDocumentStatusByAdmin(data: UpdateDocumentStatusByAdmin) {
     if (data.status === 'APPROVED') {
-      // data.approvalDate = new Date().toLocaleDateString();
-      data.approvalDocumentDate = new Date();
+      data.approvalDocumentDate = DateInGmt530();
     }
 
     const documentPayload = {
