@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateKycAgencyCodeInput } from './dto/create-kyc-agency.input';
 import { UpdateKycAgencyInput } from './dto/update-kyc-agency.input';
 import { PrismaService } from 'nestjs-prisma';
@@ -537,6 +541,11 @@ export class KycAgencyService {
         ],
       },
     });
+
+    if (!UserDetails) {
+      throw new NotFoundException(`No user found for PW_Id: ${referralCode}`);
+    }
+
     return UserDetails;
   }
 
