@@ -53,14 +53,13 @@ export class AuthService {
         userId: user.id,
       });
     } catch (e) {
-      console.log('--', e);
       if (
         e instanceof Prisma.PrismaClientKnownRequestError &&
         e.code === 'P2002'
       ) {
         let problemField = e.meta.target[0];
         if (problemField === 'pw_id') {
-          problemField = `PlanetWay Id ${payload.pw_id}`;
+          problemField = `PW Id ${payload.pw_id}`;
         }
 
         throw new ConflictException(`${problemField} already used.`);
