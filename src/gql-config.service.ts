@@ -16,11 +16,11 @@ export class GqlConfigService implements GqlOptionsFactory {
       buildSchemaOptions: {
         numberScalarMode: 'integer',
       },
-      // introspection: true,
+      introspection: true,
       // subscription
       installSubscriptionHandlers: true,
       debug: graphqlConfig.debug,
-      playground: graphqlConfig.playgroundEnabled,
+      playground: true,
       context: ({ req }) => ({ req }),
     };
   }

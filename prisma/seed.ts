@@ -33,6 +33,21 @@ function getMonthDates(monthNumber) {
 }
 
 const SeedCommand = async () => {
+  const users = await prisma.user.findMany({
+    where: {
+      createdAt: {
+        gte: '2023-10-01T00:00:00.000Z',
+      },
+      referralAgencyCode: {
+        contains: 'RLI',
+      },
+    },
+  });
+
+  users.map((user) =>
+    console.log(user.pw_id, user.referralAgencyCode, user.kyc, user.createdAt)
+  );
+
   // const users = await prisma.user.findMany({
   //   where: {
   //     OR: [
@@ -64,41 +79,39 @@ const SeedCommand = async () => {
   //     documents: true,
   //   },
   // });
-
-  const documents = await prisma.document.findMany({
-    where: {
-      OR: [
-        {
-          title: { contains: 'demat_document' },
-          status: 'APPROVED',
-          approvalDocumentDate: {
-            gte: '2023-10-01T00:00:00.00Z',
-          },
-        },
-        {
-          title: { contains: 'demat_document' },
-          status: 'APPROVED',
-          createdAt: {
-            gte: '2023-10-01T00:00:00.00Z',
-          },
-        },
-      ],
-    },
-    include: {
-      user: true,
-    },
-  });
-  documents.map((doc) =>
-    console.log(
-      doc.user.pw_id,
-      doc.user.membership,
-      doc.user.referralAgencyCode,
-      doc.title,
-      doc.createdAt,
-      doc.approvalDocumentDate
-    )
-  );
-
+  // const documents = await prisma.document.findMany({
+  //   where: {
+  //     OR: [
+  //       {
+  //         title: { contains: 'demat_document' },
+  //         status: 'APPROVED',
+  //         approvalDocumentDate: {
+  //           gte: '2023-10-01T00:00:00.00Z',
+  //         },
+  //       },
+  //       {
+  //         title: { contains: 'demat_document' },
+  //         status: 'APPROVED',
+  //         createdAt: {
+  //           gte: '2023-10-01T00:00:00.00Z',
+  //         },
+  //       },
+  //     ],
+  //   },
+  //   include: {
+  //     user: true,
+  //   },
+  // });
+  // documents.map((doc) =>
+  //   console.log(
+  //     doc.user.pw_id,
+  //     doc.user.membership,
+  //     doc.user.referralAgencyCode,
+  //     doc.title,
+  //     doc.createdAt,
+  //     doc.approvalDocumentDate
+  //   )
+  // );
   // users.map((user) => console.log(user.pw_id, user.referralAgencyCode));
 };
 

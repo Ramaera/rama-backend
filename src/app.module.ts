@@ -28,10 +28,8 @@ import { RestApisModule } from './rest-apis/rest-apis.module';
         middlewares: [loggingMiddleware(new Logger('PrismaMiddleware'))], // configure your prisma middleware
       },
     }),
-
     GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
-
       useClass: GqlConfigService,
     }),
     AuthModule,
