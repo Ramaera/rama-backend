@@ -5,7 +5,6 @@ import fs from 'fs';
 // import { PasswordService } from 'src/auth/password.service';
 import { PasswordService } from 'src/auth/password.service';
 import { hash, compare } from 'bcrypt';
-import moment from 'moment';
 import cuid from 'cuid';
 import { KycAgency } from 'src/kyc-agency/entities/kyc-agency.entity';
 import { createObjectCsvWriter } from 'csv-writer';
@@ -33,7 +32,75 @@ function getMonthDates(monthNumber) {
   };
 }
 
-const SeedCommand = async () => {};
+const SeedCommand = async () => {
+  // const users = await prisma.user.findMany({
+  //   where: {
+  //     OR: [
+  //       {
+  //         documents: {
+  //           some: {
+  //             title: { contains: 'demat_document' },
+  //             status: 'APPROVED',
+  //             approvalDocumentDate: {
+  //               gte: '2023-10-01T00:00:00.00Z',
+  //             },
+  //           },
+  //         },
+  //       },
+  //       {
+  //         documents: {
+  //           some: {
+  //             title: { contains: 'demat_document' },
+  //             status: 'APPROVED',
+  //             createdAt: {
+  //               gte: '2023-10-01T00:00:00.00Z',
+  //             },
+  //           },
+  //         },
+  //       },
+  //     ],
+  //   },
+  //   include: {
+  //     documents: true,
+  //   },
+  // });
+
+  const documents = await prisma.document.findMany({
+    where: {
+      OR: [
+        {
+          title: { contains: 'demat_document' },
+          status: 'APPROVED',
+          approvalDocumentDate: {
+            gte: '2023-10-01T00:00:00.00Z',
+          },
+        },
+        {
+          title: { contains: 'demat_document' },
+          status: 'APPROVED',
+          createdAt: {
+            gte: '2023-10-01T00:00:00.00Z',
+          },
+        },
+      ],
+    },
+    include: {
+      user: true,
+    },
+  });
+  documents.map((doc) =>
+    console.log(
+      doc.user.pw_id,
+      doc.user.membership,
+      doc.user.referralAgencyCode,
+      doc.title,
+      doc.createdAt,
+      doc.approvalDocumentDate
+    )
+  );
+
+  // users.map((user) => console.log(user.pw_id, user.referralAgencyCode));
+};
 
 async function main() {
   const check = await SeedCommand();

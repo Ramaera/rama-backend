@@ -92,4 +92,33 @@ export class ShareholdingService {
   remove(id: number) {
     return `This action removes a #${id} shareholding`;
   }
+
+  async searchShareHolder(searchTerm: SearchInvestmentType) {
+    const result = await this.prisma.shareHoldingType.findMany({
+      where: {
+        OR: [
+          {
+            user: {
+              pw_id: {
+                contains: searchTerm.name,
+                mode: 'insensitive',
+              },
+            },
+          },
+          {
+            user: {
+              name: {
+                contains: searchTerm.name,
+                mode: 'insensitive',
+              },
+            },
+          },
+        ],
+      },
+      include: {
+        user: true,
+      },
+    });
+    return result;
+  }
 }

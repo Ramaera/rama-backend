@@ -30,6 +30,7 @@ model User {
   membership              Membership              @default(BASIC)
   referralAgencyCode      String?
   date_of_birth           String?
+  // stepCompleted           Int?                    @default(0)
   isKycAgent              Boolean                 @default(false)
   demat_account           String?
   private_key             String?                 @unique

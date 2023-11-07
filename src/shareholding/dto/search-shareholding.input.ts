@@ -6,6 +6,9 @@ export class SearchInvestmentType {
   @Field()
   searchProject?: string;
 
+  @Field()
+  name?: string;
+
   @Field(() => Membership)
   searchMembership?: Membership;
 }

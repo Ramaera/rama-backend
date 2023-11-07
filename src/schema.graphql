@@ -287,6 +287,7 @@ type Query {
   myNominee(userId: String!): Nominee!
   projectEnrolled(id: String!): [Projects!]!
   searchShareHolding(input: SearchInvestmentType!, skip: Int! = 0, take: Int! = 100): [Shareholding!]!
+  searchShareholder(input: SearchInvestmentType!): [Shareholding!]!
   searchUsers(input: SearchInput!): [User!]!
   shareholding(id: String!): [Shareholding!]!
   verifyReferralId(referralCode: String!): User!
@@ -311,12 +312,13 @@ input SearchInput {
 }
 
 input SearchInvestmentType {
+  name: String
   searchMembership: Membership
   searchProject: String
 }
 
 input SearchMembershipInput {
-  searchTerm: Membership!
+  searchTerm: Membership
 }
 
 type ShareHolderCountDTO {

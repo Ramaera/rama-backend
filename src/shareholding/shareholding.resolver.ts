@@ -4,6 +4,7 @@ import { Shareholding } from './entities/shareholding.entity';
 import { CreateShareholdingInput } from './dto/create-shareholding.input';
 import { UpdateShareholdingInput } from './dto/update-shareholding.input';
 import { SearchInvestmentType } from './dto/search-shareholding.input';
+import { SearchInput } from 'src/users/dto/search-user.input';
 
 @Resolver(() => Shareholding)
 export class ShareholdingResolver {
@@ -55,5 +56,11 @@ export class ShareholdingResolver {
   @Mutation(() => Shareholding)
   removeShareholding(@Args('id', { type: () => Int }) id: number) {
     return this.shareholdingService.remove(id);
+  }
+
+  // ********************* Search Shareholder ********************************
+  @Query(() => [Shareholding])
+  async searchShareholder(@Args('input') input: SearchInvestmentType) {
+    return this.shareholdingService.searchShareHolder(input);
   }
 }

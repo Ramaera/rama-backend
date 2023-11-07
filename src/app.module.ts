@@ -17,6 +17,7 @@ import { KycAgencyModule } from './kyc-agency/kyc-agency.module';
 import { ShareholdingModule } from './shareholding/shareholding.module';
 import { ProjectEnrolledModule } from './project-enrolled/project-enrolled.module';
 import { DscModule } from './dsc/dsc.module';
+import { RestApisModule } from './rest-apis/rest-apis.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { DscModule } from './dsc/dsc.module';
     ShareholdingModule,
     ProjectEnrolledModule,
     DscModule,
+    RestApisModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],
