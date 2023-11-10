@@ -66,10 +66,14 @@ export class DocumentsService {
       where: {
         status: 'PENDING',
       },
+      include: {
+        user: true,
+      },
       orderBy: {
         updatedAt: 'desc',
       },
     });
+    // console.log('pendingTask', pendingTask);
 
     return pendingTask;
   }
