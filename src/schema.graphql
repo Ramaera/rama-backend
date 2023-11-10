@@ -67,11 +67,11 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Document {
-  createdAt: String!
+  createdAt: DateTime!
   id: String!
   status: String!
   title: String!
-  updatedAt: String!
+  updatedAt: DateTime!
   url: String!
   user: User!
 }

@@ -4,10 +4,10 @@ import { User } from 'src/users/models/user.model';
 @ObjectType()
 export class Document {
   @Field()
-  createdAt: string;
+  createdAt: Date;
 
   @Field()
-  updatedAt: string;
+  updatedAt: Date;
 
   @Field()
   title: string;
