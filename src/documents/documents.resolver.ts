@@ -89,6 +89,16 @@ export class DocumentsResolver {
       .documents();
   }
 
+  //  *********************** Pending Tasks ************************************************
+
+  @Query(() => [Document])
+  pendingTasks(
+    @Args({ name: 'take', type: () => Int, defaultValue: 30 }) take: number,
+    @Args({ name: 'skip', type: () => Int, defaultValue: 0 }) skip: number
+  ) {
+    return this.documentsService.listOfPendingtasks({ take, skip });
+  }
+
   // @Query(() => [User], { name: 'dataDocuments' })
   // findAllKycAgnecyuser() {
   //   return this.documentsService.updatePaymentName();

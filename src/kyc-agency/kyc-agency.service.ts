@@ -116,6 +116,7 @@ export class KycAgencyService {
         where: {
           referralAgencyCode: AgencyCode,
           membership: 'BASIC',
+          kyc: 'APPROVED',
           documents: {
             some: {
               status: 'APPROVED',
@@ -324,6 +325,7 @@ export class KycAgencyService {
       where: {
         referralAgencyCode: AgencyCode,
         membership: 'BASIC',
+        kyc: 'APPROVED',
         documents: {
           some: {
             status: 'APPROVED',
@@ -528,7 +530,6 @@ export class KycAgencyService {
         KycAgency: true,
       },
     });
-    // console.log('listofagencyuser', listofagencyuser);
     return listofagencyuser;
   }
 
@@ -828,4 +829,29 @@ export class KycAgencyService {
   //   let totalKycPayment = KYCPaymentUsersInAgency.length * 200;
   //   totalHajipurPayment;
   // }
+
+  async stow() {
+    const allAgencyDetails = await this.prisma.kycAgency.findMany({});
+
+    const KYCUsers = [];
+
+    allAgencyDetails.map(async (agencyData) => {
+      const users = await this.prisma.user.findMany({
+        where: {
+          kyc: 'APPROVED',
+          referralAgencyCode: agencyData.agencyCode,
+          documents: {
+            some: {
+              title: 'demat_document',
+              status: 'APPROVED',
+              approvalDocumentDate: {
+                gte: '',
+                lte: '',
+              },
+            },
+          },
+        },
+      });
+    });
+  }
 }

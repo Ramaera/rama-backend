@@ -192,7 +192,6 @@ type Mutation {
   updateDataByAdmin(data: UpdateUserInputByAdmin!): User!
   updateDocument(data: UpdateDocumentsInput!): Document!
   updateDocumentStatusByAdmin(data: UpdateDocumentStatusByAdmin!): Document!
-  updateKycAgency(updateKycAgencyInput: UpdateKycAgencyInput!): KycAgency!
   updateMembership(data: UpdateUserMembershipAdmin!): User!
   updateProjectEnrolled(updateProjectEnrolledInput: UpdateProjectEnrolledInput!): ProjectEnrolled!
   updateShareholding(data: UpdateShareholdingInput!): Shareholding!
@@ -285,11 +284,13 @@ type Query {
   me: User!
   myDocuments(userId: String!): [Document!]!
   myNominee(userId: String!): Nominee!
+  pendingTasks(skip: Int! = 0, take: Int! = 30): [Document!]!
   projectEnrolled(id: String!): [Projects!]!
   searchShareHolding(input: SearchInvestmentType!, skip: Int! = 0, take: Int! = 100): [Shareholding!]!
   searchShareholder(input: SearchInvestmentType!): [Shareholding!]!
   searchUsers(input: SearchInput!): [User!]!
   shareholding(id: String!): [Shareholding!]!
+  starOfTheWeek: KycAgency!
   verifyReferralId(referralCode: String!): User!
 }
 
@@ -387,11 +388,6 @@ input UpdateDocumentsInput {
   status: STATUS
   title: String
   url: String
-}
-
-input UpdateKycAgencyInput {
-  id: Int!
-  userId: String
 }
 
 input UpdateLicenseDetailsInput {

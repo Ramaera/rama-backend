@@ -38,27 +38,31 @@ export class KycAgencyResolver {
     return this.kycAgencyService.findAll();
   }
 
-  //  **************** Find a Particular Agency ********************
+  //  **************** Find a Particular Agency By Agency Code ********************
 
   @Query(() => KycAgency, { name: 'findAgency' })
   findAgency(@Args('AgencyCode', { type: () => String }) AgencyCode: string) {
     return this.kycAgencyService.findAgency(AgencyCode);
   }
 
+  //  **************** Find a Particular Agency By  User id ********************
+
   @Query(() => KycAgency, { name: 'kycAgency' })
   findOne(@Args() id: GetKycAgency) {
     return this.kycAgencyService.findOne(id);
   }
 
-  @Mutation(() => KycAgency)
-  updateKycAgency(
-    @Args('updateKycAgencyInput') updateKycAgencyInput: UpdateKycAgencyInput
-  ) {
-    return this.kycAgencyService.update(
-      updateKycAgencyInput.id,
-      updateKycAgencyInput
-    );
-  }
+  // @Mutation(() => KycAgency)
+  // updateKycAgency(
+  //   @Args('updateKycAgencyInput') updateKycAgencyInput: UpdateKycAgencyInput
+  // ) {
+  //   return this.kycAgencyService.update(
+  //     updateKycAgencyInput.id,
+  //     updateKycAgencyInput
+  //   );
+  // }
+
+  // **************** Find All users Inside a KYC Agency  *************************
 
   @Query(() => [User], { name: 'GetAllKycAgencyUser' })
   findAllKycAgnecyuser(@Args() code: GetAllUserofSpecificKycAgency) {
@@ -70,6 +74,8 @@ export class KycAgencyResolver {
     return this.kycAgencyService.findReport();
   }
 
+  // ****************** Agency Payment **************************************
+
   @Query(() => KYCAGENYCPAYMENT, { name: 'AgencyPayment' })
   findAgencyPaymentt(
     @Args('month', { type: () => Int }) month: number,
@@ -79,7 +85,7 @@ export class KycAgencyResolver {
     return this.kycAgencyService.findAgencyPayment(month, year, agencyCode);
   }
 
-  // ************** Verify Referral id ************************
+  // *********************** Verify Referral id ************************
 
   @Query(() => User)
   verifyReferralId(
@@ -88,8 +94,16 @@ export class KycAgencyResolver {
     return this.kycAgencyService.findReferralDetails(referralCode);
   }
 
+  // ********************* Remove KYC Agency **************************
+
   @Mutation(() => KycAgency)
   removeKycAgency(@Args('id', { type: () => Int }) id: number) {
     return this.kycAgencyService.remove(id);
+  }
+
+  // ********************* Star Of the Week ******************************
+  @Query(() => KycAgency)
+  starOfTheWeek() {
+    return this.kycAgencyService.stow();
   }
 }

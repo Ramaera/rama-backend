@@ -58,6 +58,22 @@ export class DocumentsService {
     });
   }
 
+  // *********************** List of Pending Tasks *************
+  async listOfPendingtasks({ skip, take }) {
+    const pendingTask = await this.prisma.document.findMany({
+      skip,
+      take,
+      where: {
+        status: 'PENDING',
+      },
+      orderBy: {
+        updatedAt: 'desc',
+      },
+    });
+
+    return pendingTask;
+  }
+
   // async updatePaymentName() {
   //   const users = this.prisma.user.findMany();
 
