@@ -16,6 +16,7 @@ import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
 
 import { User } from 'src/users/models/user.model';
+import { STOW } from './entities/STOW.entity';
 
 @Resolver(() => KycAgency)
 export class KycAgencyResolver {
@@ -102,8 +103,11 @@ export class KycAgencyResolver {
   }
 
   // ********************* Star Of the Week ******************************
-  @Query(() => KycAgency)
-  starOfTheWeek() {
-    return this.kycAgencyService.stow();
+  @Query(() => [STOW])
+  starOfTheWeek(
+    @Args('startOfTheWeek', { type: () => String }) saturdayDate: string,
+    @Args('EndOfTheWeek', { type: () => String }) nextFridayDate: string
+  ) {
+    return this.kycAgencyService.stow(saturdayDate, nextFridayDate);
   }
 }

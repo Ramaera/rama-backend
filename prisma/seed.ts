@@ -32,22 +32,76 @@ function getMonthDates(monthNumber) {
   };
 }
 
+function getSaturdayAndPreviousFriday() {
+  const currentDate = new Date();
+
+  // Get the current day of the week (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
+  const currentDayOfWeek = currentDate.getDay();
+
+  // Calculate the difference between the current day and Saturday
+  const daysUntilSaturday = 6 - currentDayOfWeek;
+
+  // Calculate the date of the most recent Saturday
+  const saturdayDate = new Date(currentDate);
+  saturdayDate.setDate(currentDate.getDate() + daysUntilSaturday);
+  saturdayDate.setUTCHours(0, 0, 0, 0);
+
+  // Calculate the date of the previous week's Friday
+  const previousFridayDate = new Date(saturdayDate);
+  previousFridayDate.setDate(saturdayDate.getDate() - 6);
+  previousFridayDate.setUTCHours(23, 59, 59, 999);
+
+  return {
+    mostRecentSaturday: saturdayDate.toISOString(),
+    previousWeekFriday: previousFridayDate.toISOString(),
+  };
+}
+
+// Example usage:
+// const { mostRecentSaturday, previousWeekFriday } =
+//   getSaturdayAndPreviousFriday();
+// console.log('Most recent Saturday:', mostRecentSaturday);
+// console.log("Previous week's Friday:", previousWeekFriday);
+
 const SeedCommand = async () => {
-  const users = await prisma.user.findMany({
+  // Example usage:
+
+  const doc = await prisma.document.findMany({
     where: {
-      createdAt: {
+      title: {
+        contains: 'agra',
+      },
+      approvalDocumentDate: {
         gte: '2023-10-01T00:00:00.000Z',
+        lte: '2023-10-31T00:00:00.000Z',
       },
-      referralAgencyCode: {
-        contains: 'RLI',
+      user: {
+        kyc: 'APPROVED',
       },
+    },
+
+    include: {
+      user: true,
     },
   });
 
-  users.map((user) =>
-    console.log(user.pw_id, user.referralAgencyCode, user.kyc, user.createdAt)
+  doc.map((data) =>
+    console.log(data.user.pw_id, data.user.kyc, data.title, data.approvalDate)
   );
 
+  // const users = await prisma.user.findMany({
+  //   where: {
+  //     createdAt: {
+  //       gte: '2023-10-01T00:00:00.000Z',
+  //     },
+  //     referralAgencyCode: {
+  //       contains: 'RLI',
+  //     },
+  //   },
+  // });
+  // users.map((user) =>
+  //   console.log(user.pw_id, user.referralAgencyCode, user.kyc, user.createdAt)
+  // );
   // const users = await prisma.user.findMany({
   //   where: {
   //     OR: [

@@ -10,7 +10,7 @@ import {
   GetAllUserofSpecificKycAgency,
   GetKycAgency,
 } from './dto/get-kyc-agency.input';
-
+var AgencyList = [];
 const getStartAndEndDate = (month, year) => {
   if (isNaN(month) || month < 1 || month > 12) {
     throw new Error('Invalid month');
@@ -830,28 +830,37 @@ export class KycAgencyService {
   //   totalHajipurPayment;
   // }
 
-  async stow() {
+  async stow(saturdayDate: string, nextFridayDate: string) {
     const allAgencyDetails = await this.prisma.kycAgency.findMany({});
+    const agenciesData = [];
 
-    const KYCUsers = [];
-
-    allAgencyDetails.map(async (agencyData) => {
-      const users = await this.prisma.user.findMany({
-        where: {
-          kyc: 'APPROVED',
-          referralAgencyCode: agencyData.agencyCode,
-          documents: {
-            some: {
-              title: 'demat_document',
-              status: 'APPROVED',
-              approvalDocumentDate: {
-                gte: '',
-                lte: '',
+    await Promise.all(
+      allAgencyDetails.map(async (agencyData, index) => {
+        const user = await this.prisma.user.findMany({
+          where: {
+            kyc: 'APPROVED',
+            referralAgencyCode: agencyData.agencyCode,
+            documents: {
+              some: {
+                title: 'demat_document',
+                status: 'APPROVED',
+                approvalDocumentDate: {
+                  gte: saturdayDate,
+                  lte: nextFridayDate,
+                },
               },
             },
           },
-        },
-      });
-    });
+        });
+        agenciesData.push({
+          agencyCode: agencyData.agencyCode,
+          users: user,
+        });
+      })
+    );
+    // Sort the array based on the number of users in descending order
+    agenciesData.sort((a, b) => b.users.length - a.users.length);
+
+    return agenciesData;
   }
 }

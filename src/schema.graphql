@@ -293,7 +293,7 @@ type Query {
   searchShareholder(input: SearchInvestmentType!): [Shareholding!]!
   searchUsers(input: SearchInput!): [User!]!
   shareholding(id: String!): [Shareholding!]!
-  starOfTheWeek: KycAgency!
+  starOfTheWeek(EndOfTheWeek: String!, startOfTheWeek: String!): [STOW!]!
   verifyReferralId(referralCode: String!): User!
 }
 
@@ -309,6 +309,11 @@ enum STATUS {
   NOT_INITILAIZED
   PENDING
   REJECTED
+}
+
+type STOW {
+  agencyCode: String!
+  users: [User!]!
 }
 
 input SearchInput {
