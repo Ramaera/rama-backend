@@ -831,7 +831,9 @@ export class KycAgencyService {
   // }
 
   async stow(saturdayDate: string, nextFridayDate: string) {
-    const allAgencyDetails = await this.prisma.kycAgency.findMany({});
+    const allAgencyDetails = await this.prisma.kycAgency.findMany({
+      include: { user: true },
+    });
     const agenciesData = [];
 
     await Promise.all(
@@ -854,12 +856,15 @@ export class KycAgencyService {
         });
         agenciesData.push({
           agencyCode: agencyData.agencyCode,
+          agencyOwnerName: agencyData.user.name,
           users: user,
         });
       })
     );
     // Sort the array based on the number of users in descending order
     agenciesData.sort((a, b) => b.users.length - a.users.length);
+
+    console.log('--', agenciesData);
 
     return agenciesData;
   }

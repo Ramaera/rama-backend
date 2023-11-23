@@ -18,6 +18,9 @@ class STOW {
   @Field()
   agencyCode: string;
 
+  @Field()
+  agencyOwnerName: string;
+
   @Field(() => [User])
   users: User[];
 }

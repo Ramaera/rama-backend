@@ -5,9 +5,9 @@ services:
     container_name: postgresdb
     restart: always
     expose:
-    - "5439"
+    - "5433"
     ports:
-      - '5439:5432'
+      - '5433:5432'
     env_file:
       - .env
     volumes:

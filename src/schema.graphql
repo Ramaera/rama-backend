@@ -313,6 +313,7 @@ enum STATUS {
 
 type STOW {
   agencyCode: String!
+  agencyOwnerName: String!
   users: [User!]!
 }
 
