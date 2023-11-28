@@ -105,216 +105,224 @@ export class KycAgencyService {
   async findAgencyPayment(month: number, year: number, AgencyCode: string) {
     const getLocalDateData = getStartAndEndDate(month, year);
 
-    if (month >= 11) {
-      let basicKYCAmount = 0;
-      let advanceKYCAmount = 0;
-      let kycAmount = 0;
-      let hajipurProjectAmount = 0;
-      let agraProjectAmount = 0;
+    const agencyCreationDate = await this.prisma.kycAgency.findFirst({
+      where: {
+        agencyCode: AgencyCode,
+      },
+    });
+    // if (month >= 11) {
+    //   let basicKYCAmount = 0;
+    //   let advanceKYCAmount = 0;
+    //   let kycAmount = 0;
+    //   let hajipurProjectAmount = 0;
+    //   let agraProjectAmount = 0;
 
-      const BasicKycApprovedUser = await this.prisma.user.findMany({
-        where: {
-          referralAgencyCode: AgencyCode,
-          membership: 'BASIC',
-          kyc: 'APPROVED',
-          documents: {
-            some: {
-              status: 'APPROVED',
-              title: 'demat_document',
-              approvalDocumentDate: {
-                gte: getLocalDateData.startDate,
-                lte: getLocalDateData.endDate,
-              },
-            },
-          },
-        },
-      });
+    //   const BasicKycApprovedUser = await this.prisma.user.findMany({
+    //     where: {
+    //       referralAgencyCode: AgencyCode,
+    //       membership: 'BASIC',
+    //       kyc: 'APPROVED',
+    //       createdAt: {
+    //         gte: agencyCreationDate.createdAt,
+    //       },
+    //       documents: {
+    //         some: {
+    //           status: 'APPROVED',
+    //           title: 'demat_document',
+    //           approvalDocumentDate: {
+    //             gte: getLocalDateData.startDate,
+    //             lte: getLocalDateData.endDate,
+    //           },
+    //         },
+    //       },
+    //     },
+    //   });
 
-      basicKYCAmount = BasicKycApprovedUser.length * 200;
+    //   basicKYCAmount = BasicKycApprovedUser.length * 200;
 
-      const AdvanceKYCApprovedUser = await this.prisma.user.findMany({
-        where: {
-          referralAgencyCode: AgencyCode,
-          membership: 'ADVANCE',
-          documents: {
-            some: {
-              status: 'APPROVED',
-              title: 'demat_document',
-              approvalDocumentDate: {
-                gte: getLocalDateData.startDate,
-                lte: getLocalDateData.endDate,
-              },
-            },
-          },
-          DSCDetails: {
-            some: {
-              DSCStatus: 'RECEIVED',
-            },
-          },
-        },
-      });
+    //   const AdvanceKYCApprovedUser = await this.prisma.user.findMany({
+    //     where: {
+    //       referralAgencyCode: AgencyCode,
+    //       membership: 'ADVANCE',
+    //       documents: {
+    //         some: {
+    //           status: 'APPROVED',
+    //           title: 'demat_document',
+    //           approvalDocumentDate: {
+    //             gte: getLocalDateData.startDate,
+    //             lte: getLocalDateData.endDate,
+    //           },
+    //         },
+    //       },
+    //       DSCDetails: {
+    //         some: {
+    //           DSCStatus: 'RECEIVED',
+    //         },
+    //       },
+    //     },
+    //   });
 
-      advanceKYCAmount = AdvanceKYCApprovedUser.length * 200;
+    //   advanceKYCAmount = AdvanceKYCApprovedUser.length * 200;
 
-      const basicHajipurprojectDocument = await this.prisma.document.findMany({
-        where: {
-          approvalDocumentDate: {
-            gte: getLocalDateData.startDate,
-            lte: getLocalDateData.endDate,
-          },
-          title: {
-            contains: 'hajipur',
-          },
-          status: 'APPROVED',
-          user: {
-            referralAgencyCode: AgencyCode,
-            membership: 'BASIC',
-            isKycAgent: false,
-            documents: {
-              some: {
-                title: {
-                  contains: 'demat_document',
-                },
-                status: 'APPROVED',
-              },
-            },
-          },
-        },
-        include: {
-          user: true,
-        },
-      });
+    //   const basicHajipurprojectDocument = await this.prisma.document.findMany({
+    //     where: {
+    //       approvalDocumentDate: {
+    //         gte: getLocalDateData.startDate,
+    //         lte: getLocalDateData.endDate,
+    //       },
+    //       title: {
+    //         contains: 'hajipur',
+    //       },
+    //       status: 'APPROVED',
+    //       user: {
+    //         referralAgencyCode: AgencyCode,
+    //         membership: 'BASIC',
+    //         isKycAgent: false,
+    //         documents: {
+    //           some: {
+    //             title: {
+    //               contains: 'demat_document',
+    //             },
+    //             status: 'APPROVED',
+    //           },
+    //         },
+    //       },
+    //     },
+    //     include: {
+    //       user: true,
+    //     },
+    //   });
 
-      const advanceHajipurprojectDocument = await this.prisma.document.findMany(
-        {
-          where: {
-            approvalDocumentDate: {
-              gte: getLocalDateData.startDate,
-              lte: getLocalDateData.endDate,
-            },
-            title: {
-              contains: 'hajipur',
-            },
-            status: 'APPROVED',
-            user: {
-              referralAgencyCode: AgencyCode,
-              membership: 'ADVANCE',
-              isKycAgent: false,
-              documents: {
-                some: {
-                  title: {
-                    contains: 'demat_document',
-                  },
-                  status: 'APPROVED',
-                },
-              },
-              DSCDetails: {
-                some: {
-                  DSCStatus: 'RECEIVED',
-                },
-              },
-            },
-          },
-          include: {
-            user: true,
-          },
-        }
-      );
+    //   const advanceHajipurprojectDocument = await this.prisma.document.findMany(
+    //     {
+    //       where: {
+    //         approvalDocumentDate: {
+    //           gte: getLocalDateData.startDate,
+    //           lte: getLocalDateData.endDate,
+    //         },
+    //         title: {
+    //           contains: 'hajipur',
+    //         },
+    //         status: 'APPROVED',
+    //         user: {
+    //           referralAgencyCode: AgencyCode,
+    //           membership: 'ADVANCE',
+    //           isKycAgent: false,
+    //           documents: {
+    //             some: {
+    //               title: {
+    //                 contains: 'demat_document',
+    //               },
+    //               status: 'APPROVED',
+    //             },
+    //           },
+    //           DSCDetails: {
+    //             some: {
+    //               DSCStatus: 'RECEIVED',
+    //             },
+    //           },
+    //         },
+    //       },
+    //       include: {
+    //         user: true,
+    //       },
+    //     }
+    //   );
 
-      const basicAgraprojectDocument = await this.prisma.document.findMany({
-        where: {
-          approvalDocumentDate: {
-            gte: getLocalDateData.startDate,
-            lte: getLocalDateData.endDate,
-          },
-          title: {
-            contains: 'agra',
-          },
-          status: 'APPROVED',
-          user: {
-            referralAgencyCode: AgencyCode,
-            membership: 'BASIC',
-            isKycAgent: false,
-            documents: {
-              some: {
-                title: {
-                  contains: 'demat_document',
-                },
-                status: 'APPROVED',
-              },
-            },
-          },
-        },
-        include: {
-          user: true,
-        },
-      });
+    //   const basicAgraprojectDocument = await this.prisma.document.findMany({
+    //     where: {
+    //       approvalDocumentDate: {
+    //         gte: getLocalDateData.startDate,
+    //         lte: getLocalDateData.endDate,
+    //       },
+    //       title: {
+    //         contains: 'agra',
+    //       },
+    //       status: 'APPROVED',
+    //       user: {
+    //         referralAgencyCode: AgencyCode,
+    //         membership: 'BASIC',
+    //         isKycAgent: false,
+    //         documents: {
+    //           some: {
+    //             title: {
+    //               contains: 'demat_document',
+    //             },
+    //             status: 'APPROVED',
+    //           },
+    //         },
+    //       },
+    //     },
+    //     include: {
+    //       user: true,
+    //     },
+    //   });
 
-      const advanceAgraprojectDocument = await this.prisma.document.findMany({
-        where: {
-          approvalDocumentDate: {
-            gte: getLocalDateData.startDate,
-            lte: getLocalDateData.endDate,
-          },
-          title: {
-            contains: 'agra',
-          },
-          status: 'APPROVED',
-          user: {
-            referralAgencyCode: AgencyCode,
-            membership: 'ADVANCE',
-            isKycAgent: false,
-            documents: {
-              some: {
-                title: {
-                  contains: 'demat_document',
-                },
-                status: 'APPROVED',
-              },
-            },
-          },
-        },
-        include: {
-          user: true,
-        },
-      });
+    //   const advanceAgraprojectDocument = await this.prisma.document.findMany({
+    //     where: {
+    //       approvalDocumentDate: {
+    //         gte: getLocalDateData.startDate,
+    //         lte: getLocalDateData.endDate,
+    //       },
+    //       title: {
+    //         contains: 'agra',
+    //       },
+    //       status: 'APPROVED',
+    //       user: {
+    //         referralAgencyCode: AgencyCode,
+    //         membership: 'ADVANCE',
+    //         isKycAgent: false,
+    //         documents: {
+    //           some: {
+    //             title: {
+    //               contains: 'demat_document',
+    //             },
+    //             status: 'APPROVED',
+    //           },
+    //         },
+    //       },
+    //     },
+    //     include: {
+    //       user: true,
+    //     },
+    //   });
 
-      let basicHajipurAmount = 0;
-      basicHajipurprojectDocument.map((data) => {
-        basicHajipurAmount += data?.amount;
-      });
+    //   let basicHajipurAmount = 0;
+    //   basicHajipurprojectDocument.map((data) => {
+    //     basicHajipurAmount += data?.amount;
+    //   });
 
-      let advanceHajipurAmount = 0;
-      advanceHajipurprojectDocument.map((data) => {
-        advanceHajipurAmount += data?.amount;
-      });
+    //   let advanceHajipurAmount = 0;
+    //   advanceHajipurprojectDocument.map((data) => {
+    //     advanceHajipurAmount += data?.amount;
+    //   });
 
-      let basicAgraAmount = 0;
-      basicAgraprojectDocument.map((data) => {
-        basicAgraAmount += data?.amount;
-      });
+    //   let basicAgraAmount = 0;
+    //   basicAgraprojectDocument.map((data) => {
+    //     basicAgraAmount += data?.amount;
+    //   });
 
-      let advanceAgraAmount = 0;
-      advanceAgraprojectDocument.map((data) => {
-        advanceAgraAmount += data?.amount;
-      });
+    //   let advanceAgraAmount = 0;
+    //   advanceAgraprojectDocument.map((data) => {
+    //     advanceAgraAmount += data?.amount;
+    //   });
 
-      hajipurProjectAmount =
-        basicHajipurAmount * 0.01 + advanceHajipurAmount * 0.01;
-      agraProjectAmount = basicAgraAmount * 0.1 + advanceAgraAmount * 0.1;
-      kycAmount = basicKYCAmount + advanceKYCAmount;
+    //   hajipurProjectAmount =
+    //     basicHajipurAmount * 0.01 + advanceHajipurAmount * 0.01;
+    //   agraProjectAmount = basicAgraAmount * 0.1 + advanceAgraAmount * 0.1;
+    //   kycAmount = basicKYCAmount + advanceKYCAmount;
 
-      return {
-        hajipurProjectAmount,
-        agraProjectAmount,
-        kycAmount,
-        BasicKycApprovedUser,
-        basicAgraprojectDocument,
-        advanceAgraprojectDocument,
-        basicHajipurprojectDocument,
-        advanceHajipurprojectDocument,
-      };
-    }
+    //   return {
+    //     hajipurProjectAmount,
+    //     agraProjectAmount,
+    //     kycAmount,
+    //     BasicKycApprovedUser,
+    //     basicAgraprojectDocument,
+    //     advanceAgraprojectDocument,
+    //     basicHajipurprojectDocument,
+    //     advanceHajipurprojectDocument,
+    //   };
+    // }
     let basicKYCAmount = 0;
     let advanceKYCAmount = 0;
     let kycAmount = 0;
@@ -326,6 +334,9 @@ export class KycAgencyService {
         referralAgencyCode: AgencyCode,
         membership: 'BASIC',
         kyc: 'APPROVED',
+        createdAt: {
+          gte: agencyCreationDate.createdAt,
+        },
         documents: {
           some: {
             status: 'APPROVED',
