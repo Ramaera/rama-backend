@@ -22,3 +22,9 @@ export class Document {
   @Field()
   user: User;
 }
+
+@ObjectType()
+export class DocumentUrl {
+  @Field()
+  url: string;
+}

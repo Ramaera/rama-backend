@@ -8,7 +8,7 @@ import {
   ResolveField,
   Int,
 } from '@nestjs/graphql';
-import { Document } from './entities/document.entity';
+import { Document, DocumentUrl } from './entities/document.entity';
 import { CreateDocumentInput } from './dto/createDocument.input';
 import { PrismaService } from 'nestjs-prisma';
 import { UseGuards } from '@nestjs/common';
@@ -93,14 +93,16 @@ export class DocumentsResolver {
 
   @Query(() => [Document])
   pendingTasks(
-    @Args({ name: 'take', type: () => Int, defaultValue: 30 }) take: number,
+    @Args({ name: 'take', type: () => Int, defaultValue: 3000 }) take: number,
     @Args({ name: 'skip', type: () => Int, defaultValue: 0 }) skip: number
   ) {
     return this.documentsService.listOfPendingtasks({ take, skip });
   }
 
-  // @Query(() => [User], { name: 'dataDocuments' })
-  // findAllKycAgnecyuser() {
-  //   return this.documentsService.updatePaymentName();
-  // }
+  //  *************** Get image Url From Image id *******************************************
+
+  @Query(() => DocumentUrl)
+  showImageUrl(@Args({ name: 'id', type: () => String }) id: string) {
+    return this.documentsService.showImageUrlService(id);
+  }
 }

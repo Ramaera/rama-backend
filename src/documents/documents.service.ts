@@ -58,6 +58,16 @@ export class DocumentsService {
     });
   }
 
+  // **********************
+
+  async showImageUrlService(id: string) {
+    return await this.prisma.document.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
+
   // *********************** List of Pending Tasks *************
   async listOfPendingtasks({ skip, take }) {
     const pendingTask = await this.prisma.document.findMany({

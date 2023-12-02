@@ -89,6 +89,10 @@ type DocumentModal {
   utrNo: String
 }
 
+type DocumentUrl {
+  url: String!
+}
+
 type DscOutputDataField {
   """Dsc Status"""
   DSCStatus: DSCSTATUS
@@ -287,12 +291,13 @@ type Query {
   me: User!
   myDocuments(userId: String!): [Document!]!
   myNominee(userId: String!): Nominee!
-  pendingTasks(skip: Int! = 0, take: Int! = 30): [Document!]!
+  pendingTasks(skip: Int! = 0, take: Int! = 3000): [Document!]!
   projectEnrolled(id: String!): [Projects!]!
   searchShareHolding(input: SearchInvestmentType!, skip: Int! = 0, take: Int! = 100): [Shareholding!]!
   searchShareholder(input: SearchInvestmentType!): [Shareholding!]!
   searchUsers(input: SearchInput!): [User!]!
   shareholding(id: String!): [Shareholding!]!
+  showImageUrl(id: String!): DocumentUrl!
   starOfTheWeek(EndOfTheWeek: String!, startOfTheWeek: String!): [STOW!]!
   verifyReferralId(referralCode: String!): User!
 }
