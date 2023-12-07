@@ -75,6 +75,9 @@ export class User extends BaseModel {
   @Field(() => String, { nullable: true })
   Address?: string | null;
 
+  @Field(() => Boolean, { nullable: true })
+  isKycAgent?: boolean;
+
   @Field(() => [DocumentModal])
   documents?: DocumentModal[] | null;
 
