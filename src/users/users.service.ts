@@ -467,6 +467,9 @@ export class UsersService {
         ProjectEnrolledStatus: true,
         shareHoldingType: true,
       },
+      orderBy: {
+        createdAt: 'asc',
+      },
     });
 
     return allUser;
