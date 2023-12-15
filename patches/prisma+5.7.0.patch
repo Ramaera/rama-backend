@@ -1,0 +1,8 @@
+diff --git a/node_modules/prisma/engines/8d8414deb360336e4698a65aa45a1fbaf1ce13d8/libquery_engine-darwin.dylib.node b/node_modules/prisma/engines/8d8414deb360336e4698a65aa45a1fbaf1ce13d8/libquery_engine-darwin.dylib.node
+new file mode 100755
+index 0000000..7ef48ce
+Binary files /dev/null and b/node_modules/prisma/engines/8d8414deb360336e4698a65aa45a1fbaf1ce13d8/libquery_engine-darwin.dylib.node differ
+diff --git a/node_modules/prisma/libquery_engine-darwin.dylib.node b/node_modules/prisma/libquery_engine-darwin.dylib.node
+new file mode 100755
+index 0000000..38e8424
+Binary files /dev/null and b/node_modules/prisma/libquery_engine-darwin.dylib.node differ

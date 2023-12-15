@@ -17,6 +17,8 @@ export class RestApisService {
         name: true,
         pw_id: true,
         kyc: true,
+        createdAt: true,
+        membership: true,
       },
     });
   }

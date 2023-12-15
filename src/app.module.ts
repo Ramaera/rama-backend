@@ -18,6 +18,7 @@ import { ShareholdingModule } from './shareholding/shareholding.module';
 import { ProjectEnrolledModule } from './project-enrolled/project-enrolled.module';
 import { DscModule } from './dsc/dsc.module';
 import { RestApisModule } from './rest-apis/rest-apis.module';
+import { WalletManagementModule } from './wallet-management/wallet-management.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { RestApisModule } from './rest-apis/rest-apis.module';
     ProjectEnrolledModule,
     DscModule,
     RestApisModule,
+    WalletManagementModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],

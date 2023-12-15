@@ -123,6 +123,17 @@ Table AgencyIncome {
   KycAgency KycAgency [not null]
 }
 
+Table WalletTransactionAndBalance {
+  id Int [pk, increment]
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime [default: `now()`]
+  amount Int [not null]
+  AgencyId String [not null]
+  metaData Json
+  type String
+  finalBalance Int
+}
+
 Enum PROJECTSTATUS {
   ENROLLED
   NOT_ENROLLED

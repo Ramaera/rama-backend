@@ -133,6 +133,17 @@ model AgencyIncome {
   KycAgency    KycAgency @relation(fields: [AgencyId], references: [id])
 }
 
+model WalletTransactionAndBalance {
+  id           Int       @id @default(autoincrement())
+  createdAt    DateTime? @default(now())
+  updatedAt    DateTime? @default(now()) @updatedAt
+  amount       Int
+  AgencyId     String
+  metaData     Json?     @db.Json
+  type         String?
+  finalBalance Int?
+}
+
 enum PROJECTSTATUS {
   ENROLLED
   NOT_ENROLLED

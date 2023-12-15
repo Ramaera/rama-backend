@@ -112,6 +112,11 @@ type EmptyModal {
 }
 
 """
+The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSONObject @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+"""
 A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction.
 """
 scalar JWT
@@ -186,6 +191,7 @@ type Mutation {
   createKycAgency(data: CreateKycAgencyCodeInput!): AllKycAgency!
   createProjectEnrolled(projectData: projectDataInput!): ProjectEnrolled!
   createShareholding(data: CreateShareholdingInput!): Shareholding!
+  depositAmountToWallet(transactionToWallet: WalletTransactionInput!): Wallet!
   forgetPasswordWithPrivateKey(data: ChangePasswordWithPrivateKeyInput!): EmptyModal!
   getSponserDetails(data: SponserDetails!): Sponser!
   login(data: LoginInput!): Auth!
@@ -482,6 +488,7 @@ type User {
   email: String
   father_or_husband_name: String
   id: String!
+  isKycAgent: Boolean
   kyc: KYC!
   kycAgency: [KycAgencyModel!]
   membership: Membership
@@ -504,6 +511,37 @@ type UserCountDTO {
   totalBasicSubscribers: Int
   totalHajipurSubscribers: Int
   totalSubscribers: Int
+}
+
+type Wallet {
+  """Agency Id"""
+  AgencyId: String!
+
+  """Transaction Amount"""
+  amount: Int!
+
+  """Transaction Created At """
+  createdAt: DateTime!
+
+  """Final Balance"""
+  finalBalance: Int!
+
+  """Id of Transaction"""
+  id: Int!
+  metaData: JSONObject
+
+  """ Type of Transaction DEPOSIT or WITHDRAWL"""
+  type: String!
+
+  """Transaction Updated At """
+  updatedAt: DateTime!
+}
+
+input WalletTransactionInput {
+  agencyId: String!
+  amount: Int!
+  metaData: [JSONObject!]
+  type: String
 }
 
 input projectDataInput {
