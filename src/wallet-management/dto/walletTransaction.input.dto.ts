@@ -12,7 +12,7 @@ export class WalletTransactionInput {
   amount: number;
 
   @Field()
-  agencyId?: string;
+  agencyCode?: string;
 
   @Field({ nullable: true })
   type?: string;

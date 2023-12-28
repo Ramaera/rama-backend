@@ -138,7 +138,7 @@ model WalletTransactionAndBalance {
   createdAt    DateTime? @default(now())
   updatedAt    DateTime? @default(now()) @updatedAt
   amount       Int
-  AgencyId     String
+  agencyCode   String
   metaData     Json?     @db.Json
   type         String?
   finalBalance Int?

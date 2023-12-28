@@ -12,24 +12,41 @@ export class WalletManagementService {
     transactionInput: WalletTransactionInput
   ) {
     try {
+      const checkAgencyCode = await this.prisma.kycAgency.findUnique({
+        where: {
+          agencyCode: transactionInput.agencyCode.toUpperCase(),
+        },
+      });
+
+      if (!checkAgencyCode) {
+        throw new ConflictException(`Agency Code Is Not Valid  `);
+      }
+
       const totalBalance =
         await this.prisma.walletTransactionAndBalance.findFirst({
+          where: {
+            agencyCode: transactionInput.agencyCode,
+          },
           orderBy: { id: 'desc' },
         });
+      console.log(totalBalance);
+
+      if (
+        transactionInput.type === 'WITHDRAWL' &&
+        totalBalance.finalBalance < transactionInput.amount
+      ) {
+        throw new ConflictException(`Insufficient Balance. `);
+      }
 
       if (transactionInput.amount <= 0) {
         throw new ConflictException(`Amount should be greater Than 0 `);
       }
-      if (
-        transactionInput.type === 'WITHDRAWL'
-          ? totalBalance.finalBalance >= transactionInput.amount
-          : totalBalance
-      ) {
-        var totalDetails;
-        totalDetails = await this.prisma.walletTransactionAndBalance.create({
+
+      const totalDetails = await this.prisma.walletTransactionAndBalance.create(
+        {
           data: {
             amount: transactionInput.amount,
-            AgencyId: transactionInput.agencyId,
+            agencyCode: transactionInput.agencyCode,
             type: transactionInput.type,
             metaData: transactionInput.metaData,
             finalBalance: totalBalance
@@ -38,13 +55,8 @@ export class WalletManagementService {
                 : totalBalance?.finalBalance - transactionInput.amount
               : transactionInput.amount,
           },
-        });
-      } else {
-        throw new ConflictException(`Insufficient Balance. `);
-        // throw new Error(
-        //   'The requested withdrawal amount is greater than the available balance in the account'
-        // );
-      }
+        }
+      );
 
       return totalDetails;
     } catch (err) {

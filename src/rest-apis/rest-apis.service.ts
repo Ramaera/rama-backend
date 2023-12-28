@@ -19,6 +19,7 @@ export class RestApisService {
         kyc: true,
         createdAt: true,
         membership: true,
+        referralAgencyCode: true,
       },
     });
   }

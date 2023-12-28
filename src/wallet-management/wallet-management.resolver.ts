@@ -8,7 +8,7 @@ export class WalletManagementResolver {
   constructor(private readonly walletService: WalletManagementService) {}
 
   @Mutation(() => Wallet)
-  async depositAmountToWallet(
+  async TransactionToWallet(
     @Args('transactionToWallet') transactionInput: WalletTransactionInput
   ) {
     const data =
