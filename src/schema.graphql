@@ -184,6 +184,7 @@ enum Membership {
 }
 
 type Mutation {
+  TransactionToWallet(transactionToWallet: WalletTransactionInput!): Wallet!
   UpdateLicenseDetails(data: UpdateLicenseDetailsInput!): User!
   changePassword(data: ChangePasswordInput!): User!
   createDocument(data: CreateDocumentInput!): Document!
@@ -191,7 +192,6 @@ type Mutation {
   createKycAgency(data: CreateKycAgencyCodeInput!): AllKycAgency!
   createProjectEnrolled(projectData: projectDataInput!): ProjectEnrolled!
   createShareholding(data: CreateShareholdingInput!): Shareholding!
-  depositAmountToWallet(transactionToWallet: WalletTransactionInput!): Wallet!
   forgetPasswordWithPrivateKey(data: ChangePasswordWithPrivateKeyInput!): EmptyModal!
   getSponserDetails(data: SponserDetails!): Sponser!
   login(data: LoginInput!): Auth!
@@ -280,6 +280,7 @@ type Query {
   DeleteUser: User!
   FeedProjectEnrolled: ProjectEnrolled!
   GetAllKycAgencyUser(agencyCode: String!): [User!]!
+  GetFinalWalletBalanceOfAgency(agencyCode: String!): WalletBalance!
   Report: [User!]!
   TotalShareholders(skip: Int! = 0, take: Int! = 100): [Shareholding!]!
   allKycUser(input: SearchMembershipInput!, skip: Int! = 0, take: Int! = 100): [User!]!
@@ -535,6 +536,14 @@ type Wallet {
 
   """Transaction Updated At """
   updatedAt: DateTime!
+}
+
+type WalletBalance {
+  """Agency Id"""
+  agencyCode: String!
+
+  """Final Balance"""
+  finalBalance: Int!
 }
 
 input WalletTransactionInput {

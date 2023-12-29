@@ -3,6 +3,7 @@ import { CreateWalletManagementInput } from './dto/create-wallet-management.inpu
 import { UpdateWalletManagementInput } from './dto/update-wallet-management.input';
 import { WalletTransactionInput } from './dto/walletTransaction.input.dto';
 import { PrismaService } from 'nestjs-prisma';
+import { WalletBalance } from './entities/wallet-balance.entity';
 
 @Injectable()
 export class WalletManagementService {
@@ -67,6 +68,18 @@ export class WalletManagementService {
 
   findAll() {
     return `This action returns all walletManagement`;
+  }
+
+  async findWalletBalance(agencyCode: string) {
+    const finalBalance = this.prisma.walletTransactionAndBalance.findFirst({
+      where: {
+        agencyCode,
+      },
+      orderBy: {
+        id: 'desc',
+      },
+    });
+    return finalBalance;
   }
 
   findOne(id: number) {

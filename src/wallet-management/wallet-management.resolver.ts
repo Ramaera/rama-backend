@@ -2,6 +2,7 @@ import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { WalletManagementService } from './wallet-management.service';
 import { Wallet } from './entities/wallet-management.entity';
 import { WalletTransactionInput } from './dto/walletTransaction.input.dto';
+import { WalletBalance } from './entities/wallet-balance.entity';
 
 @Resolver(() => Wallet)
 export class WalletManagementResolver {
@@ -24,10 +25,10 @@ export class WalletManagementResolver {
   //   return this.walletManagementService.findAll();
   // }
 
-  // @Query(() => WalletManagement, { name: 'walletManagement' })
-  // findOne(@Args('id', { type: () => Int }) id: number) {
-  //   return this.walletManagementService.findOne(id);
-  // }
+  @Query(() => WalletBalance, { name: 'GetFinalWalletBalanceOfAgency' })
+  findOne(@Args('agencyCode', { type: () => String }) agencyCode: string) {
+    return this.walletService.findWalletBalance(agencyCode);
+  }
 
   // @Mutation(() => WalletManagement)
   // updateWalletManagement(@Args('updateWalletManagementInput') updateWalletManagementInput: UpdateWalletManagementInput) {

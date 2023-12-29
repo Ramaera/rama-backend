@@ -15,8 +15,8 @@ export class Wallet {
   @Field({ description: 'Transaction Amount' })
   amount: number;
 
-  @Field({ description: 'Agency Id' })
-  AgencyId: string;
+  @Field({ description: 'Agency COde' })
+  agencyCode: string;
 
   @Field({ description: ' Type of Transaction DEPOSIT or WITHDRAWL' })
   type: string;
