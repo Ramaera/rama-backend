@@ -172,7 +172,7 @@ type KYCREFERRAL {
   updatedAt: DateTime!
 
   """Agency COde"""
-  userid: String!
+  userId: String!
 }
 
 type KycAgency {
@@ -308,8 +308,9 @@ type Query {
   dsc(id: Int!): DscOutputDataField!
   findAgency(AgencyCode: String!): KycAgency!
   findreferralKycTransaction(userId: String!): KYCREFERRAL!
-  findreferralProjectTransaction(userId: String!): KYCREFERRAL!
+  findreferralProjectTransaction(documentId: String!): KYCREFERRAL!
   getAllKycHandler: [KYCHANDLER!]!
+  getAllKycReferral: [KYCREFERRAL!]!
   getAllShareHoldersCount: ShareHolderCountDTO!
   getAllUser(skip: Int! = 0, take: Int! = 5000): [User!]!
   getAllUsersCount: UserCountDTO!

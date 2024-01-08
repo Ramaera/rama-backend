@@ -191,4 +191,8 @@ export class WalletManagementService {
   remove(id: number) {
     return `This action removes a #${id} walletManagement`;
   }
+
+  findAllKycReferral() {
+    return this.prisma.referralKYCTransaction.findMany({});
+  }
 }

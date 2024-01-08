@@ -38,6 +38,11 @@ export class WalletManagementResolver {
     return this.walletService.findWalletBalance(agencyCode);
   }
 
+  @Query(() => [KYCREFERRAL], { name: 'getAllKycReferral' })
+  findAllKycReferral() {
+    return this.walletService.findAllKycReferral();
+  }
+
   // @Mutation(() => WalletManagement)
   // updateWalletManagement(@Args('updateWalletManagementInput') updateWalletManagementInput: UpdateWalletManagementInput) {
   //   return this.walletManagementService.update(updateWalletManagementInput.id, updateWalletManagementInput);

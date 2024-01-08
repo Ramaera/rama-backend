@@ -19,5 +19,5 @@ export class KYCREFERRAL {
   documentId: string;
 
   @Field({ description: 'Agency COde' })
-  userid: string;
+  userId: string;
 }
