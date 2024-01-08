@@ -102,19 +102,19 @@ export class WalletManagementService {
 
       if (check) {
         throw new ConflictException(`Amount already Transferred To Agency`);
+      } else {
+        await this.prisma.referralKYCTransaction.create({
+          data: {
+            agencyCode: agencyCode,
+            kycAgencyId: agencyId,
+            userId: userIdValue,
+            transferDate: new Date(),
+            pwID: (
+              await this.prisma.user.findFirst({ where: { id: userIdValue } })
+            ).pw_id,
+          },
+        });
       }
-
-      await this.prisma.referralKYCTransaction.create({
-        data: {
-          agencyCode: agencyCode,
-          kycAgencyId: agencyId,
-          userId: userIdValue,
-          transferDate: new Date(),
-          pwID: (
-            await this.prisma.user.findFirst({ where: { id: userIdValue } })
-          ).pw_id,
-        },
-      });
     } catch (err) {
       throw new Error(err.message);
     }
@@ -137,20 +137,20 @@ export class WalletManagementService {
         throw new ConflictException(
           `Project Amount already Transferred To Agency`
         );
+      } else {
+        await this.prisma.referralProjectTransaction.create({
+          data: {
+            agencyCode: agencyCode,
+            kycAgencyId: agencyId,
+            userId: userIdValue,
+            documentId: documentId,
+            transferDate: new Date(),
+            pwID: (
+              await this.prisma.user.findFirst({ where: { id: userIdValue } })
+            ).pw_id,
+          },
+        });
       }
-
-      await this.prisma.referralProjectTransaction.create({
-        data: {
-          agencyCode: agencyCode,
-          kycAgencyId: agencyId,
-          userId: userIdValue,
-          documentId: documentId,
-          transferDate: new Date(),
-          pwID: (
-            await this.prisma.user.findFirst({ where: { id: userIdValue } })
-          ).pw_id,
-        },
-      });
     } catch (err) {
       throw new Error(err.message);
     }
