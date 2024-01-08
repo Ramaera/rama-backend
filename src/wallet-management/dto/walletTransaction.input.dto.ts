@@ -27,3 +27,7 @@ export class WalletTransactionInput {
   @Field(() => [GraphQLJSONObject], { nullable: true })
   metaData?: any[];
 }
+
+registerEnumType(REFERRAL_CATEGORY, {
+  name: 'REFERRAL_CATEGORY',
+});
