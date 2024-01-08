@@ -1,4 +1,5 @@
 import { PrismaClient, Role } from '@prisma/client';
+import { User } from '@prisma/client';
 const prisma = new PrismaClient();
 import csv from 'papaparse';
 import fs from 'fs';
@@ -63,116 +64,117 @@ function getSaturdayAndPreviousFriday() {
 // console.log('Most recent Saturday:', mostRecentSaturday);
 // console.log("Previous week's Friday:", previousWeekFriday);
 
-const SeedCommand = async () => {
-  // Example usage:
+// const SeedCommand = async () => {
+//   // Example usage:
 
-  const doc = await prisma.document.findMany({
-    where: {
-      title: {
-        contains: 'agra',
-      },
-      approvalDocumentDate: {
-        gte: '2023-10-01T00:00:00.000Z',
-        lte: '2023-10-31T00:00:00.000Z',
-      },
-      user: {
-        kyc: 'APPROVED',
-      },
-    },
+//   const doc = await prisma.document.findMany({
+//     where: {
+//       title: {
+//         contains: 'agra',
+//       },
+//       approvalDocumentDate: {
+//         gte: '2023-10-01T00:00:00.000Z',
+//         lte: '2023-10-31T00:00:00.000Z',
+//       },
+//       user: {
+//         kyc: 'APPROVED',
+//       },
+//     },
 
-    include: {
-      user: true,
-    },
-  });
+//     include: {
+//       user: true,
+//     },
+//   });
 
-  doc.map((data) =>
-    console.log(data.user.pw_id, data.user.kyc, data.title, data.approvalDate)
-  );
+//   doc.map((data) =>
+//     console.log(data.user.pw_id, data.user.kyc, data.title, data.approvalDate)
+//   );
 
-  // const users = await prisma.user.findMany({
-  //   where: {
-  //     createdAt: {
-  //       gte: '2023-10-01T00:00:00.000Z',
-  //     },
-  //     referralAgencyCode: {
-  //       contains: 'RLI',
-  //     },
-  //   },
-  // });
-  // users.map((user) =>
-  //   console.log(user.pw_id, user.referralAgencyCode, user.kyc, user.createdAt)
-  // );
-  // const users = await prisma.user.findMany({
-  //   where: {
-  //     OR: [
-  //       {
-  //         documents: {
-  //           some: {
-  //             title: { contains: 'demat_document' },
-  //             status: 'APPROVED',
-  //             approvalDocumentDate: {
-  //               gte: '2023-10-01T00:00:00.00Z',
-  //             },
-  //           },
-  //         },
-  //       },
-  //       {
-  //         documents: {
-  //           some: {
-  //             title: { contains: 'demat_document' },
-  //             status: 'APPROVED',
-  //             createdAt: {
-  //               gte: '2023-10-01T00:00:00.00Z',
-  //             },
-  //           },
-  //         },
-  //       },
-  //     ],
-  //   },
-  //   include: {
-  //     documents: true,
-  //   },
-  // });
-  // const documents = await prisma.document.findMany({
-  //   where: {
-  //     OR: [
-  //       {
-  //         title: { contains: 'demat_document' },
-  //         status: 'APPROVED',
-  //         approvalDocumentDate: {
-  //           gte: '2023-10-01T00:00:00.00Z',
-  //         },
-  //       },
-  //       {
-  //         title: { contains: 'demat_document' },
-  //         status: 'APPROVED',
-  //         createdAt: {
-  //           gte: '2023-10-01T00:00:00.00Z',
-  //         },
-  //       },
-  //     ],
-  //   },
-  //   include: {
-  //     user: true,
-  //   },
-  // });
-  // documents.map((doc) =>
-  //   console.log(
-  //     doc.user.pw_id,
-  //     doc.user.membership,
-  //     doc.user.referralAgencyCode,
-  //     doc.title,
-  //     doc.createdAt,
-  //     doc.approvalDocumentDate
-  //   )
-  // );
-  // users.map((user) => console.log(user.pw_id, user.referralAgencyCode));
-};
+//   // const users = await prisma.user.findMany({
+//   //   where: {
+//   //     createdAt: {
+//   //       gte: '2023-10-01T00:00:00.000Z',
+//   //     },
+//   //     referralAgencyCode: {
+//   //       contains: 'RLI',
+//   //     },
+//   //   },
+//   // });
+//   // users.map((user) =>
+//   //   console.log(user.pw_id, user.referralAgencyCode, user.kyc, user.createdAt)
+//   // );
+//   // const users = await prisma.user.findMany({
+//   //   where: {
+//   //     OR: [
+//   //       {
+//   //         documents: {
+//   //           some: {
+//   //             title: { contains: 'demat_document' },
+//   //             status: 'APPROVED',
+//   //             approvalDocumentDate: {
+//   //               gte: '2023-10-01T00:00:00.00Z',
+//   //             },
+//   //           },
+//   //         },
+//   //       },
+//   //       {
+//   //         documents: {
+//   //           some: {
+//   //             title: { contains: 'demat_document' },
+//   //             status: 'APPROVED',
+//   //             createdAt: {
+//   //               gte: '2023-10-01T00:00:00.00Z',
+//   //             },
+//   //           },
+//   //         },
+//   //       },
+//   //     ],
+//   //   },
+//   //   include: {
+//   //     documents: true,
+//   //   },
+//   // });
+//   // const documents = await prisma.document.findMany({
+//   //   where: {
+//   //     OR: [
+//   //       {
+//   //         title: { contains: 'demat_document' },
+//   //         status: 'APPROVED',
+//   //         approvalDocumentDate: {
+//   //           gte: '2023-10-01T00:00:00.00Z',
+//   //         },
+//   //       },
+//   //       {
+//   //         title: { contains: 'demat_document' },
+//   //         status: 'APPROVED',
+//   //         createdAt: {
+//   //           gte: '2023-10-01T00:00:00.00Z',
+//   //         },
+//   //       },
+//   //     ],
+//   //   },
+//   //   include: {
+//   //     user: true,
+//   //   },
+//   // });
+//   // documents.map((doc) =>
+//   //   console.log(
+//   //     doc.user.pw_id,
+//   //     doc.user.membership,
+//   //     doc.user.referralAgencyCode,
+//   //     doc.title,
+//   //     doc.createdAt,
+//   //     doc.approvalDocumentDate
+//   //   )
+//   // );
+//   // users.map((user) => console.log(user.pw_id, user.referralAgencyCode));
+// };
 
 async function main() {
-  const check = await SeedCommand();
-  //
-  // console.log('Seeding completed!');
+  const result = await prisma.$queryRaw<User[]>`SELECT * FROM User`;
+
+  console.log(result);
+  // const check = await SeedCommand();/
 }
 
 main()

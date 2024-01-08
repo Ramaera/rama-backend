@@ -1,4 +1,5 @@
 import { Field, InputType, registerEnumType } from '@nestjs/graphql';
+import { REFERRAL_CATEGORY } from '@prisma/client';
 import { GraphQLJSONObject } from 'graphql-type-json';
 @InputType()
 export class MetaDataInput {
@@ -14,8 +15,14 @@ export class WalletTransactionInput {
   @Field()
   agencyCode?: string;
 
+  @Field()
+  documentId?: string;
+
   @Field({ nullable: true })
   type?: string;
+
+  @Field({ nullable: true })
+  category?: REFERRAL_CATEGORY;
 
   @Field(() => [GraphQLJSONObject], { nullable: true })
   metaData?: any[];

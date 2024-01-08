@@ -155,6 +155,20 @@ type KYCHANDLER {
   userId: String
 }
 
+type KYCREFERRAL {
+  """Agency COde"""
+  agencyCode: String!
+
+  """Transaction Created At """
+  createdAt: DateTime!
+
+  """Id of Transaction"""
+  id: Int!
+
+  """Transaction Updated At """
+  updatedAt: DateTime!
+}
+
 type KycAgency {
   agencyCode: String
   createdAt: DateTime!
@@ -287,6 +301,8 @@ type Query {
   allprojectEnrolleds: [ProjectEnrolled!]!
   dsc(id: Int!): DscOutputDataField!
   findAgency(AgencyCode: String!): KycAgency!
+  findreferralKycTransaction(userId: String!): KYCREFERRAL!
+  findreferralProjectTransaction(userId: String!): KYCREFERRAL!
   getAllKycHandler: [KYCHANDLER!]!
   getAllShareHoldersCount: ShareHolderCountDTO!
   getAllUser(skip: Int! = 0, take: Int! = 5000): [User!]!
@@ -515,8 +531,8 @@ type UserCountDTO {
 }
 
 type Wallet {
-  """Agency Id"""
-  AgencyId: String!
+  """Agency COde"""
+  agencyCode: String!
 
   """Transaction Amount"""
   amount: Int!

@@ -4,6 +4,7 @@ import { UpdateWalletManagementInput } from './dto/update-wallet-management.inpu
 import { WalletTransactionInput } from './dto/walletTransaction.input.dto';
 import { PrismaService } from 'nestjs-prisma';
 import { WalletBalance } from './entities/wallet-balance.entity';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class WalletManagementService {
@@ -30,8 +31,6 @@ export class WalletManagementService {
           },
           orderBy: { id: 'desc' },
         });
-      console.log(totalBalance);
-
       if (
         transactionInput.type === 'WITHDRAWL' &&
         totalBalance.finalBalance < transactionInput.amount
@@ -50,6 +49,7 @@ export class WalletManagementService {
             agencyCode: transactionInput.agencyCode,
             type: transactionInput.type,
             metaData: transactionInput.metaData,
+            category: transactionInput.category,
             finalBalance: totalBalance
               ? transactionInput.type === 'DEPOSIT'
                 ? totalBalance.finalBalance + transactionInput.amount
@@ -59,15 +59,101 @@ export class WalletManagementService {
         }
       );
 
+      var metadataFromOutput = totalDetails.metaData;
+      const dataFromMetaData = metadataFromOutput as { userId?: string }[];
+      const userObject = dataFromMetaData.find((obj) =>
+        obj.hasOwnProperty('userId')
+      );
+      const userIdValue = userObject ? userObject.userId : null;
+
+      if (transactionInput.category === 'DEPOSIT_KYC') {
+        await this.referralKycTransaction(
+          userIdValue,
+          transactionInput.agencyCode,
+          checkAgencyCode.id
+        );
+      }
+      if (transactionInput.category === 'DEPOSIT_PROJECT') {
+        await this.referralProjectTransaction(
+          userIdValue,
+          transactionInput.documentId,
+          transactionInput.agencyCode,
+          checkAgencyCode.id
+        );
+      }
+
       return totalDetails;
     } catch (err) {
-      console.log(err.message);
       throw new Error(err.message);
     }
   }
 
   findAll() {
     return `This action returns all walletManagement`;
+  }
+
+  async referralKycTransaction(userIdValue, agencyCode, agencyId) {
+    try {
+      const check = await this.prisma.referralKYCTransaction.findFirst({
+        where: {
+          userId: userIdValue,
+        },
+      });
+
+      if (check) {
+        throw new ConflictException(`Amount already Transferred To Agency`);
+      }
+
+      await this.prisma.referralKYCTransaction.create({
+        data: {
+          agencyCode: agencyCode,
+          kycAgencyId: agencyId,
+          userId: userIdValue,
+          transferDate: new Date(),
+          pwID: (
+            await this.prisma.user.findFirst({ where: { id: userIdValue } })
+          ).pw_id,
+        },
+      });
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  }
+
+  async referralProjectTransaction(
+    userIdValue,
+    documentId,
+    agencyCode,
+    agencyId
+  ) {
+    try {
+      const check = await this.prisma.referralProjectTransaction.findFirst({
+        where: {
+          documentId,
+        },
+      });
+
+      if (check) {
+        throw new ConflictException(
+          `Project Amount already Transferred To Agency`
+        );
+      }
+
+      await this.prisma.referralProjectTransaction.create({
+        data: {
+          agencyCode: agencyCode,
+          kycAgencyId: agencyId,
+          userId: userIdValue,
+          documentId: documentId,
+          transferDate: new Date(),
+          pwID: (
+            await this.prisma.user.findFirst({ where: { id: userIdValue } })
+          ).pw_id,
+        },
+      });
+    } catch (err) {
+      throw new Error(err.message);
+    }
   }
 
   async findWalletBalance(agencyCode: string) {
@@ -82,8 +168,20 @@ export class WalletManagementService {
     return finalBalance;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} walletManagement`;
+  async findreferralKycTransaction(userId: string) {
+    return this.prisma.referralKYCTransaction.findUnique({
+      where: {
+        userId,
+      },
+    });
+  }
+
+  async findreferralProjectTransaction(documentId: string) {
+    return this.prisma.referralProjectTransaction.findUnique({
+      where: {
+        documentId,
+      },
+    });
   }
 
   update(id: number, updateWalletManagementInput: UpdateWalletManagementInput) {

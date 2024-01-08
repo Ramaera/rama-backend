@@ -118,6 +118,11 @@ export class UsersService {
       throw new Error('User not found');
     }
     user.kyc = newUserData.kyc;
+
+    if (user.kyc === 'APPROVED') {
+      user.kycApprovalDate = new Date();
+    }
+
     const userPayload = {
       ...user,
     };
@@ -192,18 +197,6 @@ export class UsersService {
     return user;
   }
 
-  // *****************************************************
-
-  // async updateSubKycStatus(newUserData: UpdateSubKycStatus) {
-  //   let subKycStatus = await this.prisma.subKyc.findFirst({
-  //     where: {
-  //       AND: [{ userId: newUserData.id }, { fieldName: newUserData.fieldName }],
-  //     },
-  //   });
-  //   subKycStatus.fieldStatus = newUserData.fieldStatus;
-  //   return subKycStatus;
-  // }
-
   // ***************************** Get User Details By Id    ************************
   async getUser(userId: string) {
     const user = await this.prisma.user.findFirst({
@@ -240,9 +233,6 @@ export class UsersService {
         ProjectEnrolledStatus: true,
       },
     });
-
-    console.log('--->>', allUser[5].DSCDetails);
-
     return allUser;
   }
 

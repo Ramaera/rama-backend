@@ -30,8 +30,11 @@ Table User {
   documents Document [not null]
   KycAgency KycAgency
   nominee Nominee
+  kycApprovalDate DateTime
   shareHoldingType ShareHoldingType [not null]
   ProjectEnrolledStatus ProjectEnrolledStatus [not null]
+  ReferralKYCTransaction ReferralKYCTransaction [not null]
+  ReferralProjectransaction ReferralProjectTransaction [not null]
 }
 
 Table KycAgency {
@@ -43,6 +46,8 @@ Table KycAgency {
   licenseValidityInYear Int
   AgencyIncome AgencyIncome [not null]
   user User [not null]
+  ReferralKYCTransaction ReferralKYCTransaction [not null]
+  ReferralProjectTransaction ReferralProjectTransaction [not null]
 }
 
 Table Document {
@@ -52,6 +57,7 @@ Table Document {
   title String [not null]
   url String [not null]
   amount Int
+  referralProjectMoneytoAgency ReferralProjectTransaction
   approvalDocumentDate DateTime
   approvalDate String
   userId String
@@ -127,11 +133,46 @@ Table WalletTransactionAndBalance {
   id Int [pk, increment]
   createdAt DateTime [default: `now()`]
   updatedAt DateTime [default: `now()`]
+  category REFERRAL_CATEGORY [not null]
   amount Int [not null]
-  agencyCode String [not null]
+  agencyCode String
   metaData Json
   type String
   finalBalance Int
+}
+
+Table ReferralKYCTransaction {
+  id Int [pk, increment]
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime [default: `now()`]
+  user User [not null]
+  userId String [unique, not null]
+  pwID String [unique, not null]
+  agencyCode String [not null]
+  transferDate DateTime
+  KycAgency KycAgency
+  kycAgencyId String
+}
+
+Table ReferralProjectTransaction {
+  id Int [pk, increment]
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime [default: `now()`]
+  user User [not null]
+  userId String [not null]
+  documentId String [unique, not null]
+  document Document [not null]
+  pwID String [unique, not null]
+  agencyCode String [not null]
+  transferDate DateTime
+  KycAgency KycAgency
+  kycAgencyId String
+}
+
+Enum REFERRAL_CATEGORY {
+  DEPOSIT_KYC
+  DEPOSIT_PROJECT
+  WITHDRAWL
 }
 
 Enum PROJECTSTATUS {
@@ -184,3 +225,13 @@ Ref: ShareHoldingType.userId > User.id
 Ref: ProjectEnrolledStatus.userId > User.id
 
 Ref: AgencyIncome.AgencyId > KycAgency.id
+
+Ref: ReferralKYCTransaction.userId > User.id
+
+Ref: ReferralKYCTransaction.kycAgencyId > KycAgency.id
+
+Ref: ReferralProjectTransaction.userId > User.id
+
+Ref: ReferralProjectTransaction.documentId - Document.id
+
+Ref: ReferralProjectTransaction.kycAgencyId > KycAgency.id

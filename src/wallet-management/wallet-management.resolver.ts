@@ -3,6 +3,7 @@ import { WalletManagementService } from './wallet-management.service';
 import { Wallet } from './entities/wallet-management.entity';
 import { WalletTransactionInput } from './dto/walletTransaction.input.dto';
 import { WalletBalance } from './entities/wallet-balance.entity';
+import { KYCREFERRAL } from './entities/kyc-referral.entity';
 
 @Resolver(() => Wallet)
 export class WalletManagementResolver {
@@ -20,10 +21,17 @@ export class WalletManagementResolver {
     return data;
   }
 
-  // @Query(() => [WalletManagement], { name: 'walletManagement' })
-  // findAll() {
-  //   return this.walletManagementService.findAll();
-  // }
+  @Query(() => KYCREFERRAL, { name: 'findreferralKycTransaction' })
+  findReferralKyc(@Args('userId', { type: () => String }) userId: string) {
+    return this.walletService.findreferralKycTransaction(userId);
+  }
+
+  @Query(() => KYCREFERRAL, { name: 'findreferralProjectTransaction' })
+  findReferralProjects(
+    @Args('userId', { type: () => String }) documentId: string
+  ) {
+    return this.walletService.findreferralProjectTransaction(documentId);
+  }
 
   @Query(() => WalletBalance, { name: 'GetFinalWalletBalanceOfAgency' })
   findOne(@Args('agencyCode', { type: () => String }) agencyCode: string) {
