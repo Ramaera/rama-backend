@@ -28,7 +28,7 @@ export class WalletManagementResolver {
 
   @Query(() => KYCREFERRAL, { name: 'findreferralProjectTransaction' })
   findReferralProjects(
-    @Args('userId', { type: () => String }) documentId: string
+    @Args('documentId', { type: () => String }) documentId: string
   ) {
     return this.walletService.findreferralProjectTransaction(documentId);
   }
