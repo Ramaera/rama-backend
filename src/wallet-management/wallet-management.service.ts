@@ -42,24 +42,7 @@ export class WalletManagementService {
         throw new ConflictException(`Amount should be greater Than 0 `);
       }
 
-      const totalDetails = await this.prisma.walletTransactionAndBalance.create(
-        {
-          data: {
-            amount: transactionInput.amount,
-            agencyCode: transactionInput.agencyCode,
-            type: transactionInput.type,
-            metaData: transactionInput.metaData,
-            category: transactionInput.category,
-            finalBalance: totalBalance
-              ? transactionInput.type === 'DEPOSIT'
-                ? totalBalance.finalBalance + transactionInput.amount
-                : totalBalance?.finalBalance - transactionInput.amount
-              : transactionInput.amount,
-          },
-        }
-      );
-
-      var metadataFromOutput = totalDetails.metaData;
+      var metadataFromOutput = transactionInput.metaData;
       const dataFromMetaData = metadataFromOutput as { userId?: string }[];
       const userObject = dataFromMetaData.find((obj) =>
         obj.hasOwnProperty('userId')
@@ -81,6 +64,23 @@ export class WalletManagementService {
           checkAgencyCode.id
         );
       }
+
+      const totalDetails = await this.prisma.walletTransactionAndBalance.create(
+        {
+          data: {
+            amount: transactionInput.amount,
+            agencyCode: transactionInput.agencyCode,
+            type: transactionInput.type,
+            metaData: transactionInput.metaData,
+            category: transactionInput.category,
+            finalBalance: totalBalance
+              ? transactionInput.type === 'DEPOSIT'
+                ? totalBalance.finalBalance + transactionInput.amount
+                : totalBalance?.finalBalance - transactionInput.amount
+              : transactionInput.amount,
+          },
+        }
+      );
 
       return totalDetails;
     } catch (err) {
