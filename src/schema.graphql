@@ -162,11 +162,17 @@ type KYCREFERRAL {
   """Transaction Created At """
   createdAt: DateTime!
 
+  """Agency COde"""
+  documentId: String!
+
   """Id of Transaction"""
   id: Int!
 
   """Transaction Updated At """
   updatedAt: DateTime!
+
+  """Agency COde"""
+  userid: String!
 }
 
 type KycAgency {
@@ -565,6 +571,8 @@ type WalletBalance {
 input WalletTransactionInput {
   agencyCode: String!
   amount: Int!
+  category: String
+  documentId: String
   metaData: [JSONObject!]
   type: String
 }

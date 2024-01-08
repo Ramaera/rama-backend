@@ -14,4 +14,10 @@ export class KYCREFERRAL {
 
   @Field({ description: 'Agency COde' })
   agencyCode: string;
+
+  @Field({ description: 'Agency COde' })
+  documentId: string;
+
+  @Field({ description: 'Agency COde' })
+  userid: string;
 }
