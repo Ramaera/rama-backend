@@ -5,6 +5,7 @@ import { WalletTransactionInput } from './dto/walletTransaction.input.dto';
 import { PrismaService } from 'nestjs-prisma';
 import { WalletBalance } from './entities/wallet-balance.entity';
 import { UsersService } from 'src/users/users.service';
+import { PrismaClient } from '@prisma/client';
 
 @Injectable()
 export class WalletManagementService {
@@ -14,59 +15,36 @@ export class WalletManagementService {
     transactionInput: WalletTransactionInput
   ) {
     try {
-      const checkAgencyCode = await this.prisma.kycAgency.findUnique({
-        where: {
-          agencyCode: transactionInput.agencyCode.toUpperCase(),
-        },
-      });
+      const data = await this.prisma.$transaction(async (tx) => {
+        const checkAgencyCode = await tx.kycAgency.findUnique({
+          where: {
+            agencyCode: transactionInput.agencyCode.toUpperCase(),
+          },
+        });
 
-      if (!checkAgencyCode) {
-        throw new ConflictException(`Agency Code Is Not Valid  `);
-      }
+        if (!checkAgencyCode) {
+          throw new ConflictException(`Agency Code Is Not Valid  `);
+        }
 
-      const totalBalance =
-        await this.prisma.walletTransactionAndBalance.findFirst({
+        const totalBalance = await tx.walletTransactionAndBalance.findFirst({
           where: {
             agencyCode: transactionInput.agencyCode,
           },
           orderBy: { id: 'desc' },
         });
-      if (
-        transactionInput.type === 'WITHDRAWL' &&
-        totalBalance.finalBalance < transactionInput.amount
-      ) {
-        throw new ConflictException(`Insufficient Balance. `);
-      }
 
-      if (transactionInput.amount <= 0) {
-        throw new ConflictException(`Amount should be greater Than 0 `);
-      }
+        if (
+          transactionInput.type === 'WITHDRAWL' &&
+          totalBalance.finalBalance < transactionInput.amount
+        ) {
+          throw new ConflictException(`Insufficient Balance. `);
+        }
 
-      var metadataFromOutput = transactionInput.metaData;
-      const dataFromMetaData = metadataFromOutput as { userId?: string }[];
-      const userObject = dataFromMetaData.find((obj) =>
-        obj.hasOwnProperty('userId')
-      );
-      const userIdValue = userObject ? userObject.userId : null;
+        if (transactionInput.amount <= 0) {
+          throw new ConflictException(`Amount should be greater Than 0 `);
+        }
 
-      if (transactionInput.category === 'DEPOSIT_KYC') {
-        await this.referralKycTransaction(
-          userIdValue,
-          transactionInput.agencyCode,
-          checkAgencyCode.id
-        );
-      }
-      if (transactionInput.category === 'DEPOSIT_PROJECT') {
-        await this.referralProjectTransaction(
-          userIdValue,
-          transactionInput.documentId,
-          transactionInput.agencyCode,
-          checkAgencyCode.id
-        );
-      }
-
-      const totalDetails = await this.prisma.walletTransactionAndBalance.create(
-        {
+        const totalDetails = await tx.walletTransactionAndBalance.create({
           data: {
             amount: transactionInput.amount,
             agencyCode: transactionInput.agencyCode,
@@ -79,10 +57,37 @@ export class WalletManagementService {
                 : totalBalance?.finalBalance - transactionInput.amount
               : transactionInput.amount,
           },
-        }
-      );
+        });
+        var metadataFromOutput = totalDetails.metaData;
+        const dataFromMetaData = metadataFromOutput as { userId?: string }[];
+        const userObject = dataFromMetaData.find((obj) =>
+          obj.hasOwnProperty('userId')
+        );
+        const userIdValue = userObject ? userObject.userId : null;
 
-      return totalDetails;
+        if (transactionInput.category === 'DEPOSIT_KYC') {
+          await this.referralKycTransaction(
+            tx,
+            userIdValue,
+            transactionInput.agencyCode,
+            checkAgencyCode.id
+          );
+        }
+
+        if (transactionInput.category === 'DEPOSIT_PROJECT') {
+          await this.referralProjectTransaction(
+            tx,
+            userIdValue,
+            transactionInput.documentId,
+            transactionInput.agencyCode,
+            checkAgencyCode.id
+          );
+        }
+
+        return totalDetails;
+      });
+
+      return data;
     } catch (err) {
       throw new Error(err.message);
     }
@@ -92,9 +97,14 @@ export class WalletManagementService {
     return `This action returns all walletManagement`;
   }
 
-  async referralKycTransaction(userIdValue, agencyCode, agencyId) {
+  async referralKycTransaction(
+    tx,
+    userIdValue: string,
+    agencyCode: string,
+    agencyId: string
+  ) {
     try {
-      const check = await this.prisma.referralKYCTransaction.findFirst({
+      const check = await tx.referralKYCTransaction.findFirst({
         where: {
           userId: userIdValue,
         },
@@ -102,32 +112,30 @@ export class WalletManagementService {
 
       if (check) {
         throw new ConflictException(`Amount already Transferred To Agency`);
-      } else {
-        await this.prisma.referralKYCTransaction.create({
-          data: {
-            agencyCode: agencyCode,
-            kycAgencyId: agencyId,
-            userId: userIdValue,
-            transferDate: new Date(),
-            pwID: (
-              await this.prisma.user.findFirst({ where: { id: userIdValue } })
-            ).pw_id,
-          },
-        });
       }
+      await tx.referralKYCTransaction.create({
+        data: {
+          agencyCode: agencyCode,
+          kycAgencyId: agencyId,
+          userId: userIdValue,
+          transferDate: new Date(),
+          pwID: (await tx.user.findFirst({ where: { id: userIdValue } })).pw_id,
+        },
+      });
     } catch (err) {
       throw new Error(err.message);
     }
   }
 
   async referralProjectTransaction(
-    userIdValue,
-    documentId,
-    agencyCode,
-    agencyId
+    tx,
+    userIdValue: string,
+    documentId: string,
+    agencyCode: string,
+    agencyId: string
   ) {
     try {
-      const check = await this.prisma.referralProjectTransaction.findFirst({
+      const check = await tx.referralProjectTransaction.findFirst({
         where: {
           documentId,
         },
@@ -137,20 +145,17 @@ export class WalletManagementService {
         throw new ConflictException(
           `Project Amount already Transferred To Agency`
         );
-      } else {
-        await this.prisma.referralProjectTransaction.create({
-          data: {
-            agencyCode: agencyCode,
-            kycAgencyId: agencyId,
-            userId: userIdValue,
-            documentId: documentId,
-            transferDate: new Date(),
-            pwID: (
-              await this.prisma.user.findFirst({ where: { id: userIdValue } })
-            ).pw_id,
-          },
-        });
       }
+      await tx.referralProjectTransaction.create({
+        data: {
+          agencyCode: agencyCode,
+          kycAgencyId: agencyId,
+          userId: userIdValue,
+          documentId: documentId,
+          transferDate: new Date(),
+          pwID: (await tx.user.findFirst({ where: { id: userIdValue } })).pw_id,
+        },
+      });
     } catch (err) {
       throw new Error(err.message);
     }
