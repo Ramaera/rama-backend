@@ -4,6 +4,7 @@ import { Wallet } from './entities/wallet-management.entity';
 import { WalletTransactionInput } from './dto/walletTransaction.input.dto';
 import { WalletBalance } from './entities/wallet-balance.entity';
 import { KYCREFERRAL } from './entities/kyc-referral.entity';
+import { PROJECTREFERRAL } from './entities/project-referral.entity';
 
 @Resolver(() => Wallet)
 export class WalletManagementResolver {
@@ -41,6 +42,11 @@ export class WalletManagementResolver {
   @Query(() => [KYCREFERRAL], { name: 'getAllKycReferral' })
   findAllKycReferral() {
     return this.walletService.findAllKycReferral();
+  }
+
+  @Query(() => [PROJECTREFERRAL], { name: 'getAllProjectReferral' })
+  findAllProjectReferral() {
+    return this.walletService.findAllProjectReferral();
   }
 
   // @Mutation(() => WalletManagement)
