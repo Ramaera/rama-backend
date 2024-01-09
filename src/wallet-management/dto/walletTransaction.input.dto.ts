@@ -16,9 +16,6 @@ export class WalletTransactionInput {
   agencyCode?: string;
 
   @Field({ nullable: true })
-  documentId?: string;
-
-  @Field({ nullable: true })
   type?: string;
 
   @Field({ nullable: true })
