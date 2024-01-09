@@ -208,4 +208,8 @@ export class WalletManagementService {
   findAllKycReferral() {
     return this.prisma.referralKYCTransaction.findMany({});
   }
+
+  findAllProjectReferral() {
+    return this.prisma.referralProjectTransaction.findMany({});
+  }
 }
