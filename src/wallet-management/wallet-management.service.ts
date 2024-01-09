@@ -73,12 +73,20 @@ export class WalletManagementService {
             checkAgencyCode.id
           );
         }
-
+        const documentDataFromMetaData = metadataFromOutput as {
+          documentId?: string;
+        }[];
+        const documentObject = documentDataFromMetaData.find((obj) =>
+          obj.hasOwnProperty('documentId')
+        );
+        const documentIdValue = documentObject
+          ? documentObject.documentId
+          : null;
         if (transactionInput.category === 'DEPOSIT_PROJECT') {
           await this.referralProjectTransaction(
             tx,
             userIdValue,
-            transactionInput.documentId,
+            documentIdValue,
             transactionInput.agencyCode,
             checkAgencyCode.id
           );
