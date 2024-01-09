@@ -2,7 +2,7 @@ import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { GraphQLJSONObject } from 'graphql-type-json';
 
 @ObjectType()
-export class KYCREFERRAL {
+export class PROJECTREFERRAL {
   @Field({ description: 'Id of Transaction' })
   id: number;
 
