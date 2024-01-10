@@ -162,9 +162,6 @@ type KYCREFERRAL {
   """Transaction Created At """
   createdAt: DateTime!
 
-  """Agency COde"""
-  documentId: String!
-
   """Id of Transaction"""
   id: Int!
 
@@ -253,6 +250,26 @@ type NomineeModel {
   updatedAt: DateTime!
 }
 
+type PROJECTREFERRAL {
+  """Agency COde"""
+  agencyCode: String!
+
+  """Transaction Created At """
+  createdAt: DateTime!
+
+  """Document Id """
+  documentId: String!
+
+  """Id of Transaction"""
+  id: Int!
+
+  """Transaction Updated At """
+  updatedAt: DateTime!
+
+  """user Id """
+  userId: String!
+}
+
 enum PROJECT_PAYMENT {
   AGRA
   HAJIPUR
@@ -311,6 +328,7 @@ type Query {
   findreferralProjectTransaction(documentId: String!): KYCREFERRAL!
   getAllKycHandler: [KYCHANDLER!]!
   getAllKycReferral: [KYCREFERRAL!]!
+  getAllProjectReferral: [PROJECTREFERRAL!]!
   getAllShareHoldersCount: ShareHolderCountDTO!
   getAllUser(skip: Int! = 0, take: Int! = 5000): [User!]!
   getAllUsersCount: UserCountDTO!
@@ -573,7 +591,6 @@ input WalletTransactionInput {
   agencyCode: String!
   amount: Int!
   category: String
-  documentId: String
   metaData: [JSONObject!]
   type: String
 }

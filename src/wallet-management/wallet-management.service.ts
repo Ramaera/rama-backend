@@ -119,7 +119,7 @@ export class WalletManagementService {
       });
 
       if (check) {
-        throw new ConflictException(`Amount already Transferred To Agency`);
+        throw new ConflictException(`Amount already Transferred To Wallet`);
       }
       await tx.referralKYCTransaction.create({
         data: {
@@ -151,7 +151,7 @@ export class WalletManagementService {
 
       if (check) {
         throw new ConflictException(
-          `Project Amount already Transferred To Agency`
+          `Project Amount already Transferred To Wallet`
         );
       }
       await tx.referralProjectTransaction.create({
