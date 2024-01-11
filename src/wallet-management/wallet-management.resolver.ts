@@ -39,9 +39,9 @@ export class WalletManagementResolver {
     return this.walletService.findWalletBalance(agencyCode);
   }
 
-  @Query(() => WalletBalance, { name: 'AgencyWalletHistory' })
+  @Query(() => [Wallet], { name: 'AgencyWalletHistory' })
   findAll(@Args('agencyCode', { type: () => String }) agencyCode: string) {
-    return this.walletService.findWalletBalance(agencyCode);
+    return this.walletService.AgencyWalletHistory(agencyCode);
   }
 
   @Query(() => [KYCREFERRAL], { name: 'getAllKycReferral' })
