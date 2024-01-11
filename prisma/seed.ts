@@ -33,30 +33,30 @@ function getMonthDates(monthNumber) {
   };
 }
 
-function getSaturdayAndPreviousFriday() {
-  const currentDate = new Date();
+// function getSaturdayAndPreviousFriday() {
+//   const currentDate = new Date();
 
-  // Get the current day of the week (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
-  const currentDayOfWeek = currentDate.getDay();
+//   // Get the current day of the week (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
+//   const currentDayOfWeek = currentDate.getDay();
 
-  // Calculate the difference between the current day and Saturday
-  const daysUntilSaturday = 6 - currentDayOfWeek;
+//   // Calculate the difference between the current day and Saturday
+//   const daysUntilSaturday = 6 - currentDayOfWeek;
 
-  // Calculate the date of the most recent Saturday
-  const saturdayDate = new Date(currentDate);
-  saturdayDate.setDate(currentDate.getDate() + daysUntilSaturday);
-  saturdayDate.setUTCHours(0, 0, 0, 0);
+//   // Calculate the date of the most recent Saturday
+//   const saturdayDate = new Date(currentDate);
+//   saturdayDate.setDate(currentDate.getDate() + daysUntilSaturday);
+//   saturdayDate.setUTCHours(0, 0, 0, 0);
 
-  // Calculate the date of the previous week's Friday
-  const previousFridayDate = new Date(saturdayDate);
-  previousFridayDate.setDate(saturdayDate.getDate() - 6);
-  previousFridayDate.setUTCHours(23, 59, 59, 999);
+//   // Calculate the date of the previous week's Friday
+//   const previousFridayDate = new Date(saturdayDate);
+//   previousFridayDate.setDate(saturdayDate.getDate() - 6);
+//   previousFridayDate.setUTCHours(23, 59, 59, 999);
 
-  return {
-    mostRecentSaturday: saturdayDate.toISOString(),
-    previousWeekFriday: previousFridayDate.toISOString(),
-  };
-}
+//   return {
+//     mostRecentSaturday: saturdayDate.toISOString(),
+//     previousWeekFriday: previousFridayDate.toISOString(),
+//   };
+// }
 
 // Example usage:
 // const { mostRecentSaturday, previousWeekFriday } =
@@ -64,7 +64,62 @@ function getSaturdayAndPreviousFriday() {
 // console.log('Most recent Saturday:', mostRecentSaturday);
 // console.log("Previous week's Friday:", previousWeekFriday);
 
-const SeedCommand = async () => {};
+const SeedCommand = async () => {
+  // const UserProjectData = await prisma.user.findMany({
+  //   where: {
+  //     documents: {
+  //       some: {
+  //         title: {
+  //           contains: 'demat',
+  //         },
+  //         approvalDocumentDate: {
+  //           gte: '2023-12-01T00:00:00.000Z',
+  //           lte: '2023-12-31T11:59:59.999Z',
+  //         },
+  //       },
+  //     },
+  //   },
+  //   include: {
+  //     documents: true,
+  //   },
+  // });
+
+  // UserProjectData.map((userData) =>
+  //   console.log(userData.pw_id, userData.referralAgencyCode, userData.createdAt,userData.)
+  // );
+
+  const ProjectData = await prisma.document.findMany({
+    where: {
+      approvalDocumentDate: {
+        gte: '2023-12-01T00:00:00.000Z',
+        lte: '2023-12-31T11:59:59.999Z',
+      },
+      title: {
+        contains: 'demat',
+      },
+      user: {
+        kyc: 'APPROVED',
+      },
+    },
+    include: {
+      user: true,
+    },
+    orderBy: {
+      approvalDocumentDate: 'asc',
+    },
+  });
+
+  ProjectData.map((doc) =>
+    console.log(
+      doc.user.pw_id,
+      doc.user.createdAt,
+      doc.user.kyc,
+      doc.user.referralAgencyCode,
+      doc.title,
+      doc.approvalDocumentDate
+    )
+  );
+};
 
 async function main() {
   const check = await SeedCommand();

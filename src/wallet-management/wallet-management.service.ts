@@ -181,6 +181,19 @@ export class WalletManagementService {
     return finalBalance;
   }
 
+  async AgencyWalletHistory(agencyCode: string) {
+    const history = this.prisma.walletTransactionAndBalance.findMany({
+      where: {
+        agencyCode,
+      },
+      orderBy: {
+        id: 'desc',
+      },
+    });
+
+    return history;
+  }
+
   async findreferralKycTransaction(userId: string) {
     return this.prisma.referralKYCTransaction.findUnique({
       where: {
