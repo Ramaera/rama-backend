@@ -1,4 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { REFERRAL_CATEGORY } from '@prisma/client';
 import { GraphQLJSONObject } from 'graphql-type-json';
 
 @ObjectType()
@@ -23,6 +24,9 @@ export class Wallet {
 
   @Field({ description: 'Final Balance' })
   finalBalance: number;
+
+  @Field({ nullable: true })
+  category?: string;
 
   @Field(() => [GraphQLJSONObject], { nullable: true })
   metaData?: any;

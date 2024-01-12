@@ -562,6 +562,7 @@ type Wallet {
 
   """Transaction Amount"""
   amount: Int!
+  category: String
 
   """Transaction Created At """
   createdAt: DateTime!
