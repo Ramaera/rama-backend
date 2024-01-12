@@ -5,11 +5,14 @@ import { WalletTransactionInput } from './dto/walletTransaction.input.dto';
 import { WalletBalance } from './entities/wallet-balance.entity';
 import { KYCREFERRAL } from './entities/kyc-referral.entity';
 import { PROJECTREFERRAL } from './entities/project-referral.entity';
+import { UseGuards } from '@nestjs/common';
+import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
 
 @Resolver(() => Wallet)
 export class WalletManagementResolver {
   constructor(private readonly walletService: WalletManagementService) {}
 
+  @UseGuards(GqlAuthGuard)
   @Mutation(() => Wallet)
   async TransactionToWallet(
     @Args('transactionToWallet') transactionInput: WalletTransactionInput
@@ -21,34 +24,34 @@ export class WalletManagementResolver {
 
     return data;
   }
-
+  @UseGuards(GqlAuthGuard)
   @Query(() => KYCREFERRAL, { name: 'findreferralKycTransaction' })
   findReferralKyc(@Args('userId', { type: () => String }) userId: string) {
     return this.walletService.findreferralKycTransaction(userId);
   }
-
+  @UseGuards(GqlAuthGuard)
   @Query(() => KYCREFERRAL, { name: 'findreferralProjectTransaction' })
   findReferralProjects(
     @Args('documentId', { type: () => String }) documentId: string
   ) {
     return this.walletService.findreferralProjectTransaction(documentId);
   }
-
+  @UseGuards(GqlAuthGuard)
   @Query(() => WalletBalance, { name: 'GetFinalWalletBalanceOfAgency' })
   findOne(@Args('agencyCode', { type: () => String }) agencyCode: string) {
     return this.walletService.findWalletBalance(agencyCode);
   }
-
+  @UseGuards(GqlAuthGuard)
   @Query(() => [Wallet], { name: 'AgencyWalletHistory' })
   findAll(@Args('agencyCode', { type: () => String }) agencyCode: string) {
     return this.walletService.AgencyWalletHistory(agencyCode);
   }
-
+  @UseGuards(GqlAuthGuard)
   @Query(() => [KYCREFERRAL], { name: 'getAllKycReferral' })
   findAllKycReferral() {
     return this.walletService.findAllKycReferral();
   }
-
+  @UseGuards(GqlAuthGuard)
   @Query(() => [PROJECTREFERRAL], { name: 'getAllProjectReferral' })
   findAllProjectReferral() {
     return this.walletService.findAllProjectReferral();

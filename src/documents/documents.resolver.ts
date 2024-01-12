@@ -99,10 +99,10 @@ export class DocumentsResolver {
     return this.documentsService.listOfPendingtasks({ take, skip });
   }
 
-  //  *************** Get image Url From Image id *******************************************
+  //  *************** Get Document Details  id *******************************************
 
-  @Query(() => DocumentUrl)
-  showImageUrl(@Args({ name: 'id', type: () => String }) id: string) {
-    return this.documentsService.showImageUrlService(id);
+  @Query(() => Document)
+  getDocumentDetails(@Args({ name: 'id', type: () => String }) id: string) {
+    return this.documentsService.showDocumentDetails(id);
   }
 }

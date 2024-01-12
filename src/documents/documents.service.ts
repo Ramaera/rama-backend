@@ -60,10 +60,13 @@ export class DocumentsService {
 
   // **********************
 
-  async showImageUrlService(id: string) {
+  async showDocumentDetails(id: string) {
     return await this.prisma.document.findUnique({
       where: {
         id,
+      },
+      include: {
+        user: true,
       },
     });
   }

@@ -89,10 +89,6 @@ type DocumentModal {
   utrNo: String
 }
 
-type DocumentUrl {
-  url: String!
-}
-
 type DscOutputDataField {
   """Dsc Status"""
   DSCStatus: DSCSTATUS
@@ -333,7 +329,9 @@ type Query {
   getAllShareHoldersCount: ShareHolderCountDTO!
   getAllUser(skip: Int! = 0, take: Int! = 5000): [User!]!
   getAllUsersCount: UserCountDTO!
+  getDocumentDetails(id: String!): Document!
   getProjectsPayment: projectPaymentDTO!
+  getUserDetails(id: String!): User!
   hello(name: String!): String!
   helloWorld: String!
   kycAgency(userId: String!): KycAgency!
@@ -346,7 +344,6 @@ type Query {
   searchShareholder(input: SearchInvestmentType!): [Shareholding!]!
   searchUsers(input: SearchInput!): [User!]!
   shareholding(id: String!): [Shareholding!]!
-  showImageUrl(id: String!): DocumentUrl!
   starOfTheWeek(EndOfTheWeek: String!, startOfTheWeek: String!): [STOW!]!
   verifyReferralId(referralCode: String!): User!
 }

@@ -83,42 +83,39 @@ const SeedCommand = async () => {
   //     documents: true,
   //   },
   // });
-
   // UserProjectData.map((userData) =>
   //   console.log(userData.pw_id, userData.referralAgencyCode, userData.createdAt,userData.)
   // );
-
-  const ProjectData = await prisma.document.findMany({
-    where: {
-      approvalDocumentDate: {
-        gte: '2023-12-01T00:00:00.000Z',
-        lte: '2023-12-31T11:59:59.999Z',
-      },
-      title: {
-        contains: 'demat',
-      },
-      user: {
-        kyc: 'APPROVED',
-      },
-    },
-    include: {
-      user: true,
-    },
-    orderBy: {
-      approvalDocumentDate: 'asc',
-    },
-  });
-
-  ProjectData.map((doc) =>
-    console.log(
-      doc.user.pw_id,
-      doc.user.createdAt,
-      doc.user.kyc,
-      doc.user.referralAgencyCode,
-      doc.title,
-      doc.approvalDocumentDate
-    )
-  );
+  // const ProjectData = await prisma.document.findMany({
+  //   where: {
+  //     approvalDocumentDate: {
+  //       gte: '2023-12-01T00:00:00.000Z',
+  //       lte: '2023-12-31T11:59:59.999Z',
+  //     },
+  //     title: {
+  //       contains: 'demat',
+  //     },
+  //     user: {
+  //       kyc: 'APPROVED',
+  //     },
+  //   },
+  //   include: {
+  //     user: true,
+  //   },
+  //   orderBy: {
+  //     approvalDocumentDate: 'asc',
+  //   },
+  // });
+  // ProjectData.map((doc) =>
+  //   console.log(
+  //     doc.user.pw_id,
+  //     doc.user.createdAt,
+  //     doc.user.kyc,
+  //     doc.user.referralAgencyCode,
+  //     doc.title,
+  //     doc.approvalDocumentDate
+  //   )
+  // );
 };
 
 async function main() {

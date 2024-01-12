@@ -50,6 +50,12 @@ export class UsersResolver {
     return _user;
   }
 
+  @Query(() => User)
+  async getUserDetails(@Args('id') id: string) {
+    const userData = await this.usersService.getUser(id);
+    return userData;
+  }
+
   // ********************************* Details about the  All User ********************
 
   @Query(() => [User])
