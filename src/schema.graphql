@@ -312,6 +312,7 @@ type Projects {
 
 type Query {
   AgencyPayment(agencyCode: String!, month: Int!, year: Int!): KYCAGENYCPAYMENT!
+  AgencyWalletHistory(agencyCode: String!): [Wallet!]!
   AllKycAgency: [KycAgency!]!
   ChangeAmountOfRamaeraLegalInfoTech: User!
   DeleteUser: User!
@@ -570,7 +571,7 @@ type Wallet {
 
   """Id of Transaction"""
   id: Int!
-  metaData: JSONObject
+  metaData: [JSONObject!]
 
   """ Type of Transaction DEPOSIT or WITHDRAWL"""
   type: String!

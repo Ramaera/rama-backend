@@ -24,6 +24,6 @@ export class Wallet {
   @Field({ description: 'Final Balance' })
   finalBalance: number;
 
-  @Field(() => GraphQLJSONObject, { nullable: true })
-  metaData?: JSON;
+  @Field(() => [GraphQLJSONObject], { nullable: true })
+  metaData?: any;
 }
