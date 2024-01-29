@@ -225,6 +225,7 @@ type Mutation {
   updateUser(data: UpdateUserInput!): User!
   updateuserRole(data: UpdateUserRoleInput!): User!
   upsertNominee(data: NomineeInput!): Nominee!
+  withdrawlRequest(data: WithdraWalletMoney!): withdrawlRequest!
 }
 
 type Nominee {
@@ -317,6 +318,7 @@ type Query {
   GetFinalWalletBalanceOfAgency(agencyCode: String!): WalletBalance!
   Report: [User!]!
   TotalShareholders(skip: Int! = 0, take: Int! = 100): [Shareholding!]!
+  agencyWithdrawlRequest(agencyCode: String!): [withdrawlRequest!]!
   allKycUser(input: SearchMembershipInput!, skip: Int! = 0, take: Int! = 100): [User!]!
   allprojectEnrolleds: [ProjectEnrolled!]!
   dsc(id: Int!): DscOutputDataField!
@@ -594,6 +596,11 @@ input WalletTransactionInput {
   type: String
 }
 
+input WithdraWalletMoney {
+  agencyCode: String!
+  amount: Int!
+}
+
 input projectDataInput {
   """Project Payment Name Just Select Hajupir , Agra ETC"""
   project_payment_name: PROJECT_PAYMENT!
@@ -605,4 +612,15 @@ input projectDataInput {
 type projectPaymentDTO {
   ProjectAgraAmountReceived: Int
   ProjectHajipurAmountReceived: Int
+}
+
+type withdrawlRequest {
+  """Agency Id"""
+  agencyCode: String!
+
+  """Final Balance"""
+  amount: Int!
+
+  """Final Balance"""
+  createdAt: DateTime!
 }

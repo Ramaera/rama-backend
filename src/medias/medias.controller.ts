@@ -61,7 +61,6 @@ export const imageFileFilter = (req, file, callback) => {
 };
 
 @Controller('documents')
-// @ApiTags('documents')
 export class MediasController {
   @Post('upload')
   @UseInterceptors(

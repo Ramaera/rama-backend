@@ -180,6 +180,20 @@ model ReferralProjectTransaction {
   kycAgencyId  String?
 }
 
+model WithdrawlRequest {
+  id         String          @id @default(cuid())
+  createdAt  DateTime?       @default(now())
+  updatedAt  DateTime?       @updatedAt
+  amount     Int
+  agencyCode String
+  status     WITHDRAW_STATUS @default(PENDING)
+}
+
+enum WITHDRAW_STATUS {
+  PENDING
+  TRANSFERRED
+}
+
 enum REFERRAL_CATEGORY {
   DEPOSIT_KYC
   DEPOSIT_PROJECT

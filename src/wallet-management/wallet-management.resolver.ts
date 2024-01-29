@@ -2,11 +2,15 @@ import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { WalletManagementService } from './wallet-management.service';
 import { Wallet } from './entities/wallet-management.entity';
 import { WalletTransactionInput } from './dto/walletTransaction.input.dto';
-import { WalletBalance } from './entities/wallet-balance.entity';
+import {
+  WalletBalance,
+  withdrawlRequest,
+} from './entities/wallet-balance.entity';
 import { KYCREFERRAL } from './entities/kyc-referral.entity';
 import { PROJECTREFERRAL } from './entities/project-referral.entity';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
+import { WithdraWalletMoney } from './dto/withdrawlRequest.input.dto';
 
 @Resolver(() => Wallet)
 export class WalletManagementResolver {
@@ -55,6 +59,18 @@ export class WalletManagementResolver {
   @Query(() => [PROJECTREFERRAL], { name: 'getAllProjectReferral' })
   findAllProjectReferral() {
     return this.walletService.findAllProjectReferral();
+  }
+
+  @Mutation(() => withdrawlRequest)
+  async withdrawlRequest(@Args('data') data: WithdraWalletMoney) {
+    return this.walletService.WithdrawlRequest(data);
+  }
+
+  @Query(() => [withdrawlRequest])
+  async agencyWithdrawlRequest(
+    @Args('agencyCode', { type: () => String }) agencyCode: string
+  ) {
+    return this.walletService.agencyWithdrawlRequest(agencyCode);
   }
 
   // @Mutation(() => WalletManagement)

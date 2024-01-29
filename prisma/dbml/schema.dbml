@@ -169,6 +169,20 @@ Table ReferralProjectTransaction {
   kycAgencyId String
 }
 
+Table WithdrawlRequest {
+  id String [pk]
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime
+  amount Int [not null]
+  agencyCode String [not null]
+  status WITHDRAW_STATUS [not null, default: 'PENDING']
+}
+
+Enum WITHDRAW_STATUS {
+  PENDING
+  TRANSFERRED
+}
+
 Enum REFERRAL_CATEGORY {
   DEPOSIT_KYC
   DEPOSIT_PROJECT

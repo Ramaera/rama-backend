@@ -6,6 +6,7 @@ import { PrismaService } from 'nestjs-prisma';
 import { WalletBalance } from './entities/wallet-balance.entity';
 import { UsersService } from 'src/users/users.service';
 import { PrismaClient } from '@prisma/client';
+import { WithdraWalletMoney } from './dto/withdrawlRequest.input.dto';
 
 @Injectable()
 export class WalletManagementService {
@@ -99,6 +100,21 @@ export class WalletManagementService {
     } catch (err) {
       throw new Error(err.message);
     }
+  }
+
+  async WithdrawlRequest(data: WithdraWalletMoney) {
+    return this.prisma.withdrawlRequest.create({
+      data: {
+        amount: data.amount,
+        agencyCode: data.agencyCode,
+      },
+    });
+  }
+
+  async agencyWithdrawlRequest(agencyCode: String) {
+    return this.prisma.withdrawlRequest.findMany({
+      where: { agencyCode },
+    });
   }
 
   findAll() {
