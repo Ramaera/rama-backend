@@ -1,5 +1,5 @@
 import { GraphQLModule } from '@nestjs/graphql';
-import { Logger, Module } from '@nestjs/common';
+import { Logger, Module, CacheModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from 'nestjs-prisma';
 import { AppController } from './app.controller';
@@ -17,11 +17,15 @@ import { KycAgencyModule } from './kyc-agency/kyc-agency.module';
 import { ShareholdingModule } from './shareholding/shareholding.module';
 import { ProjectEnrolledModule } from './project-enrolled/project-enrolled.module';
 import { DscModule } from './dsc/dsc.module';
+
 import { RestApisModule } from './rest-apis/rest-apis.module';
 import { WalletManagementModule } from './wallet-management/wallet-management.module';
 
+const redisStore = require('cache-manager-redis-store');
+
 @Module({
   imports: [
+    CacheModule.register({ isGlobal: true, store: redisStore }),
     ConfigModule.forRoot({ isGlobal: true, load: [config] }),
     PrismaModule.forRoot({
       isGlobal: true,

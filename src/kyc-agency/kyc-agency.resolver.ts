@@ -83,6 +83,7 @@ export class KycAgencyResolver {
     @Args('agencyCode', { type: () => String }) agencyCode: string,
     @Args('year', { type: () => Int }) year: number
   ) {
+    console.log('start');
     return this.kycAgencyService.findAgencyPayment(month, year, agencyCode);
   }
 
@@ -101,6 +102,22 @@ export class KycAgencyResolver {
   removeKycAgency(@Args('id', { type: () => Int }) id: number) {
     return this.kycAgencyService.remove(id);
   }
+
+  // @Query(() => KYCAGENYCPAYMENT)
+  // getSelfPayment(
+  //   @Args('month', { type: () => Int }) month: number,
+
+  //   @Args('year', { type: () => Int }) year: number,
+  //   @Args('agencyCode', { type: () => String }) agencyCode: string,
+  //   @Args('project', { type: () => String }) project: string
+  // ) {
+  //   return this.kycAgencyService.getSelfAgencyPaymentDetails(
+  //     month,
+  //     year,
+  //     agencyCode,
+  //     project
+  //   );
+  // }
 
   // ********************* Star Of the Week ******************************
   @Query(() => [STOW])

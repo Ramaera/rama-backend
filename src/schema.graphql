@@ -137,6 +137,8 @@ type KYCAGENYCPAYMENT {
   basicHajipurprojectDocument: [DocumentModal!]
   hajipurProjectAmount: Int
   kycAmount: Int
+  selfAgencyAgraPayment: Int
+  selfAgencyHajipurPayment: Int
 }
 
 type KYCHANDLER {

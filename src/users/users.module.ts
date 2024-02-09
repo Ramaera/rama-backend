@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, CacheModule } from '@nestjs/common';
 import { UsersResolver } from './users.resolver';
 import { UsersService } from './users.service';
 import { PasswordService } from 'src/auth/password.service';

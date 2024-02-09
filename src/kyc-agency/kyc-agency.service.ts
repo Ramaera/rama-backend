@@ -109,13 +109,19 @@ export class KycAgencyService {
       where: {
         agencyCode: AgencyCode,
       },
+      include: {
+        user: true,
+      },
     });
 
-    // Condition for Novemeber because , Before Novemeber conditions for Project payment is Different
-    if (month >= 11) {
+    // Condition for Novemeber because , Before Novemeber conditions for Self Project payment is Different
+    if (
+      getStartAndEndDate(month, year).startDate >= '2023-11-01T00:00:00.000Z'
+    ) {
       let basicKYCAmount = 0;
       let advanceKYCAmount = 0;
       let kycAmount = 0;
+      let selfProjectAmount = 0;
       let hajipurProjectAmount = 0;
       let agraProjectAmount = 0;
 
@@ -160,11 +166,11 @@ export class KycAgencyService {
               },
             },
           },
-          DSCDetails: {
-            some: {
-              DSCStatus: 'RECEIVED',
-            },
-          },
+          // DSCDetails: {
+          //   some: {
+          //     DSCStatus: 'RECEIVED',
+          //   },
+          // },
         },
       });
 
@@ -222,11 +228,11 @@ export class KycAgencyService {
                   status: 'APPROVED',
                 },
               },
-              DSCDetails: {
-                some: {
-                  DSCStatus: 'RECEIVED',
-                },
-              },
+              // DSCDetails: {
+              //   some: {
+              //     DSCStatus: 'RECEIVED',
+              //   },
+              // },
             },
           },
           include: {
@@ -293,6 +299,25 @@ export class KycAgencyService {
         },
       });
 
+      const {
+        finalProjectAmount: selfAgencyHajipurPaymentAmount,
+        paymentDocument: selfHajipurInvestmentDocument,
+      } = await this.getSelfAgencyPaymentDetails(
+        month,
+        year,
+        AgencyCode,
+        'hajipur'
+      );
+      const {
+        finalProjectAmount: selfAgencyAgraPaymentAmount,
+        paymentDocument: selfAgraInvestmentDocument,
+      } = await this.getSelfAgencyPaymentDetails(
+        month,
+        year,
+        AgencyCode,
+        'agra'
+      );
+
       let basicHajipurAmount = 0;
       basicHajipurprojectDocument.map((data) => {
         basicHajipurAmount += data?.amount;
@@ -323,6 +348,10 @@ export class KycAgencyService {
         agraProjectAmount,
         kycAmount,
         BasicKycApprovedUser,
+        selfAgencyHajipurPaymentAmount,
+        selfAgencyAgraPaymentAmount,
+        selfHajipurInvestmentDocument,
+        selfAgraInvestmentDocument,
         basicAgraprojectDocument,
         advanceAgraprojectDocument,
         basicHajipurprojectDocument,
@@ -376,11 +405,11 @@ export class KycAgencyService {
             },
           },
         },
-        DSCDetails: {
-          some: {
-            DSCStatus: 'RECEIVED',
-          },
-        },
+        // DSCDetails: {
+        //   some: {
+        //     DSCStatus: 'RECEIVED',
+        //   },
+        // },
       },
     });
 
@@ -435,11 +464,11 @@ export class KycAgencyService {
               status: 'APPROVED',
             },
           },
-          DSCDetails: {
-            some: {
-              DSCStatus: 'RECEIVED',
-            },
-          },
+          // DSCDetails: {
+          //   some: {
+          //     DSCStatus: 'RECEIVED',
+          //   },
+          // },
         },
       },
       include: {
@@ -540,6 +569,57 @@ export class KycAgencyService {
       advanceHajipurprojectDocument,
     };
   }
+
+  async getSelfAgencyPaymentDetails(
+    month: number,
+    year: number,
+    AgencyCode: string,
+    project: string
+  ) {
+    const getLocalDateData = getStartAndEndDate(month, year);
+    const agencyData = await this.prisma.kycAgency.findFirst({
+      where: {
+        agencyCode: AgencyCode,
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    const paymentDocument = await this.prisma.document.findMany({
+      where: {
+        AND: [
+          {
+            approvalDocumentDate: {
+              gte: getLocalDateData.startDate,
+              lte: getLocalDateData.endDate,
+            },
+          },
+          {
+            approvalDocumentDate: {
+              gte: agencyData.createdAt,
+            },
+          },
+        ],
+
+        title: {
+          contains: project,
+        },
+        status: 'APPROVED',
+        user: {
+          pw_id: agencyData.user.pw_id,
+        },
+      },
+    });
+
+    let projectAmount = 0;
+    paymentDocument.map((doc) => (projectAmount += doc.amount));
+
+    const finalProjectAmount = projectAmount * 0.01;
+
+    return { finalProjectAmount, paymentDocument };
+  }
+
   async findAllKycAgnecyuser(code: GetAllUserofSpecificKycAgency) {
     const listofagencyuser = await this.prisma.user.findMany({
       where: {

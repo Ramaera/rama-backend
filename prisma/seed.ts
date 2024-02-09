@@ -64,58 +64,127 @@ function getMonthDates(monthNumber) {
 // console.log('Most recent Saturday:', mostRecentSaturday);
 // console.log("Previous week's Friday:", previousWeekFriday);
 
+// const SeedCommand = async () => {
+//   // const UserProjectData = await prisma.user.findMany({
+//   //   where: {
+//   //     documents: {
+//   //       some: {
+//   //         title: {
+//   //           contains: 'demat',
+//   //         },
+//   //         approvalDocumentDate: {
+//   //           gte: '2023-12-01T00:00:00.000Z',
+//   //           lte: '2023-12-31T11:59:59.999Z',
+//   //         },
+//   //       },
+//   //     },
+//   //   },
+//   //   include: {
+//   //     documents: true,
+//   //   },
+//   // });
+//   // UserProjectData.map((userData) =>
+//   //   console.log(userData.pw_id, userData.referralAgencyCode, userData.createdAt,userData.)
+//   // );
+//   // const ProjectData = await prisma.document.findMany({
+//   //   where: {
+//   //     approvalDocumentDate: {
+//   //       gte: '2023-12-01T00:00:00.000Z',
+//   //       lte: '2023-12-31T11:59:59.999Z',
+//   //     },
+//   //     title: {
+//   //       contains: 'demat',
+//   //     },
+//   //     user: {
+//   //       kyc: 'APPROVED',
+//   //     },
+//   //   },
+//   //   include: {
+//   //     user: true,
+//   //   },
+//   //   orderBy: {
+//   //     approvalDocumentDate: 'asc',
+//   //   },
+//   // });
+//   // ProjectData.map((doc) =>
+//   //   console.log(
+//   //     doc.user.pw_id,
+//   //     doc.user.createdAt,
+//   //     doc.user.kyc,
+//   //     doc.user.referralAgencyCode,
+//   //     doc.title,
+//   //     doc.approvalDocumentDate
+//   //   )
+//   // );
+// };
+
 const SeedCommand = async () => {
-  // const UserProjectData = await prisma.user.findMany({
+  const documentsWithSameTitleAndUserId = await prisma.document.findMany({
+    where: {
+      title: 'payment_proof',
+    },
+    select: {
+      id: true,
+      title: true,
+      userId: true,
+    },
+  });
+
+  // Filter out documents with duplicate user IDs
+  const duplicates = documentsWithSameTitleAndUserId.filter(
+    (document, index, self) =>
+      index !== self.findIndex((d) => d.userId === document.userId)
+  );
+  console.log('-->', duplicates);
+  // console.log(documentsWithSameTitleAndUserId);
+
+  // const usersWithApprovedDematDocuments = await prisma.user.findMany({
   //   where: {
+  //     referralAgencyCode: 'RLI467186',
   //     documents: {
   //       some: {
   //         title: {
   //           contains: 'demat',
   //         },
-  //         approvalDocumentDate: {
-  //           gte: '2023-12-01T00:00:00.000Z',
-  //           lte: '2023-12-31T11:59:59.999Z',
-  //         },
+  //         status: 'APPROVED',
   //       },
   //     },
   //   },
-  //   include: {
-  //     documents: true,
+  //   select: {
+  //     id: true,
+  //     pw_id: true,
+  //     documents: {
+  //       select: {
+  //         title: true,
+  //         amount: true,
+  //         status: true,
+  //       },
+  //       where: {
+  //         title: {
+  //           contains: 'demat',
+  //         },
+  //         status: 'APPROVED',
+  //       },
+  //     },
   //   },
   // });
-  // UserProjectData.map((userData) =>
-  //   console.log(userData.pw_id, userData.referralAgencyCode, userData.createdAt,userData.)
-  // );
-  // const ProjectData = await prisma.document.findMany({
+
+  // The result will contain the desired information about users and their associated documents.
+
+  // ))
+  // const finalData = await prisma.document.findMany({
   //   where: {
-  //     approvalDocumentDate: {
-  //       gte: '2023-12-01T00:00:00.000Z',
-  //       lte: '2023-12-31T11:59:59.999Z',
-  //     },
-  //     title: {
-  //       contains: 'demat',
-  //     },
   //     user: {
-  //       kyc: 'APPROVED',
+  //       pw_id: USERPWID,
   //     },
-  //   },
-  //   include: {
-  //     user: true,
-  //   },
-  //   orderBy: {
-  //     approvalDocumentDate: 'asc',
   //   },
   // });
-  // ProjectData.map((doc) =>
-  //   console.log(
-  //     doc.user.pw_id,
-  //     doc.user.createdAt,
-  //     doc.user.kyc,
-  //     doc.user.referralAgencyCode,
-  //     doc.title,
-  //     doc.approvalDocumentDate
-  //   )
+
+  // finalData.map((check) =>
+  //   console.log(check.title, check.amount, check.createdAt, check.status)
   // );
+
+  // console.log(usersWithApprovedDematDocuments);
 };
 
 async function main() {
