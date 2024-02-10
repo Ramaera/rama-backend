@@ -11,8 +11,8 @@ import { UpdateUserInput, UpdateUserRoleInput } from './dto/update-user.input';
 import { NomineeInput } from './dto/createNominee.input';
 import { saveAs } from 'file-saver';
 
-import { CACHE_MANAGER } from '@nestjs/common';
-import { Cache } from 'cache-manager';
+// import { CACHE_MANAGER } from '@nestjs/common';
+// import { Cache } from 'cache-manager';
 
 import {
   UpdateLicenseDetailsInput,
@@ -27,9 +27,9 @@ import { Membership, User } from '@prisma/client';
 export class UsersService {
   constructor(
     private prisma: PrismaService,
-    private passwordService: PasswordService,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache
-  ) {}
+    private passwordService: PasswordService
+  ) // @Inject(CACHE_MANAGER) private cacheManager: Cache
+  {}
 
   // ************************* Update User Details *****************
 
@@ -228,12 +228,12 @@ export class UsersService {
   // ########## Get All User #####################
 
   async getAllUser({ skip, take }) {
-    const cacheKey = `getAllUser:${skip}:${take}`;
-    const cachedUserData: any = await this.cacheManager.get(cacheKey);
-    if (cachedUserData) {
-      console.log('returning data from cache');
-      return JSON.parse(cachedUserData);
-    }
+    // const cacheKey = `getAllUser:${skip}:${take}`;
+    // const cachedUserData: any = await this.cacheManager.get(cacheKey);
+    // if (cachedUserData) {
+    //   console.log('returning data from cache');
+    //   return JSON.parse(cachedUserData);
+    // }
     const allUser = await this.prisma.user.findMany({
       take,
       skip,
@@ -246,7 +246,7 @@ export class UsersService {
       },
     });
 
-    await this.cacheManager.set(cacheKey, 'unknown', 3600);
+    // await this.cacheManager.set(cacheKey, 'unknown', 3600);
     return allUser;
   }
 

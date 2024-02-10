@@ -21,11 +21,11 @@ import { DscModule } from './dsc/dsc.module';
 import { RestApisModule } from './rest-apis/rest-apis.module';
 import { WalletManagementModule } from './wallet-management/wallet-management.module';
 
-const redisStore = require('cache-manager-redis-store');
+// const redisStore = require('cache-manager-redis-store');
 
 @Module({
   imports: [
-    CacheModule.register({ isGlobal: true, store: redisStore }),
+    // CacheModule.register({ isGlobal: true, store: redisStore }),
     ConfigModule.forRoot({ isGlobal: true, load: [config] }),
     PrismaModule.forRoot({
       isGlobal: true,
