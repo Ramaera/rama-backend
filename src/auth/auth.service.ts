@@ -111,6 +111,7 @@ export class AuthService {
   }
 
   getUserFromToken(token: string): Promise<User> {
+    console.log('here');
     const id = this.jwtService.decode(token)['userId'];
     return this.prisma.user.findUnique({
       where: { id },

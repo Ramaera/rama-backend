@@ -35,7 +35,7 @@ import { projectPaymentDTO } from './models/projectPayment.model';
 import { ProjectEnrolled } from 'src/project-enrolled/entities/project-enrolled.entity';
 
 @Resolver(() => User)
-// @UseGuards(GqlAuthGuard)
+@UseGuards(GqlAuthGuard)
 export class UsersResolver {
   constructor(
     private usersService: UsersService,
