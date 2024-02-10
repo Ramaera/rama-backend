@@ -139,6 +139,8 @@ type KYCAGENYCPAYMENT {
   kycAmount: Int
   selfAgencyAgraPayment: Int
   selfAgencyHajipurPayment: Int
+  selfAgraInvestmentDocument: [DocumentModal!]
+  selfHajipurInvestmentDocument: [DocumentModal!]
 }
 
 type KYCHANDLER {

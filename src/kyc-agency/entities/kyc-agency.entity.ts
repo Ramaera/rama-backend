@@ -85,6 +85,12 @@ export class KYCAGENYCPAYMENT {
   @Field(() => [DocumentModal], { nullable: true })
   basicHajipurprojectDocument: DocumentModal[];
 
+  @Field(() => [DocumentModal], { nullable: true })
+  selfAgraInvestmentDocument: DocumentModal[];
+
+  @Field(() => [DocumentModal], { nullable: true })
+  selfHajipurInvestmentDocument: DocumentModal[];
+
   @Field(() => Int, { nullable: true })
   selfAgencyHajipurPayment: number;
 
