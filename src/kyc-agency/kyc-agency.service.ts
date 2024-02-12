@@ -118,6 +118,7 @@ export class KycAgencyService {
     if (
       getStartAndEndDate(month, year).startDate >= '2023-11-01T00:00:00.000Z'
     ) {
+      console.log('here');
       let basicKYCAmount = 0;
       let advanceKYCAmount = 0;
       let kycAmount = 0;

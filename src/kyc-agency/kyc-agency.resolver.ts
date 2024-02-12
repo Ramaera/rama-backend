@@ -78,13 +78,17 @@ export class KycAgencyResolver {
   // ****************** Agency Payment **************************************
 
   @Query(() => KYCAGENYCPAYMENT, { name: 'AgencyPayment' })
-  findAgencyPaymentt(
+  async findAgencyPaymentt(
     @Args('month', { type: () => Int }) month: number,
     @Args('agencyCode', { type: () => String }) agencyCode: string,
     @Args('year', { type: () => Int }) year: number
   ) {
-    console.log('start');
-    return this.kycAgencyService.findAgencyPayment(month, year, agencyCode);
+    const data = await this.kycAgencyService.findAgencyPayment(
+      month,
+      year,
+      agencyCode
+    );
+    return data;
   }
 
   // *********************** Verify Referral id ************************

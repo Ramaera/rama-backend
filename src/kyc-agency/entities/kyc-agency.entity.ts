@@ -92,10 +92,10 @@ export class KYCAGENYCPAYMENT {
   selfHajipurInvestmentDocument: DocumentModal[];
 
   @Field(() => Int, { nullable: true })
-  selfAgencyHajipurPayment: number;
+  selfAgencyHajipurPaymentAmount: number;
 
   @Field(() => Int, { nullable: true })
-  selfAgencyAgraPayment: number;
+  selfAgencyAgraPaymentAmount: number;
 
   @Field(() => [DocumentModal], { nullable: true })
   advanceHajipurprojectDocument: DocumentModal[];
