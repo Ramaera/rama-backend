@@ -12,16 +12,55 @@ export class RestApisService {
   }
 
   findAll() {
-    return this.prisma.user.findMany({
-      select: {
-        name: true,
-        pw_id: true,
-        kyc: true,
-        createdAt: true,
-        membership: true,
-        referralAgencyCode: true,
-      },
-    });
+    return this.prisma.user
+      .findMany({
+        select: {
+          name: true,
+          pw_id: true,
+          kyc: true,
+          createdAt: true,
+          membership: true,
+          referralAgencyCode: true,
+          documents: {
+            select: {
+              title: true,
+              status: true,
+              // approvalDocumentDate: true,
+            },
+            where: {
+              title: 'demat_document',
+            },
+          },
+        },
+      })
+      .then((users) => {
+        // Map over the array of user objects
+        return users.map((user) => {
+          // Check if there is a demat document for this user
+          const dematDocument = user.documents.find(
+            (doc) => doc.title === 'demat_document'
+          );
+
+          // Set DematStatus accordingly
+          let DematStatus = 'Pending';
+          if (dematDocument) {
+            if (dematDocument.status === 'APPROVED') {
+              // If demat document exists and is approved, set DematStatus to 'Approved'
+              DematStatus = 'Approved';
+            }
+          }
+
+          // Add DematStatus field to the user object
+          const newUser = { ...user, DematStatus };
+
+          // If demat document exists and is approved, create a new column
+          if (DematStatus === 'APPROVED') {
+            newUser.DematStatus = 'APPROVED';
+          }
+
+          return newUser;
+        });
+      });
   }
 
   findOne(id: number) {

@@ -17,6 +17,8 @@ import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
 
 import { User } from 'src/users/models/user.model';
 import { STOW } from './entities/STOW.entity';
+import { CreateSalesPerson } from './dto/create-salesPerson.input';
+import { SalesPersonOutPut } from './entities/salesperson.entity';
 
 @Resolver(() => KycAgency)
 export class KycAgencyResolver {

@@ -10,6 +10,7 @@ import {
   GetAllUserofSpecificKycAgency,
   GetKycAgency,
 } from './dto/get-kyc-agency.input';
+import { CreateSalesPerson } from './dto/create-salesPerson.input';
 var AgencyList = [];
 const getStartAndEndDate = (month, year) => {
   if (isNaN(month) || month < 1 || month > 12) {
@@ -33,6 +34,24 @@ const getStartAndEndDate = (month, year) => {
     startDate: formattedStartDate,
     endDate: formattedEndDate,
   };
+};
+
+const DateInGmt530 = () => {
+  // Create a new Date object for the current date and time
+  const currentDate = new Date();
+
+  // Get the current time in milliseconds since January 1, 1970
+  const currentTimeInMilliseconds = currentDate.getTime();
+
+  // Calculate the offset in milliseconds for GMT+5:30 (5 hours and 30 minutes)
+  const offsetInMilliseconds = 5.5 * 60 * 60 * 1000;
+
+  // Apply the offset to the current time
+  const newDateWithOffset = new Date(
+    currentTimeInMilliseconds + offsetInMilliseconds
+  );
+
+  return newDateWithOffset;
 };
 
 // const { startDate, endDate } = getStartAndEndDate(11, 2023);
@@ -611,6 +630,9 @@ export class KycAgencyService {
           pw_id: agencyData.user.pw_id,
         },
       },
+      include: {
+        user: true,
+      },
     });
 
     let projectAmount = 0;
@@ -965,8 +987,6 @@ export class KycAgencyService {
     );
     // Sort the array based on the number of users in descending order
     agenciesData.sort((a, b) => b.users.length - a.users.length);
-
-    console.log('--', agenciesData);
 
     return agenciesData;
   }

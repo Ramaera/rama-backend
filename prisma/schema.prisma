@@ -52,13 +52,15 @@ model KycAgency {
   createdAt                  DateTime                     @default(now())
   updatedAt                  DateTime                     @default(now()) @updatedAt
   id                         String                       @id @default(cuid())
-  agencyCode                 String?                      @unique
+  agencyCode                 String                       @unique
   userId                     String                       @unique
   licenseValidityInYear      Int?
   AgencyIncome               AgencyIncome[]
   user                       User                         @relation(fields: [userId], references: [id])
   ReferralKYCTransaction     ReferralKYCTransaction[]
   ReferralProjectTransaction ReferralProjectTransaction[]
+  SalesPerson                SalesPerson[]
+  ReferralSalesTransaction   ReferralSalesTransaction[]
 }
 
 model Document {
@@ -189,6 +191,53 @@ model WithdrawlRequest {
   status     WITHDRAW_STATUS @default(PENDING)
 }
 
+model ReferralSalesTransaction {
+  id            Int         @id @default(autoincrement())
+  createdAt     DateTime?   @default(now())
+  updatedAt     DateTime?   @default(now()) @updatedAt
+  salesPerson   SalesPerson @relation(fields: [salesPersonId], references: [id])
+  salesPersonId String      @unique
+  agencyCode    String
+  transferDate  DateTime?
+  KycAgency     KycAgency?  @relation(fields: [kycAgencyId], references: [id])
+  kycAgencyId   String?
+}
+
+model SalesPerson {
+  id                               String                    @id @default(cuid())
+  createdAt                        DateTime?                 @default(now())
+  updatedAt                        DateTime?                 @updatedAt
+  type                             TYPE
+  KycAgency                        KycAgency?                @relation(fields: [kycAgencycode], references: [agencyCode])
+  kycAgencycode                    String?
+  approvalStatus                   STATUS                    @default(NOT_INITILAIZED)
+  approvalDate                     DateTime?
+  referralSalesPersonMoneyToAgency ReferralSalesTransaction?
+  name                             String?
+  email                            String
+  mobileNumber                     String
+  address                          Json?
+  extraInfo                        Json?
+  SalesPersonDocument              SalesPersonDocument[]
+}
+
+model SalesPersonDocument {
+  id            String      @id @default(cuid())
+  createdAt     DateTime?   @default(now())
+  updatedAt     DateTime?   @updatedAt
+  title         String?
+  status        STATUS      @default(NOT_INITILAIZED)
+  salesPerson   SalesPerson @relation(fields: [salesPersonId], references: [id])
+  url           String?
+  salesPersonId String
+}
+
+enum TYPE {
+  CONFECTIONARY
+  DISTRIBUTOR
+  SUPERSTOCKIST
+}
+
 enum WITHDRAW_STATUS {
   PENDING
   TRANSFERRED
@@ -197,6 +246,9 @@ enum WITHDRAW_STATUS {
 enum REFERRAL_CATEGORY {
   DEPOSIT_KYC
   DEPOSIT_PROJECT
+  DEPOSIT_SELF
+  DEPOSIT_SALES
+  DEPOSIT_AGENCY
   WITHDRAWL
 }
 

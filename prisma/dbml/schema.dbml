@@ -41,13 +41,15 @@ Table KycAgency {
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [default: `now()`, not null]
   id String [pk]
-  agencyCode String [unique]
+  agencyCode String [unique, not null]
   userId String [unique, not null]
   licenseValidityInYear Int
   AgencyIncome AgencyIncome [not null]
   user User [not null]
   ReferralKYCTransaction ReferralKYCTransaction [not null]
   ReferralProjectTransaction ReferralProjectTransaction [not null]
+  SalesPerson SalesPerson [not null]
+  ReferralSalesTransaction ReferralSalesTransaction [not null]
 }
 
 Table Document {
@@ -178,6 +180,53 @@ Table WithdrawlRequest {
   status WITHDRAW_STATUS [not null, default: 'PENDING']
 }
 
+Table ReferralSalesTransaction {
+  id Int [pk, increment]
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime [default: `now()`]
+  salesPerson SalesPerson [not null]
+  salesPersonId String [unique, not null]
+  agencyCode String [not null]
+  transferDate DateTime
+  KycAgency KycAgency
+  kycAgencyId String
+}
+
+Table SalesPerson {
+  id String [pk]
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime
+  type TYPE [not null]
+  KycAgency KycAgency
+  kycAgencycode String
+  approvalStatus STATUS [not null, default: 'NOT_INITILAIZED']
+  approvalDate DateTime
+  referralSalesPersonMoneyToAgency ReferralSalesTransaction
+  name String
+  email String [not null]
+  mobileNumber String [not null]
+  address Json
+  extraInfo Json
+  SalesPersonDocument SalesPersonDocument [not null]
+}
+
+Table SalesPersonDocument {
+  id String [pk]
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime
+  title String
+  status STATUS [not null, default: 'NOT_INITILAIZED']
+  salesPerson SalesPerson [not null]
+  url String
+  salesPersonId String [not null]
+}
+
+Enum TYPE {
+  CONFECTIONARY
+  DISTRIBUTOR
+  SUPERSTOCKIST
+}
+
 Enum WITHDRAW_STATUS {
   PENDING
   TRANSFERRED
@@ -186,6 +235,9 @@ Enum WITHDRAW_STATUS {
 Enum REFERRAL_CATEGORY {
   DEPOSIT_KYC
   DEPOSIT_PROJECT
+  DEPOSIT_SELF
+  DEPOSIT_SALES
+  DEPOSIT_AGENCY
   WITHDRAWL
 }
 
@@ -249,3 +301,11 @@ Ref: ReferralProjectTransaction.userId > User.id
 Ref: ReferralProjectTransaction.documentId - Document.id
 
 Ref: ReferralProjectTransaction.kycAgencyId > KycAgency.id
+
+Ref: ReferralSalesTransaction.salesPersonId - SalesPerson.id
+
+Ref: ReferralSalesTransaction.kycAgencyId > KycAgency.id
+
+Ref: SalesPerson.kycAgencycode > KycAgency.agencyCode
+
+Ref: SalesPersonDocument.salesPersonId > SalesPerson.id

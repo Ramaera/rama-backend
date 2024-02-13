@@ -20,6 +20,7 @@ import { DscModule } from './dsc/dsc.module';
 
 import { RestApisModule } from './rest-apis/rest-apis.module';
 import { WalletManagementModule } from './wallet-management/wallet-management.module';
+import { SalesChannelModule } from './sales-channel/sales-channel.module';
 
 // const redisStore = require('cache-manager-redis-store');
 
@@ -47,6 +48,7 @@ import { WalletManagementModule } from './wallet-management/wallet-management.mo
     DscModule,
     RestApisModule,
     WalletManagementModule,
+    SalesChannelModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],

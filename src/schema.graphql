@@ -49,6 +49,17 @@ input CreateKycAgencyCodeInput {
   userId: String!
 }
 
+input CreateSalesPerson {
+  address: [JSONObject!]
+  agencyCode: String!
+  approvalStatus: STATUS
+  email: String!
+  extraInfo: [JSONObject!]
+  mobileNumber: String!
+  name: String!
+  type: TYPE!
+}
+
 input CreateShareholdingInput {
   InvestmentType: String
   allotedShare: Int
@@ -208,6 +219,7 @@ type Mutation {
   createDsc(createDscInput: CreateDscInput!): DscOutputDataField!
   createKycAgency(data: CreateKycAgencyCodeInput!): AllKycAgency!
   createProjectEnrolled(projectData: projectDataInput!): ProjectEnrolled!
+  createSalesPerson(data: CreateSalesPerson!): SalesPersonOutPut!
   createShareholding(data: CreateShareholdingInput!): Shareholding!
   forgetPasswordWithPrivateKey(data: ChangePasswordWithPrivateKeyInput!): EmptyModal!
   getSponserDetails(data: SponserDetails!): Sponser!
@@ -217,6 +229,7 @@ type Mutation {
   removeDsc(id: Int!): DscOutputDataField!
   removeKycAgency(id: Int!): KycAgency!
   removeProjectEnrolled(id: Int!): ProjectEnrolled!
+  removeSalesChannel(id: Int!): SalesChannel!
   removeShareholding(id: Int!): Shareholding!
   signup(data: SignupInput!): Auth!
   updateDataByAdmin(data: UpdateUserInputByAdmin!): User!
@@ -224,6 +237,7 @@ type Mutation {
   updateDocumentStatusByAdmin(data: UpdateDocumentStatusByAdmin!): Document!
   updateMembership(data: UpdateUserMembershipAdmin!): User!
   updateProjectEnrolled(updateProjectEnrolledInput: UpdateProjectEnrolledInput!): ProjectEnrolled!
+  updateSalesChannel(updateSalesChannelInput: UpdateSalesChannelInput!): SalesChannel!
   updateShareholding(data: UpdateShareholdingInput!): Shareholding!
   updateStatus(data: UpdateUserStatusAdmin!): User!
   updateUser(data: UpdateUserInput!): User!
@@ -346,6 +360,8 @@ type Query {
   myNominee(userId: String!): Nominee!
   pendingTasks(skip: Int! = 0, take: Int! = 3000): [Document!]!
   projectEnrolled(id: String!): [Projects!]!
+  salesChannel: [SalesChannel!]!
+  salesPersonsInAAgency(agencyCode: String!): SalesChannel!
   searchShareHolding(input: SearchInvestmentType!, skip: Int! = 0, take: Int! = 100): [Shareholding!]!
   searchShareholder(input: SearchInvestmentType!): [Shareholding!]!
   searchUsers(input: SearchInput!): [User!]!
@@ -372,6 +388,21 @@ type STOW {
   agencyCode: String!
   agencyOwnerName: String!
   users: [User!]!
+}
+
+type SalesChannel {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type SalesPersonOutPut {
+  address: String
+  agencyCode: String
+  approvalStatus: String
+  email: String
+  extraInfo: String
+  mobileNumber: String
+  name: String
 }
 
 input SearchInput {
@@ -434,6 +465,12 @@ input SponserDetails {
   ReferralCode: String!
 }
 
+enum TYPE {
+  CONFECTIONARY
+  DISTRIBUTOR
+  SUPERSTOCKIST
+}
+
 type Token {
   """JWT access token"""
   accessToken: JWT!
@@ -462,6 +499,12 @@ input UpdateLicenseDetailsInput {
 }
 
 input UpdateProjectEnrolledInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input UpdateSalesChannelInput {
   """Example field (placeholder)"""
   exampleField: Int
   id: Int!
