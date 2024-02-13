@@ -121,7 +121,7 @@ function getMonthDates(monthNumber) {
 const SeedCommand = async () => {
   const documentsWithSameTitleAndUserId = await prisma.document.findMany({
     where: {
-      title: 'payment_proof',
+      title: 'demat_document',
     },
     select: {
       id: true,
