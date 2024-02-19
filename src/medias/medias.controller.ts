@@ -97,6 +97,7 @@ export class MediasController {
     };
     return response;
   }
+
   @Get(':name')
   getFile(@Param() params): StreamableFile {
     const file = createReadStream(

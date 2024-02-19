@@ -27,9 +27,8 @@ import { Membership, User } from '@prisma/client';
 export class UsersService {
   constructor(
     private prisma: PrismaService,
-    private passwordService: PasswordService
-  ) // @Inject(CACHE_MANAGER) private cacheManager: Cache
-  {}
+    private passwordService: PasswordService // @Inject(CACHE_MANAGER) private cacheManager: Cache
+  ) {}
 
   // ************************* Update User Details *****************
 
@@ -342,6 +341,7 @@ export class UsersService {
         title: {
           contains: 'hajipur', // Case-insensitive search for "hajipur" in title
         },
+        status: 'APPROVED',
         NOT: {
           userId: 'clmospewa0747luj406xtnoh7',
         },
@@ -356,6 +356,7 @@ export class UsersService {
         title: {
           contains: 'agra', // Case-insensitive search for "hajipur" in title
         },
+        status: 'APPROVED',
       },
       select: {
         amount: true, // Select the "amount" field
