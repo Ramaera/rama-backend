@@ -60,54 +60,58 @@ export class UsersService {
 
   // ********************************* Update User Data by Admin    ********************
   async updateDataByAdmin(newData: UpdateUserInputByAdmin) {
-    const updated_details = this.prisma.user.update({
-      where: {
-        id: newData.id,
-      },
-      data: {
-        name: newData.name,
-        email: newData.email,
-        father_or_husband_name: newData.father_or_husband_name,
-        mobile_number: newData.mobile_number,
-        alternate_mobile_number: newData.alternate_mobile_number,
-        date_of_birth: newData.date_of_birth,
-        demat_account: newData.demat_account,
-        documents: newData.documentId
-          ? {
-              update: {
-                data: {
-                  utrNo: newData.utrNo,
-                  url: newData.url !== undefined ? newData.url : undefined, // Set to newData.url if provided, otherwise keep it unchanged
-                  amount: newData.amount,
-                },
-                where: {
-                  id: newData.documentId,
-                },
-              },
-            }
-          : undefined,
-        nominee:
-          newData.nomineeName || newData.nomineeRelationship
+    try {
+      const updated_details = this.prisma.user.update({
+        where: {
+          id: newData.id,
+        },
+        data: {
+          name: newData.name,
+          email: newData.email,
+          father_or_husband_name: newData.father_or_husband_name,
+          mobile_number: newData.mobile_number,
+          alternate_mobile_number: newData.alternate_mobile_number,
+          date_of_birth: newData.date_of_birth,
+          demat_account: newData.demat_account,
+          documents: newData.documentId
             ? {
-                upsert: {
-                  create: {
-                    name: newData.nomineeName,
-                    relationship: newData.nomineeRelationship,
+                update: {
+                  data: {
+                    utrNo: newData.utrNo,
+                    url: newData.url !== undefined ? newData.url : undefined, // Set to newData.url if provided, otherwise keep it unchanged
+                    amount: newData.amount,
                   },
-                  update: {
-                    name: newData.nomineeName,
-                    relationship: newData.nomineeRelationship,
+                  where: {
+                    id: newData.documentId,
                   },
                 },
               }
             : undefined,
-      },
-      include: {
-        nominee: true,
-        documents: true,
-      },
-    });
-    return updated_details;
+          nominee:
+            newData.nomineeName || newData.nomineeRelationship
+              ? {
+                  upsert: {
+                    create: {
+                      name: newData.nomineeName,
+                      relationship: newData.nomineeRelationship,
+                    },
+                    update: {
+                      name: newData.nomineeName,
+                      relationship: newData.nomineeRelationship,
+                    },
+                  },
+                }
+              : undefined,
+        },
+        include: {
+          nominee: true,
+          documents: true,
+        },
+      });
+      return updated_details;
+    } catch (err) {
+      throw new Error('Facing Some Issue. Please Try After some Time');
+    }
   }
 
   // **************************** Update User Kyc Status *************************
