@@ -137,9 +137,9 @@ export class KycAgencyService {
     if (
       getStartAndEndDate(month, year).startDate >= '2023-11-01T00:00:00.000Z'
     ) {
-      console.log('here');
       let basicKYCAmount = 0;
       let advanceKYCAmount = 0;
+      let totalKycUser = 0;
       let kycAmount = 0;
       let selfProjectAmount = 0;
       let hajipurProjectAmount = 0;
@@ -193,6 +193,8 @@ export class KycAgencyService {
           // },
         },
       });
+      totalKycUser =
+        BasicKycApprovedUser.length + AdvanceKYCApprovedUser.length;
 
       advanceKYCAmount = AdvanceKYCApprovedUser.length * 200;
 
@@ -425,11 +427,6 @@ export class KycAgencyService {
             },
           },
         },
-        // DSCDetails: {
-        //   some: {
-        //     DSCStatus: 'RECEIVED',
-        //   },
-        // },
       },
     });
 
@@ -588,6 +585,23 @@ export class KycAgencyService {
       basicHajipurprojectDocument,
       advanceHajipurprojectDocument,
     };
+  }
+
+  async getKycReferralAmount(kycUsers) {
+    const ranges = [
+      { min: 0, max: 7, amount: 200 },
+      { min: 8, max: 11, amount: 300 },
+      { min: 12, max: 14, amount: 400 },
+      { min: 15, max: 20, amount: 600 },
+      { min: 21, max: 25, amount: 800 },
+      { min: 26, max: 500, amount: 1000 },
+    ];
+
+    for (const range of ranges) {
+      if (kycUsers >= range.min && kycUsers <= range.max) {
+        return range.amount;
+      }
+    }
   }
 
   async getSelfAgencyPaymentDetails(

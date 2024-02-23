@@ -119,23 +119,39 @@ function getMonthDates(monthNumber) {
 // };
 
 const SeedCommand = async () => {
-  const documentsWithSameTitleAndUserId = await prisma.document.findMany({
+  const documents = await prisma.document.findMany({
     where: {
-      title: 'demat_document',
+      title: {
+        contains: 'agra',
+      },
+      status: 'REJECTED',
     },
-    select: {
-      id: true,
-      title: true,
-      userId: true,
+    include: {
+      user: true,
     },
   });
 
-  // Filter out documents with duplicate user IDs
-  const duplicates = documentsWithSameTitleAndUserId.filter(
-    (document, index, self) =>
-      index !== self.findIndex((d) => d.userId === document.userId)
+  documents.map((data) =>
+    console.log(data.title, data.amount, data.user.pw_id)
   );
-  console.log('-->', duplicates);
+
+  // const documentsWithSameTitleAndUserId = await prisma.document.findMany({
+  //   where: {
+  //     title: 'demat_document',
+  //   },
+  //   select: {
+  //     id: true,
+  //     title: true,
+  //     userId: true,
+  //   },
+  // });
+
+  // Filter out documents with duplicate user IDs
+  // const duplicates = documentsWithSameTitleAndUserId.filter(
+  //   (document, index, self) =>
+  //     index !== self.findIndex((d) => d.userId === document.userId)
+  // );
+  // console.log('-->', duplicates);
   // console.log(documentsWithSameTitleAndUserId);
 
   // const usersWithApprovedDematDocuments = await prisma.user.findMany({
