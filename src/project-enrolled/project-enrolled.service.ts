@@ -61,6 +61,7 @@ export class ProjectEnrolledService {
   // **************** Live Query For Project Enrollement ******* F
 
   async createlive(data: projectDataInput) {
+    console.log('here');
     const searchUser = await this.prisma.user.findFirst({
       where: {
         id: data.userId,
@@ -90,6 +91,8 @@ export class ProjectEnrolledService {
               ? 'Hajipur_Spice_Project'
               : data.project_payment_name === 'agra_project_payment'
               ? 'Agra_Mart_Project'
+              : data.project_payment_name === 'hyderabad_project_payment'
+              ? 'Hyderabad_Mart_Project'
               : 'Not in Project',
         },
       });
@@ -100,7 +103,6 @@ export class ProjectEnrolledService {
         totalPayment.toString()
       ) {
         // Update the existing record if the totalPayment has changed
-        console.log('About to update Status');
         await this.prisma.projectEnrolledStatus.update({
           where: { id: existingProjectEnrolled.id },
           data: {
@@ -109,10 +111,7 @@ export class ProjectEnrolledService {
         });
       }
       // If totalPayment hasn't changed, do nothing
-      console.log('already existed');
     } else {
-      // Create the projectEnrolledStatus record if it doesn't exist
-      console.log('About to create Status');
       await this.prisma.projectEnrolledStatus.create({
         data: {
           projectName:
@@ -120,6 +119,8 @@ export class ProjectEnrolledService {
               ? 'Hajipur_Spice_Project'
               : data.project_payment_name === 'agra_project_payment'
               ? 'Agra_Mart_Project'
+              : data.project_payment_name === 'hyderabad_project_payment'
+              ? 'Hyderabad_Mart_Project'
               : 'Not in Project',
           projectStatus: 'ENROLLED',
           userId: searchUser.id,
@@ -127,24 +128,6 @@ export class ProjectEnrolledService {
         },
       });
     }
-
-    // if (totalPayment > 0) {
-    //   // Create the projectEnrolledStatus record for each user
-    //   console.log('About to create Status');
-    //   const projectEnrolled = await this.prisma.projectEnrolledStatus.create({
-    //     data: {
-    //       projectName:
-    //         data.project_payment_name === 'hajipur_project_payment'
-    //           ? 'Hajipur_Spice_project'
-    //           : data.project_payment_name === 'agra_project_payment'
-    //           ? 'Agra_Mart_project'
-    //           : 'Not in Project',
-    //       projectStatus: 'ENROLLED',
-    //       userId: searchUser.id,
-    //       totalInvestedAmountinProject: totalPayment.toString(),
-    //     },
-    //   });
-    // }
 
     return 'This';
   }

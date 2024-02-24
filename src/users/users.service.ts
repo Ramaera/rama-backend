@@ -365,6 +365,17 @@ export class UsersService {
         amount: true, // Select the "amount" field
       },
     });
+    const hyderabadDocuments = await this.prisma.document.findMany({
+      where: {
+        title: {
+          contains: 'hyderabad', // Case-insensitive search for "hajipur" in title
+        },
+        status: 'APPROVED',
+      },
+      select: {
+        amount: true, // Select the "amount" field
+      },
+    });
 
     // Calculate the sum of "amount" for the filtered documents
     const totalHajipurAmount = hajipurDocuments.reduce(
@@ -375,8 +386,12 @@ export class UsersService {
       (sum, document) => sum + document.amount,
       0
     );
+    const totalHyderabadAmount = hyderabadDocuments.reduce(
+      (sum, document) => sum + document.amount,
+      0
+    );
 
-    return { totalHajipurAmount, totalAgraAmount };
+    return { totalHajipurAmount, totalAgraAmount, totalHyderabadAmount };
   }
 
   // ###################### Update Nominee Details ##################

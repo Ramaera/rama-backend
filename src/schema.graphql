@@ -659,6 +659,7 @@ input projectDataInput {
 type projectPaymentDTO {
   ProjectAgraAmountReceived: Int
   ProjectHajipurAmountReceived: Int
+  ProjectHyderabadAmountReceived: Int
 }
 
 type withdrawlRequest {
