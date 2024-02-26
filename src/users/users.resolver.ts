@@ -32,7 +32,9 @@ import { DocumentModal } from 'src/documents/models/document.models';
 import { SearchInput, SearchMembershipInput } from './dto/search-user.input';
 import { ShareHolderCountDTO, UserCountDTO } from './models/countUsers.model';
 import { projectPaymentDTO } from './models/projectPayment.model';
+import { Document } from 'src/documents/entities/document.entity';
 import { ProjectEnrolled } from 'src/project-enrolled/entities/project-enrolled.entity';
+import { UpdateDocumentUTRandAmountInput } from './dto/update-documentUTRandAmount.input';
 
 @Resolver(() => User)
 @UseGuards(GqlAuthGuard)
@@ -150,6 +152,12 @@ export class UsersResolver {
   @Mutation(() => User)
   async updateuserRole(@Args('data') newUserData: UpdateUserRoleInput) {
     return this.usersService.updateUserRole(newUserData);
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => Document)
+  async updateDocumentUTR(@Args('data') data: UpdateDocumentUTRandAmountInput) {
+    return this.usersService.updateDocumentmaountandUtr(data);
   }
 
   // *****************************  Changed Password   *******************************

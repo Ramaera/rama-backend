@@ -22,6 +22,7 @@ import {
   UpdateUserStatusAdmin,
 } from './dto/update-user-Admin.input ';
 import { Membership, User } from '@prisma/client';
+import { UpdateDocumentUTRandAmountInput } from './dto/update-documentUTRandAmount.input';
 
 @Injectable()
 export class UsersService {
@@ -121,6 +122,18 @@ export class UsersService {
     } catch (err) {
       throw new Error('Facing Some Issue. Please Try After some Time');
     }
+  }
+
+  async updateDocumentmaountandUtr(data: UpdateDocumentUTRandAmountInput) {
+    return await this.prisma.document.update({
+      data: {
+        utrNo: data.utrNo,
+        amount: data.amount,
+      },
+      where: {
+        id: data.documentId,
+      },
+    });
   }
 
   // **************************** Update User Kyc Status *************************

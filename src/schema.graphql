@@ -235,6 +235,7 @@ type Mutation {
   updateDataByAdmin(data: UpdateUserInputByAdmin!): User!
   updateDocument(data: UpdateDocumentsInput!): Document!
   updateDocumentStatusByAdmin(data: UpdateDocumentStatusByAdmin!): Document!
+  updateDocumentUTR(data: UpdateDocumentUTRandAmountInput!): Document!
   updateMembership(data: UpdateUserMembershipAdmin!): User!
   updateProjectEnrolled(updateProjectEnrolledInput: UpdateProjectEnrolledInput!): ProjectEnrolled!
   updateSalesChannel(updateSalesChannelInput: UpdateSalesChannelInput!): SalesChannel!
@@ -484,6 +485,12 @@ input UpdateDocumentStatusByAdmin {
   approvalDocumentDate: DateTime
   id: String!
   status: STATUS!
+}
+
+input UpdateDocumentUTRandAmountInput {
+  amount: Int
+  documentId: String
+  utrNo: String
 }
 
 input UpdateDocumentsInput {
