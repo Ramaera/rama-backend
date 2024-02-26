@@ -73,20 +73,29 @@ export class UsersService {
           alternate_mobile_number: newData.alternate_mobile_number,
           date_of_birth: newData.date_of_birth,
           demat_account: newData.demat_account,
-          documents: newData.documentId
-            ? {
-                update: {
-                  data: {
-                    utrNo: newData.utrNo,
-                    url: newData.url !== undefined ? newData.url : undefined, // Set to newData.url if provided, otherwise keep it unchanged
-                    amount: newData.amount,
+          documents:
+            newData.documentId && !newData.url
+              ? {
+                  update: {
+                    data: {
+                      utrNo: newData.utrNo,
+                      amount: newData.amount,
+                    },
+                    where: {
+                      id: newData.documentId,
+                    },
                   },
-                  where: {
-                    id: newData.documentId,
+                }
+              : newData.url
+              ? {
+                  update: {
+                    data: {
+                      url: newData.url,
+                    },
+                    where: { id: newData.documentId },
                   },
-                },
-              }
-            : undefined,
+                }
+              : undefined,
           nominee:
             newData.nomineeName || newData.nomineeRelationship
               ? {
