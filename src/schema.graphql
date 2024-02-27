@@ -80,7 +80,7 @@ scalar DateTime
 type Document {
   createdAt: DateTime!
   id: String!
-  status: String!
+  status: String
   title: String!
   updatedAt: DateTime!
   url: String!
@@ -232,11 +232,15 @@ type Mutation {
   removeSalesChannel(id: Int!): SalesChannel!
   removeShareholding(id: Int!): Shareholding!
   signup(data: SignupInput!): Auth!
+  updateBasicDetailsByAdmin(data: UpdateBasicDetailsInput!): User!
   updateDataByAdmin(data: UpdateUserInputByAdmin!): User!
+  updateDematDetailsByAdmin(data: UpdateDematDocumentsInput!): User!
   updateDocument(data: UpdateDocumentsInput!): Document!
+  updateDocumentByAdmin(data: UpdateDocumentInput!): Document!
   updateDocumentStatusByAdmin(data: UpdateDocumentStatusByAdmin!): Document!
   updateDocumentUTR(data: UpdateDocumentUTRandAmountInput!): Document!
   updateMembership(data: UpdateUserMembershipAdmin!): User!
+  updateNomineeDetailByAdmin(data: UpdateNomineeDetailsInput!): User!
   updateProjectEnrolled(updateProjectEnrolledInput: UpdateProjectEnrolledInput!): ProjectEnrolled!
   updateSalesChannel(updateSalesChannelInput: UpdateSalesChannelInput!): SalesChannel!
   updateShareholding(data: UpdateShareholdingInput!): Shareholding!
@@ -480,6 +484,30 @@ type Token {
   refreshToken: JWT!
 }
 
+input UpdateBasicDetailsInput {
+  Address: String
+  aadharCardNumber: String
+  alternate_mobile_number: String
+  date_of_birth: String
+  demat_account: String
+  email: String
+  father_or_husband_name: String
+  id: String
+  mobile_number: String
+  name: String
+  panCardNumber: String
+}
+
+input UpdateDematDocumentsInput {
+  demat_account: String
+  userId: String
+}
+
+input UpdateDocumentInput {
+  documentId: String
+  url: String
+}
+
 input UpdateDocumentStatusByAdmin {
   approvalDate: String
   approvalDocumentDate: DateTime
@@ -503,6 +531,12 @@ input UpdateDocumentsInput {
 input UpdateLicenseDetailsInput {
   id: String!
   licenseValidityInYear: Int!
+}
+
+input UpdateNomineeDetailsInput {
+  name: String
+  relationship: String
+  userId: String
 }
 
 input UpdateProjectEnrolledInput {

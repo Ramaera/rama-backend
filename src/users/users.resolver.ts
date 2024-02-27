@@ -35,6 +35,10 @@ import { projectPaymentDTO } from './models/projectPayment.model';
 import { Document } from 'src/documents/entities/document.entity';
 import { ProjectEnrolled } from 'src/project-enrolled/entities/project-enrolled.entity';
 import { UpdateDocumentUTRandAmountInput } from './dto/update-documentUTRandAmount.input';
+import { UpdateDocumentInput } from './dto/update-document.input';
+import { UpdateBasicDetailsInput } from './dto/update-BasicDetails.input';
+import { UpdateDematDocumentsInput } from './dto/update-dematDocument.input';
+import { UpdateNomineeDetailsInput } from './dto/update-nominee.input';
 
 @Resolver(() => User)
 @UseGuards(GqlAuthGuard)
@@ -146,12 +150,45 @@ export class UsersResolver {
     return this.usersService.DeleteUser(user.id);
   }
 
+  //  ********************************** Update Document Details ***********************
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => Document)
+  async updateDocumentByAdmin(@Args('data') data: UpdateDocumentInput) {
+    return this.usersService.updateDocumentUrlByAdmin(data);
+  }
+
+  // *********************** Update Basic Details By Admin *******************************
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => User)
+  async updateBasicDetailsByAdmin(@Args('data') data: UpdateBasicDetailsInput) {
+    return this.usersService.updateBasicDetailsByAdmin(data);
+  }
+
+  // *********************** Update Demat Details By Admin *******************************
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => User)
+  async updateDematDetailsByAdmin(
+    @Args('data') data: UpdateDematDocumentsInput
+  ) {
+    return this.usersService.updateDematDetailsByAdmin(data);
+  }
+
   // ********************************* Update User Role *******************************
 
   @UseGuards(GqlAuthGuard)
   @Mutation(() => User)
   async updateuserRole(@Args('data') newUserData: UpdateUserRoleInput) {
     return this.usersService.updateUserRole(newUserData);
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => User)
+  async updateNomineeDetailByAdmin(
+    @Args('data') newUserData: UpdateNomineeDetailsInput
+  ) {
+    return this.usersService.updateNomineeDetailsByAdmin(newUserData);
   }
 
   @UseGuards(GqlAuthGuard)

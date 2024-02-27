@@ -16,7 +16,7 @@ export class Document {
   @Field()
   id: string;
 
-  @Field()
+  @Field({ nullable: true })
   status: string;
 
   @Field()

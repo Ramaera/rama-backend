@@ -23,6 +23,10 @@ import {
 } from './dto/update-user-Admin.input ';
 import { Membership, User } from '@prisma/client';
 import { UpdateDocumentUTRandAmountInput } from './dto/update-documentUTRandAmount.input';
+import { UpdateDocumentInput } from './dto/update-document.input';
+import { UpdateBasicDetailsInput } from './dto/update-BasicDetails.input';
+import { UpdateDematDocumentsInput } from './dto/update-dematDocument.input';
+import { UpdateNomineeDetailsInput } from './dto/update-nominee.input';
 
 @Injectable()
 export class UsersService {
@@ -122,6 +126,58 @@ export class UsersService {
     } catch (err) {
       throw new Error('Facing Some Issue. Please Try After some Time');
     }
+  }
+
+  async updateBasicDetailsByAdmin(newData: UpdateBasicDetailsInput) {
+    return await this.prisma.user.update({
+      where: {
+        id: newData.id,
+      },
+      data: {
+        name: newData.name,
+        email: newData.email,
+        father_or_husband_name: newData.father_or_husband_name,
+        mobile_number: newData.mobile_number,
+        alternate_mobile_number: newData.alternate_mobile_number,
+        date_of_birth: newData.date_of_birth,
+      },
+    });
+  }
+
+  async updateDematDetailsByAdmin(newData: UpdateDematDocumentsInput) {
+    return await this.prisma.user.update({
+      where: {
+        id: newData.userId,
+      },
+      data: {
+        demat_account: newData.demat_account,
+      },
+    });
+  }
+
+  async updateNomineeDetailsByAdmin(newData: UpdateNomineeDetailsInput) {
+    return await this.prisma.nominee.update({
+      where: {
+        userId: newData.userId,
+      },
+      data: {
+        name: newData.name,
+        relationship: newData.relationship,
+      },
+    });
+  }
+
+  async updateDocumentUrlByAdmin(newData: UpdateDocumentInput) {
+    const data = await this.prisma.document.update({
+      where: {
+        id: newData.documentId,
+      },
+      data: {
+        url: newData.url,
+        status: 'PENDING',
+      },
+    });
+    return data;
   }
 
   async updateDocumentmaountandUtr(data: UpdateDocumentUTRandAmountInput) {
