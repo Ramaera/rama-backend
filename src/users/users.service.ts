@@ -346,35 +346,35 @@ export class UsersService {
       },
     });
 
-    const totalHajipurSubscribers = await this.prisma.user.count({
-      where: {
-        documents: {
-          some: {
-            title: {
-              contains: 'hajipur',
-            },
-          },
-        },
-      },
-    });
-    const totalAgraMartSubscribers = await this.prisma.user.count({
-      where: {
-        documents: {
-          some: {
-            title: {
-              contains: 'agra',
-            },
-          },
-        },
-      },
-    });
+    const totalHajipurSubscribers = this.totalProjectSubscribers('hajipur');
+    const totalAgraMartSubscribers = this.totalProjectSubscribers('agra');
+    const totalHyderbadMartSubscribers =
+      this.totalProjectSubscribers('hyderabad');
+
     return {
       totalSubscribers,
       totalBasicSubscribers,
       totalAdvanceSubscribers,
       totalHajipurSubscribers,
       totalAgraMartSubscribers,
+      totalHyderbadMartSubscribers,
     };
+  }
+
+  async totalProjectSubscribers(projectLocation: string) {
+    const SubscribersCount = await this.prisma.user.count({
+      where: {
+        documents: {
+          some: {
+            title: {
+              contains: projectLocation,
+            },
+            status: 'APPROVED',
+          },
+        },
+      },
+    });
+    return SubscribersCount;
   }
 
   // ************************* shareHolders Counts  ***********************

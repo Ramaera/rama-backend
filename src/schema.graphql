@@ -355,6 +355,7 @@ type Query {
   getAllUser(skip: Int! = 0, take: Int! = 5000): [User!]!
   getAllUsersCount: UserCountDTO!
   getDocumentDetails(id: String!): Document!
+  getProjectUserCount(title: String!): UserCountDTO!
   getProjectsPayment: projectPaymentDTO!
   getUserDetails(id: String!): User!
   hello(name: String!): String!
@@ -640,6 +641,7 @@ type UserCountDTO {
   totalAgraSubscribers: Int
   totalBasicSubscribers: Int
   totalHajipurSubscribers: Int
+  totalHyderabadSubscribers: Int
   totalSubscribers: Int
 }
 

@@ -225,7 +225,12 @@ export class UsersResolver {
       totalAdvanceSubscribers: totalUser.totalAdvanceSubscribers,
       totalHajipurSubscribers: totalUser.totalHajipurSubscribers,
       totalAgraSubscribers: totalUser.totalAgraMartSubscribers,
+      totalHyderabadSubscribers: totalUser.totalHyderbadMartSubscribers,
     };
+  }
+  @Query(() => UserCountDTO)
+  async getProjectUserCount(@Args('title') title: string) {
+    return this.usersService.totalProjectSubscribers(title);
   }
 
   //  ************************** Get All Users Count( With Basic Subscribers, Advance Subscribers, Hajipur Subscribers, Agra Subscribers) **************************

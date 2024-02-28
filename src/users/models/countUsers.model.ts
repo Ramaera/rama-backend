@@ -16,6 +16,9 @@ export class UserCountDTO {
 
   @Field(() => Int)
   totalAgraSubscribers?: number;
+
+  @Field(() => Int)
+  totalHyderabadSubscribers?: number;
 }
 
 @ObjectType()
