@@ -166,9 +166,9 @@ export class KycAgencyService {
         },
       });
 
-      basicKYCAmount = BasicKycApprovedUser.length * 200;
+      // basicKYCAmount = BasicKycApprovedUser.length * 200;
 
-      const AdvanceKYCApprovedUser = await this.prisma.user.findMany({
+      const AdvanceKycApprovedUser = await this.prisma.user.findMany({
         where: {
           referralAgencyCode: AgencyCode,
           membership: 'ADVANCE',
@@ -193,10 +193,14 @@ export class KycAgencyService {
           // },
         },
       });
-      totalKycUser =
-        BasicKycApprovedUser.length + AdvanceKYCApprovedUser.length;
 
-      advanceKYCAmount = AdvanceKYCApprovedUser.length * 200;
+      totalKycUser =
+        BasicKycApprovedUser.length + AdvanceKycApprovedUser.length;
+
+      const kycRewardAmount =
+        getStartAndEndDate(month, year).startDate >= '2024-02-01T00:00:00.000Z'
+          ? await this.getKycReferralAmount(totalKycUser)
+          : 200;
 
       const basicHajipurprojectDocument = await this.prisma.document.findMany({
         where: {
@@ -363,13 +367,15 @@ export class KycAgencyService {
       hajipurProjectAmount =
         basicHajipurAmount * 0.01 + advanceHajipurAmount * 0.01;
       agraProjectAmount = basicAgraAmount * 0.1 + advanceAgraAmount * 0.1;
-      kycAmount = basicKYCAmount + advanceKYCAmount;
+      kycAmount = totalKycUser * kycRewardAmount;
 
       return {
+        kycRewardAmount,
         hajipurProjectAmount,
         agraProjectAmount,
         kycAmount,
         BasicKycApprovedUser,
+        AdvanceKycApprovedUser,
         selfAgencyHajipurPaymentAmount,
         selfAgencyAgraPaymentAmount,
         selfHajipurInvestmentDocument,
@@ -409,7 +415,7 @@ export class KycAgencyService {
 
     basicKYCAmount = BasicKycApprovedUser.length * 200;
 
-    const AdvanceKYCApprovedUser = await this.prisma.user.findMany({
+    const AdvanceKycApprovedUser = await this.prisma.user.findMany({
       where: {
         referralAgencyCode: AgencyCode,
         membership: 'ADVANCE',
@@ -430,7 +436,7 @@ export class KycAgencyService {
       },
     });
 
-    advanceKYCAmount = AdvanceKYCApprovedUser.length * 200;
+    advanceKYCAmount = AdvanceKycApprovedUser.length * 200;
 
     const basicHajipurprojectDocument = await this.prisma.document.findMany({
       where: {
@@ -580,6 +586,7 @@ export class KycAgencyService {
       agraProjectAmount,
       kycAmount,
       BasicKycApprovedUser,
+      AdvanceKycApprovedUser,
       basicAgraprojectDocument,
       advanceAgraprojectDocument,
       basicHajipurprojectDocument,

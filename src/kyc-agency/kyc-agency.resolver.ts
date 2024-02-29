@@ -90,6 +90,8 @@ export class KycAgencyResolver {
       year,
       agencyCode
     );
+
+    console.log(data);
     return data;
   }
 

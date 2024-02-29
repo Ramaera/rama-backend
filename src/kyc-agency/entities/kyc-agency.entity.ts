@@ -97,6 +97,9 @@ export class KYCAGENYCPAYMENT {
   @Field(() => Int, { nullable: true })
   selfAgencyAgraPaymentAmount: number;
 
+  @Field(() => Int, { nullable: true })
+  kycRewardAmount?: number;
+
   @Field(() => [DocumentModal], { nullable: true })
   advanceHajipurprojectDocument: DocumentModal[];
 }

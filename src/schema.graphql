@@ -148,6 +148,7 @@ type KYCAGENYCPAYMENT {
   basicHajipurprojectDocument: [DocumentModal!]
   hajipurProjectAmount: Int
   kycAmount: Int
+  kycRewardAmount: Int
   selfAgencyAgraPaymentAmount: Int
   selfAgencyHajipurPaymentAmount: Int
   selfAgraInvestmentDocument: [DocumentModal!]
