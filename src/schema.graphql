@@ -27,6 +27,7 @@ input ChangePasswordWithPrivateKeyInput {
 }
 
 input CreateDocumentInput {
+  referralAgencyCode: String
   title: String!
   url: String!
 }
@@ -80,6 +81,7 @@ scalar DateTime
 type Document {
   createdAt: DateTime!
   id: String!
+  referralAgencyCode: String!
   status: String
   title: String!
   updatedAt: DateTime!
@@ -91,6 +93,7 @@ type DocumentModal {
   amount: Int
   createdAt: DateTime!
   id: String!
+  referralAgencyCode: String
   status: String
   title: String
   updatedAt: DateTime!

@@ -11,10 +11,15 @@ export class Document {
 
   @Field()
   title: string;
+
   @Field()
   url: string;
+
   @Field()
   id: string;
+
+  @Field()
+  referralAgencyCode: string;
 
   @Field({ nullable: true })
   status: string;

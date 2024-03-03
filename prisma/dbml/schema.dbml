@@ -50,6 +50,7 @@ Table KycAgency {
   ReferralProjectTransaction ReferralProjectTransaction [not null]
   SalesPerson SalesPerson [not null]
   ReferralSalesTransaction ReferralSalesTransaction [not null]
+  Document Document [not null]
 }
 
 Table Document {
@@ -60,6 +61,8 @@ Table Document {
   url String [not null]
   amount Int
   referralProjectMoneytoAgency ReferralProjectTransaction
+  agency KycAgency
+  referralAgencyCode String
   approvalDocumentDate DateTime
   approvalDate String
   userId String
@@ -279,6 +282,8 @@ Enum STATUS {
 }
 
 Ref: KycAgency.userId - User.id
+
+Ref: Document.referralAgencyCode > KycAgency.agencyCode
 
 Ref: Document.userId > User.id
 

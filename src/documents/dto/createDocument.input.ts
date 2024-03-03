@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, isNotEmpty } from 'class-validator';
 import { InputType, Field } from '@nestjs/graphql';
 
 @InputType()
@@ -10,4 +10,7 @@ export class CreateDocumentInput {
   @Field()
   @IsNotEmpty()
   title: string;
+
+  @Field()
+  referralAgencyCode?: string;
 }

@@ -25,6 +25,9 @@ export class DocumentModal extends BaseModel {
   @Field(() => String, { nullable: true })
   url?: string;
 
+  @Field(() => String, { nullable: true })
+  referralAgencyCode?: string;
+
   @Field(() => Number, { nullable: true })
   amount?: number;
 

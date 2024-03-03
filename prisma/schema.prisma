@@ -61,6 +61,7 @@ model KycAgency {
   ReferralProjectTransaction ReferralProjectTransaction[]
   SalesPerson                SalesPerson[]
   ReferralSalesTransaction   ReferralSalesTransaction[]
+  Document                   Document[]
 }
 
 model Document {
@@ -71,6 +72,8 @@ model Document {
   url                          String
   amount                       Int?
   referralProjectMoneytoAgency ReferralProjectTransaction?
+  agency                       KycAgency?                  @relation(fields: [referralAgencyCode], references: [agencyCode])
+  referralAgencyCode           String?
   approvalDocumentDate         DateTime?
   approvalDate                 String?
   userId                       String?

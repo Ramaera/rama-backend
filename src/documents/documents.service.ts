@@ -90,31 +90,4 @@ export class DocumentsService {
 
     return pendingTask;
   }
-
-  // async updatePaymentName() {
-  //   const users = this.prisma.user.findMany();
-
-  //   (await users).map(async (user) => {
-  //     const alldoc = await this.prisma.document.findMany({
-  //       where: {
-  //         userId: user.id,
-  //       },
-  //     });
-
-  //     alldoc.map((doc) => {
-  //       doc.title === 'hajipur_project_payment' ? console.log(doc.title) : '';
-  //     });
-  //   });
-
-  //   return 'XX';
-  // }
-
-  // async updateProjectEnrollementStatus(userId) {
-  //   this.prisma.projectEnrolledStatus.create({
-  //     data: {
-  //       id: userId,
-  //       projectName: '',
-  //     },
-  //   });
-  // }
 }

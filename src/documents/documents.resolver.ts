@@ -44,6 +44,7 @@ export class DocumentsResolver {
       data: {
         title: data.title,
         url: data.url,
+        referralAgencyCode: data.referralAgencyCode,
         userId: user.id,
       },
     });
