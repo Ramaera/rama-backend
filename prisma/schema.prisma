@@ -178,7 +178,7 @@ model ReferralProjectTransaction {
   userId       String
   documentId   String     @unique
   document     Document   @relation(fields: [documentId], references: [id])
-  pwID         String     @unique
+  pwID         String
   agencyCode   String
   transferDate DateTime?
   KycAgency    KycAgency? @relation(fields: [kycAgencyId], references: [id])
