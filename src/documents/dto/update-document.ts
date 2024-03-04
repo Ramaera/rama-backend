@@ -13,6 +13,9 @@ export class UpdateDocumentsInput {
   @Field({ nullable: true })
   url?: string;
 
+  @Field({ nullable: true })
+  referralAgencyCode?: string;
+
   @Field(() => STATUS, { nullable: true })
   status?: STATUS;
 }

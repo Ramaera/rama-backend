@@ -122,18 +122,52 @@ const SeedCommand = async () => {
   const documents = await prisma.document.findMany({
     where: {
       title: {
-        contains: 'agra',
+        contains: 'payment',
       },
-      status: 'REJECTED',
+      user: {
+        referralAgencyCode: {
+          contains: 'RLI',
+        },
+      },
     },
     include: {
       user: true,
     },
+    orderBy: [
+      {
+        title: 'desc',
+      },
+    ],
   });
-
-  documents.map((data) =>
-    console.log(data.title, data.amount, data.user.pw_id)
+  documents.map(
+    async (doc) => (
+      console.log(doc.title, doc.user.pw_id),
+      await prisma.document.update({
+        where: {
+          id: doc.id,
+        },
+        data: {
+          referralAgencyCode: doc.user.referralAgencyCode,
+        },
+      })
+    )
   );
+
+  // const documents = await prisma.document.findMany({
+  //   where: {
+  //     title: {
+  //       contains: 'agra',
+  //     },
+  //     status: 'REJECTED',
+  //   },
+  //   include: {
+  //     user: true,
+  //   },
+  // });
+
+  // documents.map((data) =>
+  //   console.log(data.title, data.amount, data.user.pw_id)
+  // );
 
   // const documentsWithSameTitleAndUserId = await prisma.document.findMany({
   //   where: {

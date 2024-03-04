@@ -528,6 +528,7 @@ input UpdateDocumentUTRandAmountInput {
 
 input UpdateDocumentsInput {
   id: String!
+  referralAgencyCode: String
   status: STATUS
   title: String
   url: String
