@@ -18,7 +18,7 @@ export class Document {
   @Field()
   id: string;
 
-  @Field()
+  @Field({ nullable: true })
   referralAgencyCode: string;
 
   @Field({ nullable: true })

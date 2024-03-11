@@ -233,6 +233,15 @@ model SalesPersonDocument {
   salesPersonId String
 }
 
+model AGREEMENT_DATA {
+  id                 String    @id @default(cuid())
+  createdAt          DateTime? @default(now())
+  pwId               String    @unique
+  agreementFieldData Json      @db.Json
+  agreementUrl       String?
+  isCompleted        Boolean   @default(false)
+}
+
 enum TYPE {
   CONFECTIONARY
   DISTRIBUTOR

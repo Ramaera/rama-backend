@@ -222,6 +222,15 @@ Table SalesPersonDocument {
   salesPersonId String [not null]
 }
 
+Table AGREEMENT_DATA {
+  id String [pk]
+  createdAt DateTime [default: `now()`]
+  pwId String [unique, not null]
+  agreementFieldData Json [not null]
+  agreementUrl String
+  isCompleted Boolean [not null, default: false]
+}
+
 Enum TYPE {
   CONFECTIONARY
   DISTRIBUTOR

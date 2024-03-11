@@ -2,6 +2,13 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type AgreementData {
+  agreementFieldData: JSONObject!
+  agreementUrl: String
+  isCompleted: Boolean!
+  pwId: String!
+}
+
 type AllKycAgency {
   agencyCode: String
   name: String
@@ -81,7 +88,7 @@ scalar DateTime
 type Document {
   createdAt: DateTime!
   id: String!
-  referralAgencyCode: String!
+  referralAgencyCode: String
   status: String
   title: String!
   updatedAt: DateTime!
@@ -352,6 +359,7 @@ type Query {
   findAgency(AgencyCode: String!): KycAgency!
   findreferralKycTransaction(userId: String!): KYCREFERRAL!
   findreferralProjectTransaction(documentId: String!): KYCREFERRAL!
+  getAgreementData(PWID: String!): AgreementData!
   getAllKycHandler: [KYCHANDLER!]!
   getAllKycReferral: [KYCREFERRAL!]!
   getAllProjectReferral: [PROJECTREFERRAL!]!

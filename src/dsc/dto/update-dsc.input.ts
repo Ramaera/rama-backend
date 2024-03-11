@@ -6,7 +6,7 @@ import {
   registerEnumType,
 } from '@nestjs/graphql';
 import { DSCSTATUS } from '@prisma/client';
-import { GraphQLJSONObject } from 'graphql-scalars';
+import { GraphQLJSONObject } from 'graphql-type-json';
 
 @InputType()
 export class UpdateDscInput {

@@ -1,8 +1,7 @@
 import { PrismaClient, Role } from '@prisma/client';
 import { User } from '@prisma/client';
 const prisma = new PrismaClient();
-import csv from 'papaparse';
-import fs from 'fs';
+
 // import { PasswordService } from 'src/auth/password.service';
 import { PasswordService } from 'src/auth/password.service';
 import { hash, compare } from 'bcrypt';
@@ -117,124 +116,49 @@ function getMonthDates(monthNumber) {
 //   //   )
 //   // );
 // };
-
+const fs = require('fs');
+const { parse } = require('csv-parse');
 const SeedCommand = async () => {
-  const documents = await prisma.document.findMany({
-    where: {
-      title: {
-        contains: 'payment',
-      },
-      user: {
-        referralAgencyCode: {
-          contains: 'RLI',
-        },
-      },
-    },
-    include: {
-      user: true,
-    },
-    orderBy: [
-      {
-        title: 'desc',
-      },
-    ],
-  });
-  documents.map(
-    async (doc) => (
-      console.log(doc.title, doc.user.pw_id),
-      await prisma.document.update({
-        where: {
-          id: doc.id,
-        },
-        data: {
-          referralAgencyCode: doc.user.referralAgencyCode,
-        },
-      })
-    )
-  );
-
-  // const documents = await prisma.document.findMany({
-  //   where: {
-  //     title: {
-  //       contains: 'agra',
-  //     },
-  //     status: 'REJECTED',
-  //   },
-  //   include: {
-  //     user: true,
-  //   },
-  // });
-
-  // documents.map((data) =>
-  //   console.log(data.title, data.amount, data.user.pw_id)
-  // );
-
-  // const documentsWithSameTitleAndUserId = await prisma.document.findMany({
-  //   where: {
-  //     title: 'demat_document',
-  //   },
-  //   select: {
-  //     id: true,
-  //     title: true,
-  //     userId: true,
-  //   },
-  // });
-
-  // Filter out documents with duplicate user IDs
-  // const duplicates = documentsWithSameTitleAndUserId.filter(
-  //   (document, index, self) =>
-  //     index !== self.findIndex((d) => d.userId === document.userId)
-  // );
-  // console.log('-->', duplicates);
-  // console.log(documentsWithSameTitleAndUserId);
-
-  // const usersWithApprovedDematDocuments = await prisma.user.findMany({
-  //   where: {
-  //     referralAgencyCode: 'RLI467186',
-  //     documents: {
-  //       some: {
-  //         title: {
-  //           contains: 'demat',
-  //         },
-  //         status: 'APPROVED',
-  //       },
-  //     },
-  //   },
-  //   select: {
-  //     id: true,
-  //     pw_id: true,
-  //     documents: {
-  //       select: {
-  //         title: true,
-  //         amount: true,
-  //         status: true,
-  //       },
-  //       where: {
-  //         title: {
-  //           contains: 'demat',
-  //         },
-  //         status: 'APPROVED',
-  //       },
-  //     },
-  //   },
-  // });
-
-  // The result will contain the desired information about users and their associated documents.
-
-  // ))
-  // const finalData = await prisma.document.findMany({
-  //   where: {
-  //     user: {
-  //       pw_id: USERPWID,
-  //     },
-  //   },
-  // });
-
-  // finalData.map((check) =>
-  //   console.log(check.title, check.amount, check.createdAt, check.status)
-  // );
-
-  // console.log(usersWithApprovedDematDocuments);
+  fs.createReadStream('prisma/AGREEMENT_DATA.csv')
+    .pipe(parse({ delimiter: ',', from_line: 2 }))
+    .on('data', async function (row) {
+      try {
+        await prisma.aGREEMENT_DATA.create({
+          data: {
+            pwId: row[1],
+            agreementFieldData: {
+              '1': row[2],
+              '2': row[3],
+              '3': row[4],
+              '4': row[5],
+              '5': row[6],
+              '6': row[7],
+              '7': row[8],
+              '8': row[9],
+              '9': row[10],
+              '10': row[11],
+              '11': row[12],
+              '12': row[13],
+              '13': row[14],
+              '14': row[15],
+              '15': row[16],
+              '16': row[17],
+              '17': row[18],
+            },
+            agreementUrl: null, // Assuming agreementUrl is not provided in the CSV
+            isCompleted: false,
+          },
+        });
+      } catch (err) {
+        console.log('err', err);
+      }
+    })
+    .on('error', function (error) {
+      console.log(error.message);
+    })
+    .on('end', function () {
+      console.log('finished');
+    });
 };
 
 async function main() {

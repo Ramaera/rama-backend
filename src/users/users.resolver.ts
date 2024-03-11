@@ -39,6 +39,7 @@ import { UpdateDocumentInput } from './dto/update-document.input';
 import { UpdateBasicDetailsInput } from './dto/update-BasicDetails.input';
 import { UpdateDematDocumentsInput } from './dto/update-dematDocument.input';
 import { UpdateNomineeDetailsInput } from './dto/update-nominee.input';
+import { AgreementData } from './entities/agreementData.entity';
 
 @Resolver(() => User)
 @UseGuards(GqlAuthGuard)
@@ -290,6 +291,17 @@ export class UsersResolver {
     return this.usersService.usersByMembership(input.searchTerm, {
       skip,
       take,
+    });
+  }
+
+  // --------------------- Get User Agreement Data ----------------------\
+
+  @Query(() => AgreementData)
+  async getAgreementData(@Args('PWID') PWID: string) {
+    return this.prisma.aGREEMENT_DATA.findUnique({
+      where: {
+        pwId: PWID,
+      },
     });
   }
 
