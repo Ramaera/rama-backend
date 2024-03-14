@@ -12,3 +12,4 @@ prisma/migrations/
 docker-compose-db.yml
 
 uploads/
+pdfAgreement/
