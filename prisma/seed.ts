@@ -119,36 +119,39 @@ function getMonthDates(monthNumber) {
 const fs = require('fs');
 const { parse } = require('csv-parse');
 const SeedCommand = async () => {
-  fs.createReadStream('prisma/AGREEMENT_DATA.csv')
+  const duplicate = [{}];
+  fs.createReadStream('prisma/KYCOLDDATA.csv')
     .pipe(parse({ delimiter: ',', from_line: 2 }))
     .on('data', async function (row) {
       try {
-        await prisma.aGREEMENT_DATA.create({
-          data: {
-            pwId: row[1],
-            agreementFieldData: {
-              '1': row[2],
-              '2': row[3],
-              '3': row[4],
-              '4': row[5],
-              '5': row[6],
-              '6': row[7],
-              '7': row[8],
-              '8': row[9],
-              '9': row[10],
-              '10': row[11],
-              '11': row[12],
-              '12': row[13],
-              '13': row[14],
-              '14': row[15],
-              '15': row[16],
-              '16': row[17],
-              '17': row[18],
-            },
-            agreementUrl: null, // Assuming agreementUrl is not provided in the CSV
-            isCompleted: false,
+        const userId = await prisma.user.findFirst({
+          where: {
+            pw_id: row[8].toUpperCase(),
           },
         });
+        const agencyCOdeId = await prisma.kycAgency.findUnique({
+          where: {
+            agencyCode: row[1],
+          },
+        });
+        const check = await prisma.referralKYCTransaction.findUnique({
+          where: {
+            pwID: row[8].toUpperCase(),
+          },
+        });
+        if (!check) {
+          await prisma.referralKYCTransaction.create({
+            data: {
+              userId: userId.id,
+              pwID: row[8],
+              agencyCode: row[1],
+              kycAgencyId: agencyCOdeId.id,
+              transferDate: new Date(row[3]),
+            },
+          });
+        }
+
+        duplicate.push({ PWID: row[8].toUpperCase(), kycAgency: row[1] });
       } catch (err) {
         console.log('err', err);
       }
@@ -158,6 +161,7 @@ const SeedCommand = async () => {
     })
     .on('end', function () {
       console.log('finished');
+      console.log('duplicate', duplicate);
     });
 };
 

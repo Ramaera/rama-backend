@@ -150,7 +150,10 @@ enum KYC {
 
 type KYCAGENYCPAYMENT {
   AdvanceKycApprovedUser: [User!]
+  AgraprojectDocument: [DocumentModal!]
   BasicKycApprovedUser: [User!]
+  HajipurprojectDocument: [DocumentModal!]
+  HyderabadprojectDocument: [DocumentModal!]
   advanceAgraprojectDocument: [DocumentModal!]
   advanceHajipurprojectDocument: [DocumentModal!]
   agraProjectAmount: Int
@@ -161,8 +164,10 @@ type KYCAGENYCPAYMENT {
   kycRewardAmount: Int
   selfAgencyAgraPaymentAmount: Int
   selfAgencyHajipurPaymentAmount: Int
+  selfAgencyHyderabadPaymentAmount: Int
   selfAgraInvestmentDocument: [DocumentModal!]
   selfHajipurInvestmentDocument: [DocumentModal!]
+  selfHyderabadInvestmentDocument: [DocumentModal!]
 }
 
 type KYCHANDLER {
@@ -224,6 +229,7 @@ enum Membership {
 
 type Mutation {
   TransactionToWallet(transactionToWallet: WalletTransactionInput!): Wallet!
+  UpdateAgreementData(PWID: String!, url: String!): AgreementData!
   UpdateLicenseDetails(data: UpdateLicenseDetailsInput!): User!
   changePassword(data: ChangePasswordInput!): User!
   createDocument(data: CreateDocumentInput!): Document!
@@ -355,6 +361,7 @@ type Query {
   agencyWithdrawlRequest(agencyCode: String!): [withdrawlRequest!]!
   allKycUser(input: SearchMembershipInput!, skip: Int! = 0, take: Int! = 100): [User!]!
   allprojectEnrolleds: [ProjectEnrolled!]!
+  checkAgreementDataStatus(pwid: String!): AgreementData!
   dsc(id: Int!): DscOutputDataField!
   findAgency(AgencyCode: String!): KycAgency!
   findreferralKycTransaction(userId: String!): KYCREFERRAL!

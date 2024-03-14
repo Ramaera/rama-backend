@@ -143,6 +143,7 @@ export class KycAgencyService {
       let kycAmount = 0;
       let selfProjectAmount = 0;
       let hajipurProjectAmount = 0;
+      let hyderabadProjectAmount = 0;
       let agraProjectAmount = 0;
 
       const BasicKycApprovedUser = await this.prisma.user.findMany({
@@ -202,128 +203,24 @@ export class KycAgencyService {
           ? await this.getKycReferralAmount(totalKycUser)
           : 200;
 
-      const basicHajipurprojectDocument = await this.prisma.document.findMany({
-        where: {
-          approvalDocumentDate: {
-            gte: getLocalDateData.startDate,
-            lte: getLocalDateData.endDate,
-          },
-          title: {
-            contains: 'hajipur',
-          },
-          status: 'APPROVED',
-          user: {
-            referralAgencyCode: AgencyCode,
-            membership: 'BASIC',
-            isKycAgent: false,
-            documents: {
-              some: {
-                title: {
-                  contains: 'demat_document',
-                },
-                status: 'APPROVED',
-              },
-            },
-          },
-        },
-        include: {
-          user: true,
-        },
-      });
-
-      const advanceHajipurprojectDocument = await this.prisma.document.findMany(
-        {
-          where: {
-            approvalDocumentDate: {
-              gte: getLocalDateData.startDate,
-              lte: getLocalDateData.endDate,
-            },
-            title: {
-              contains: 'hajipur',
-            },
-            status: 'APPROVED',
-            user: {
-              referralAgencyCode: AgencyCode,
-              membership: 'ADVANCE',
-              isKycAgent: false,
-              documents: {
-                some: {
-                  title: {
-                    contains: 'demat_document',
-                  },
-                  status: 'APPROVED',
-                },
-              },
-              // DSCDetails: {
-              //   some: {
-              //     DSCStatus: 'RECEIVED',
-              //   },
-              // },
-            },
-          },
-          include: {
-            user: true,
-          },
-        }
+      const HajipurprojectDocument = await this.getProjectReferralAmount(
+        month,
+        year,
+        'hajipur',
+        AgencyCode
       );
-
-      const basicAgraprojectDocument = await this.prisma.document.findMany({
-        where: {
-          approvalDocumentDate: {
-            gte: getLocalDateData.startDate,
-            lte: getLocalDateData.endDate,
-          },
-          title: {
-            contains: 'agra',
-          },
-          status: 'APPROVED',
-          user: {
-            referralAgencyCode: AgencyCode,
-            membership: 'BASIC',
-            isKycAgent: false,
-            documents: {
-              some: {
-                title: {
-                  contains: 'demat_document',
-                },
-                status: 'APPROVED',
-              },
-            },
-          },
-        },
-        include: {
-          user: true,
-        },
-      });
-
-      const advanceAgraprojectDocument = await this.prisma.document.findMany({
-        where: {
-          approvalDocumentDate: {
-            gte: getLocalDateData.startDate,
-            lte: getLocalDateData.endDate,
-          },
-          title: {
-            contains: 'agra',
-          },
-          status: 'APPROVED',
-          user: {
-            referralAgencyCode: AgencyCode,
-            membership: 'ADVANCE',
-            isKycAgent: false,
-            documents: {
-              some: {
-                title: {
-                  contains: 'demat_document',
-                },
-                status: 'APPROVED',
-              },
-            },
-          },
-        },
-        include: {
-          user: true,
-        },
-      });
+      const AgraprojectDocument = await this.getProjectReferralAmount(
+        month,
+        year,
+        'agra',
+        AgencyCode
+      );
+      const HyderabadprojectDocument = await this.getProjectReferralAmount(
+        month,
+        year,
+        'hyderabad',
+        AgencyCode
+      );
 
       const {
         finalProjectAmount: selfAgencyHajipurPaymentAmount,
@@ -344,29 +241,35 @@ export class KycAgencyService {
         'agra'
       );
 
-      let basicHajipurAmount = 0;
-      basicHajipurprojectDocument.map((data) => {
-        basicHajipurAmount += data?.amount;
+      const {
+        finalProjectAmount: selfAgencyHyderabadPaymentAmount,
+        paymentDocument: selfHyderabadInvestmentDocument,
+      } = await this.getSelfAgencyPaymentDetails(
+        month,
+        year,
+        AgencyCode,
+        'hyderabad'
+      );
+
+      let HajipurAmount = 0;
+      HajipurprojectDocument.map((data) => {
+        HajipurAmount += data?.amount;
       });
 
-      let advanceHajipurAmount = 0;
-      advanceHajipurprojectDocument.map((data) => {
-        advanceHajipurAmount += data?.amount;
+      let AgraAmount = 0;
+      AgraprojectDocument.map((data) => {
+        AgraAmount += data?.amount;
+      });
+      let HyderabadAmount = 0;
+      HyderabadprojectDocument.map((data) => {
+        HyderabadAmount += data?.amount;
       });
 
-      let basicAgraAmount = 0;
-      basicAgraprojectDocument.map((data) => {
-        basicAgraAmount += data?.amount;
-      });
+      hajipurProjectAmount = HajipurAmount * 0.01;
+      agraProjectAmount = AgraAmount * 0.1;
+      // Todo multiply Hyderabad
+      hyderabadProjectAmount = HyderabadAmount;
 
-      let advanceAgraAmount = 0;
-      advanceAgraprojectDocument.map((data) => {
-        advanceAgraAmount += data?.amount;
-      });
-
-      hajipurProjectAmount =
-        basicHajipurAmount * 0.01 + advanceHajipurAmount * 0.01;
-      agraProjectAmount = basicAgraAmount * 0.1 + advanceAgraAmount * 0.1;
       kycAmount = totalKycUser * kycRewardAmount;
 
       return {
@@ -376,14 +279,15 @@ export class KycAgencyService {
         kycAmount,
         BasicKycApprovedUser,
         AdvanceKycApprovedUser,
+        selfAgencyHyderabadPaymentAmount,
         selfAgencyHajipurPaymentAmount,
+        selfHyderabadInvestmentDocument,
         selfAgencyAgraPaymentAmount,
         selfHajipurInvestmentDocument,
         selfAgraInvestmentDocument,
-        basicAgraprojectDocument,
-        advanceAgraprojectDocument,
-        basicHajipurprojectDocument,
-        advanceHajipurprojectDocument,
+        HajipurprojectDocument,
+        AgraprojectDocument,
+        HyderabadprojectDocument,
       };
     }
     let basicKYCAmount = 0;
@@ -487,11 +391,6 @@ export class KycAgencyService {
               status: 'APPROVED',
             },
           },
-          // DSCDetails: {
-          //   some: {
-          //     DSCStatus: 'RECEIVED',
-          //   },
-          // },
         },
       },
       include: {
@@ -609,6 +508,30 @@ export class KycAgencyService {
         return range.amount;
       }
     }
+  }
+
+  async getProjectReferralAmount(month, year, projectTitle, agencyCode) {
+    const getLocalDateData = getStartAndEndDate(month, year);
+    const projectDocumentData = await this.prisma.document.findMany({
+      where: {
+        approvalDocumentDate: {
+          gte: getLocalDateData.startDate,
+          lte: getLocalDateData.endDate,
+        },
+        title: {
+          contains: projectTitle,
+        },
+        status: 'APPROVED',
+        referralAgencyCode: agencyCode.toLocaleUpperCase(),
+        user: {
+          isKycAgent: false,
+        },
+      },
+      include: {
+        user: true,
+      },
+    });
+    return projectDocumentData;
   }
 
   async getSelfAgencyPaymentDetails(

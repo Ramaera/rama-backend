@@ -316,4 +316,17 @@ export class UsersResolver {
     );
     return 'xx';
   }
+
+  @Mutation(() => AgreementData)
+  async UpdateAgreementData(
+    @Args('url') agreementUrl: string,
+    @Args('PWID') pwid: string
+  ) {
+    return this.usersService.updateAgreemnetData(agreementUrl, pwid);
+  }
+
+  @Query(() => AgreementData)
+  async checkAgreementDataStatus(@Args('pwid') pwid: string) {
+    return this.usersService.checkAgreementStatus(pwid);
+  }
 }

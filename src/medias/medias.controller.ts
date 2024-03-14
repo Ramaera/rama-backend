@@ -10,7 +10,7 @@ import {
   Request,
   Param,
 } from '@nestjs/common';
-import { createReadStream } from 'fs';
+import { ReadStream, createReadStream } from 'fs';
 import { join } from 'path';
 import Express from 'express';
 
@@ -104,5 +104,65 @@ export class MediasController {
       join(process.cwd(), `uploads/${params.name}`)
     );
     return new StreamableFile(file);
+  }
+
+  @Post('pdfUpload')
+  @UseInterceptors(
+    FileInterceptor('document', {
+      storage: diskStorage({
+        destination: './pdfAgreement',
+        filename: (req, file, callback) => {
+          // Use the original filename provided by the client
+
+          callback(null, `${file.originalname}.pdf`);
+        },
+      }),
+      fileFilter: pdfFileFilter,
+      limits: {
+        fileSize: 1024 * 1024 * 20, // 20MB file size limit
+      },
+    })
+  )
+  @ApiBody({
+    description: 'Upload PDF document',
+    type: 'multipart/form-data',
+    schema: {
+      type: 'object',
+      properties: {
+        document: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  uploadSinglePDF(@UploadedFile() file, @Headers() header) {
+    const origin = header.host;
+    const url = `https://${origin}/documents/pdf/${file.filename}`;
+
+    const response = {
+      originalname: file.originalname,
+      filename: file.filename,
+      url,
+    };
+    return response;
+  }
+
+  @Get('pdf/:name')
+  getPDFFile(@Param() params): StreamableFile {
+    const file = createReadStream(
+      join(process.cwd(), `pdfAgreement/${params.name}`)
+    );
+    return new StreamableFile(file);
+  }
+}
+
+// Function to filter PDF files
+function pdfFileFilter(req, file, callback) {
+  const allowedMimes = ['application/pdf'];
+  if (allowedMimes.includes(file.mimetype)) {
+    callback(null, true);
+  } else {
+    callback(new Error('Only PDF files are allowed!'));
   }
 }

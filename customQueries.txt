@@ -1,0 +1,47 @@
+ Seed Agreement Data
+
+
+
+ 
+ const SeedCommand = async () => {
+  fs.createReadStream('prisma/AGREEMENT_DATA.csv')
+    .pipe(parse({ delimiter: ',', from_line: 2 }))
+    .on('data', async function (row) {
+      try {
+        await prisma.aGREEMENT_DATA.create({
+          data: {
+            pwId: row[1],
+            agreementFieldData: {
+              '1': row[2],
+              '2': row[3],
+              '3': row[4],
+              '4': row[5],
+              '5': row[6],
+              '6': row[7],
+              '7': row[8],
+              '8': row[9],
+              '9': row[10],
+              '10': row[11],
+              '11': row[12],
+              '12': row[13],
+              '13': row[14],
+              '14': row[15],
+              '15': row[16],
+              '16': row[17],
+              '17': row[18],
+            },
+            agreementUrl: null, // Assuming agreementUrl is not provided in the CSV
+            isCompleted: false,
+          },
+        });
+      } catch (err) {
+        console.log('err', err);
+      }
+    })
+    .on('error', function (error) {
+      console.log(error.message);
+    })
+    .on('end', function () {
+      console.log('finished');
+    });
+};

@@ -600,4 +600,25 @@ export class UsersService {
       },
     });
   }
+
+  //  *********
+  async updateAgreemnetData(url, pwid) {
+    return await this.prisma.aGREEMENT_DATA.update({
+      data: {
+        agreementUrl: url,
+        isCompleted: true,
+      },
+      where: {
+        pwId: pwid.toUpperCase(),
+      },
+    });
+  }
+
+  async checkAgreementStatus(pwid) {
+    return await this.prisma.aGREEMENT_DATA.findUnique({
+      where: {
+        pwId: pwid,
+      },
+    });
+  }
 }
