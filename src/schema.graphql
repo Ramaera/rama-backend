@@ -155,6 +155,7 @@ type KYCAGENYCPAYMENT {
   KycApprovedUser: [User!]
   agraProjectAmount: Int
   hajipurProjectAmount: Int
+  hyderabadProjectAmount: Int
   kycAmount: Int
   kycRewardAmount: Int
   selfAgencyAgraPaymentAmount: Int

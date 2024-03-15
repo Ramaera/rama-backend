@@ -260,16 +260,14 @@ export class KycAgencyService {
 
       hajipurProjectAmount = HajipurAmount * 0.01;
       agraProjectAmount = AgraAmount * 0.1;
-      // Todo multiply Hyderabad
       hyderabadProjectAmount = HyderabadAmount * 0.1;
-
       kycAmount = totalKycUser * kycRewardAmount;
-
       return {
         kycRewardAmount,
         hajipurProjectAmount,
         agraProjectAmount,
         kycAmount,
+        hyderabadProjectAmount,
         selfAgencyHyderabadPaymentAmount,
         selfAgencyHajipurPaymentAmount,
         selfHyderabadInvestmentDocument,

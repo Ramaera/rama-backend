@@ -68,6 +68,9 @@ export class KYCAGENYCPAYMENT {
   agraProjectAmount: number;
 
   @Field(() => Int, { nullable: true })
+  hyderabadProjectAmount: number;
+
+  @Field(() => Int, { nullable: true })
   kycAmount: number;
 
   @Field(() => [User], { nullable: true })
