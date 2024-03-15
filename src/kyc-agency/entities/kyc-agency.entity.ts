@@ -71,19 +71,10 @@ export class KYCAGENYCPAYMENT {
   kycAmount: number;
 
   @Field(() => [User], { nullable: true })
-  BasicKycApprovedUser: User[];
-
-  @Field(() => [User], { nullable: true })
-  AdvanceKycApprovedUser: User[];
+  KycApprovedUser: User[];
 
   @Field(() => [DocumentModal], { nullable: true })
-  basicAgraprojectDocument: DocumentModal[];
-
-  @Field(() => [DocumentModal], { nullable: true })
-  advanceAgraprojectDocument: DocumentModal[];
-
-  @Field(() => [DocumentModal], { nullable: true })
-  basicHajipurprojectDocument: DocumentModal[];
+  HajipurprojectDocument: DocumentModal[];
 
   @Field(() => [DocumentModal], { nullable: true })
   selfAgraInvestmentDocument: DocumentModal[];
@@ -96,9 +87,6 @@ export class KYCAGENYCPAYMENT {
 
   @Field(() => [DocumentModal], { nullable: true })
   HyderabadprojectDocument: DocumentModal[];
-
-  @Field(() => [DocumentModal], { nullable: true })
-  HajipurprojectDocument: DocumentModal[];
 
   @Field(() => [DocumentModal], { nullable: true })
   selfHyderabadInvestmentDocument: DocumentModal[];
@@ -114,7 +102,4 @@ export class KYCAGENYCPAYMENT {
 
   @Field(() => Int, { nullable: true })
   kycRewardAmount?: number;
-
-  @Field(() => [DocumentModal], { nullable: true })
-  advanceHajipurprojectDocument: DocumentModal[];
 }

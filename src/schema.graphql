@@ -149,16 +149,11 @@ enum KYC {
 }
 
 type KYCAGENYCPAYMENT {
-  AdvanceKycApprovedUser: [User!]
   AgraprojectDocument: [DocumentModal!]
-  BasicKycApprovedUser: [User!]
   HajipurprojectDocument: [DocumentModal!]
   HyderabadprojectDocument: [DocumentModal!]
-  advanceAgraprojectDocument: [DocumentModal!]
-  advanceHajipurprojectDocument: [DocumentModal!]
+  KycApprovedUser: [User!]
   agraProjectAmount: Int
-  basicAgraprojectDocument: [DocumentModal!]
-  basicHajipurprojectDocument: [DocumentModal!]
   hajipurProjectAmount: Int
   kycAmount: Int
   kycRewardAmount: Int

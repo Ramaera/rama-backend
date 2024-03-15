@@ -146,10 +146,9 @@ export class KycAgencyService {
       let hyderabadProjectAmount = 0;
       let agraProjectAmount = 0;
 
-      const BasicKycApprovedUser = await this.prisma.user.findMany({
+      const KycApprovedUser = await this.prisma.user.findMany({
         where: {
           referralAgencyCode: AgencyCode,
-          membership: 'BASIC',
           kyc: 'APPROVED',
           createdAt: {
             gte: agencyCreationDate.createdAt,
@@ -169,34 +168,28 @@ export class KycAgencyService {
 
       // basicKYCAmount = BasicKycApprovedUser.length * 200;
 
-      const AdvanceKycApprovedUser = await this.prisma.user.findMany({
-        where: {
-          referralAgencyCode: AgencyCode,
-          membership: 'ADVANCE',
-          kyc: 'APPROVED',
-          createdAt: {
-            gte: agencyCreationDate.createdAt,
-          },
-          documents: {
-            some: {
-              status: 'APPROVED',
-              title: 'demat_document',
-              approvalDocumentDate: {
-                gte: getLocalDateData.startDate,
-                lte: getLocalDateData.endDate,
-              },
-            },
-          },
-          // DSCDetails: {
-          //   some: {
-          //     DSCStatus: 'RECEIVED',
-          //   },
-          // },
-        },
-      });
+      // const AdvanceKycApprovedUser = await this.prisma.user.findMany({
+      //   where: {
+      //     referralAgencyCode: AgencyCode,
+      //     membership: 'ADVANCE',
+      //     kyc: 'APPROVED',
+      //     createdAt: {
+      //       gte: agencyCreationDate.createdAt,
+      //     },
+      //     documents: {
+      //       some: {
+      //         status: 'APPROVED',
+      //         title: 'demat_document',
+      //         approvalDocumentDate: {
+      //           gte: getLocalDateData.startDate,
+      //           lte: getLocalDateData.endDate,
+      //         },
+      //       },
+      //     },
+      //   },
+      // });
 
-      totalKycUser =
-        BasicKycApprovedUser.length + AdvanceKycApprovedUser.length;
+      totalKycUser = KycApprovedUser.length;
 
       const kycRewardAmount =
         getStartAndEndDate(month, year).startDate >= '2024-02-01T00:00:00.000Z'
@@ -268,7 +261,7 @@ export class KycAgencyService {
       hajipurProjectAmount = HajipurAmount * 0.01;
       agraProjectAmount = AgraAmount * 0.1;
       // Todo multiply Hyderabad
-      hyderabadProjectAmount = HyderabadAmount;
+      hyderabadProjectAmount = HyderabadAmount * 0.1;
 
       kycAmount = totalKycUser * kycRewardAmount;
 
@@ -277,8 +270,6 @@ export class KycAgencyService {
         hajipurProjectAmount,
         agraProjectAmount,
         kycAmount,
-        BasicKycApprovedUser,
-        AdvanceKycApprovedUser,
         selfAgencyHyderabadPaymentAmount,
         selfAgencyHajipurPaymentAmount,
         selfHyderabadInvestmentDocument,
@@ -290,16 +281,15 @@ export class KycAgencyService {
         HyderabadprojectDocument,
       };
     }
-    let basicKYCAmount = 0;
-    let advanceKYCAmount = 0;
+    // let basicKYCAmount = 0;
+    // let advanceKYCAmount = 0;
     let kycAmount = 0;
     let hajipurProjectAmount = 0;
     let agraProjectAmount = 0;
 
-    const BasicKycApprovedUser = await this.prisma.user.findMany({
+    const KycApprovedUser = await this.prisma.user.findMany({
       where: {
         referralAgencyCode: AgencyCode,
-        membership: 'BASIC',
         kyc: 'APPROVED',
         createdAt: {
           gte: agencyCreationDate.createdAt,
@@ -316,33 +306,7 @@ export class KycAgencyService {
         },
       },
     });
-
-    basicKYCAmount = BasicKycApprovedUser.length * 200;
-
-    const AdvanceKycApprovedUser = await this.prisma.user.findMany({
-      where: {
-        referralAgencyCode: AgencyCode,
-        membership: 'ADVANCE',
-        kyc: 'APPROVED',
-        createdAt: {
-          gte: agencyCreationDate.createdAt,
-        },
-        documents: {
-          some: {
-            status: 'APPROVED',
-            title: 'demat_document',
-            approvalDocumentDate: {
-              gte: getLocalDateData.startDate,
-              lte: getLocalDateData.endDate,
-            },
-          },
-        },
-      },
-    });
-
-    advanceKYCAmount = AdvanceKycApprovedUser.length * 200;
-
-    const basicHajipurprojectDocument = await this.prisma.document.findMany({
+    const HajipurprojectDocument = await this.prisma.document.findMany({
       where: {
         approvalDocumentDate: {
           gte: getLocalDateData.startDate,
@@ -354,7 +318,6 @@ export class KycAgencyService {
         status: 'APPROVED',
         user: {
           referralAgencyCode: AgencyCode,
-          membership: 'BASIC',
           documents: {
             some: {
               title: {
@@ -370,63 +333,35 @@ export class KycAgencyService {
       },
     });
 
-    const advanceHajipurprojectDocument = await this.prisma.document.findMany({
-      where: {
-        approvalDocumentDate: {
-          gte: getLocalDateData.startDate,
-          lte: getLocalDateData.endDate,
-        },
-        title: {
-          contains: 'hajipur',
-        },
-        status: 'APPROVED',
-        user: {
-          referralAgencyCode: AgencyCode,
-          membership: 'ADVANCE',
-          documents: {
-            some: {
-              title: {
-                contains: 'demat_document',
-              },
-              status: 'APPROVED',
-            },
-          },
-        },
-      },
-      include: {
-        user: true,
-      },
-    });
+    // const advanceHajipurprojectDocument = await this.prisma.document.findMany({
+    //   where: {
+    //     approvalDocumentDate: {
+    //       gte: getLocalDateData.startDate,
+    //       lte: getLocalDateData.endDate,
+    //     },
+    //     title: {
+    //       contains: 'hajipur',
+    //     },
+    //     status: 'APPROVED',
+    //     user: {
+    //       referralAgencyCode: AgencyCode,
+    //       membership: 'ADVANCE',
+    //       documents: {
+    //         some: {
+    //           title: {
+    //             contains: 'demat_document',
+    //           },
+    //           status: 'APPROVED',
+    //         },
+    //       },
+    //     },
+    //   },
+    //   include: {
+    //     user: true,
+    //   },
+    // });
 
-    const basicAgraprojectDocument = await this.prisma.document.findMany({
-      where: {
-        approvalDocumentDate: {
-          gte: getLocalDateData.startDate,
-          lte: getLocalDateData.endDate,
-        },
-        title: {
-          contains: 'agra',
-        },
-        status: 'APPROVED',
-        user: {
-          referralAgencyCode: AgencyCode,
-          membership: 'BASIC',
-          documents: {
-            some: {
-              title: {
-                contains: 'demat_document',
-              },
-              status: 'APPROVED',
-            },
-          },
-        },
-      },
-      include: {
-        user: true,
-      },
-    });
-
-    const advanceAgraprojectDocument = await this.prisma.document.findMany({
+    const AgraprojectDocument = await this.prisma.document.findMany({
       where: {
         approvalDocumentDate: {
           gte: getLocalDateData.startDate,
@@ -438,8 +373,6 @@ export class KycAgencyService {
         status: 'APPROVED',
         user: {
           referralAgencyCode: AgencyCode,
-          membership: 'ADVANCE',
-          isKycAgent: false,
           documents: {
             some: {
               title: {
@@ -455,41 +388,29 @@ export class KycAgencyService {
       },
     });
 
-    let basicHajipurAmount = 0;
-    basicHajipurprojectDocument.map((data) => {
-      basicHajipurAmount += data?.amount;
+    let HajipurAmount = 0;
+    HajipurprojectDocument.map((data) => {
+      HajipurAmount += data?.amount;
     });
 
-    let advanceHajipurAmount = 0;
-    advanceHajipurprojectDocument.map((data) => {
-      advanceHajipurAmount += data?.amount;
+    let AgraAmount = 0;
+    AgraprojectDocument.map((data) => {
+      AgraAmount += data?.amount;
     });
 
-    let basicAgraAmount = 0;
-    basicAgraprojectDocument.map((data) => {
-      basicAgraAmount += data?.amount;
-    });
-
-    let advanceAgraAmount = 0;
-    advanceAgraprojectDocument.map((data) => {
-      advanceAgraAmount += data?.amount;
-    });
-
-    hajipurProjectAmount =
-      basicHajipurAmount * 0.01 + advanceHajipurAmount * 0.01;
-    agraProjectAmount = basicAgraAmount * 0.1 + advanceAgraAmount * 0.1;
-    kycAmount = basicKYCAmount + advanceKYCAmount;
+    hajipurProjectAmount = HajipurAmount * 0.01;
+    agraProjectAmount = AgraAmount * 0.1;
+    kycAmount = KycApprovedUser.length * 200;
 
     return {
       hajipurProjectAmount,
       agraProjectAmount,
       kycAmount,
-      BasicKycApprovedUser,
-      AdvanceKycApprovedUser,
-      basicAgraprojectDocument,
-      advanceAgraprojectDocument,
-      basicHajipurprojectDocument,
-      advanceHajipurprojectDocument,
+      KycApprovedUser,
+
+      AgraprojectDocument,
+
+      HajipurprojectDocument,
     };
   }
 
