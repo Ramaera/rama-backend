@@ -45,3 +45,55 @@
       console.log('finished');
     });
 };
+
+
+
+
+
+
+
+// Second Query
+  const duplicate = [{}];
+  fs.createReadStream('prisma/KYCOLDDATA.csv')
+    .pipe(parse({ delimiter: ',', from_line: 2 }))
+    .on('data', async function (row) {
+      try {
+        const userId = await prisma.user.findFirst({
+          where: {
+            pw_id: row[8].toUpperCase(),
+          },
+        });
+        const agencyCOdeId = await prisma.kycAgency.findUnique({
+          where: {
+            agencyCode: row[1],
+          },
+        });
+        const check = await prisma.referralKYCTransaction.findUnique({
+          where: {
+            pwID: row[8].toUpperCase(),
+          },
+        });
+        if (!check) {
+          await prisma.referralKYCTransaction.create({
+            data: {
+              userId: userId.id,
+              pwID: row[8],
+              agencyCode: row[1],
+              kycAgencyId: agencyCOdeId.id,
+              transferDate: new Date(row[3]),
+            },
+          });
+        }
+
+        duplicate.push({ PWID: row[8].toUpperCase(), kycAgency: row[1] });
+      } catch (err) {
+        console.log('err', err);
+      }
+    })
+    .on('error', function (error) {
+      console.log(error.message);
+    })
+    .on('end', function () {
+      console.log('finished');
+      console.log('duplicate', duplicate);
+    });

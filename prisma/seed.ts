@@ -119,50 +119,45 @@ function getMonthDates(monthNumber) {
 const fs = require('fs');
 const { parse } = require('csv-parse');
 const SeedCommand = async () => {
-  const duplicate = [{}];
-  fs.createReadStream('prisma/KYCOLDDATA.csv')
-    .pipe(parse({ delimiter: ',', from_line: 2 }))
-    .on('data', async function (row) {
-      try {
-        const userId = await prisma.user.findFirst({
-          where: {
-            pw_id: row[8].toUpperCase(),
-          },
-        });
-        const agencyCOdeId = await prisma.kycAgency.findUnique({
-          where: {
-            agencyCode: row[1],
-          },
-        });
-        const check = await prisma.referralKYCTransaction.findUnique({
-          where: {
-            pwID: row[8].toUpperCase(),
-          },
-        });
-        if (!check) {
-          await prisma.referralKYCTransaction.create({
-            data: {
-              userId: userId.id,
-              pwID: row[8],
-              agencyCode: row[1],
-              kycAgencyId: agencyCOdeId.id,
-              transferDate: new Date(row[3]),
-            },
-          });
-        }
+  const allPayment = await prisma.document.findMany({
+    where: {
+      AND: [
+        {
+          OR: [
+            { title: { contains: 'hajipur' } },
+            { title: { contains: 'agra' } },
+          ],
+        },
+        { status: 'APPROVED' },
 
-        duplicate.push({ PWID: row[8].toUpperCase(), kycAgency: row[1] });
-      } catch (err) {
-        console.log('err', err);
-      }
-    })
-    .on('error', function (error) {
-      console.log(error.message);
-    })
-    .on('end', function () {
-      console.log('finished');
-      console.log('duplicate', duplicate);
-    });
+        { user: { referralAgencyCode: 'RLI467186', isKycAgent: false } },
+      ],
+    },
+    include: {
+      user: true,
+    },
+  });
+  let csvContent = 'Title,Approval Document Date,Amount,PW ID\n';
+  allPayment.forEach((payment) => {
+    csvContent += `${payment.title},${payment.approvalDocumentDate},${payment.amount},${payment.user.pw_id}\n`;
+  });
+  // Write CSV content to a file
+  fs.writeFile('payments.csv', csvContent, (err) => {
+    if (err) {
+      console.error('Error writing CSV file:', err);
+    } else {
+      console.log('CSV file has been saved successfully.');
+    }
+  });
+
+  // allPayment.map((payment) =>
+  //   console.log(
+  //     payment.title,
+  //     payment.approvalDocumentDate,
+  //     payment.amount,
+  //     payment.user.pw_id
+  //   )
+  // );
 };
 
 async function main() {

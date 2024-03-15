@@ -267,6 +267,8 @@ export class KycAgencyService {
         hajipurProjectAmount,
         agraProjectAmount,
         kycAmount,
+        KycApprovedUser,
+
         hyderabadProjectAmount,
         selfAgencyHyderabadPaymentAmount,
         selfAgencyHajipurPaymentAmount,
