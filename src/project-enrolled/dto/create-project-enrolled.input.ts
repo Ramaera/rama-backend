@@ -12,7 +12,8 @@ export class projectDataInput {
   userId: string;
 
   @Field(() => PROJECT_PAYMENT, {
-    description: 'Project Payment Name Just Select Hajupir , Agra ETC',
+    description:
+      'Project Payment Name Just Select Hajupir , Agra,HYDERABAD ETC',
   })
   project_payment_name: PROJECT_PAYMENT;
 }
@@ -20,6 +21,7 @@ export class projectDataInput {
 export const PROJECT_PAYMENT = {
   HAJIPUR: 'hajipur_project_payment',
   AGRA: 'agra_project_payment',
+  HYDERABAD: 'hyderabad_project_payment',
 };
 
 export type PROJECT_PAYMENT =

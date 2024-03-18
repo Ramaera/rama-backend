@@ -306,6 +306,7 @@ type PROJECTREFERRAL {
 enum PROJECT_PAYMENT {
   AGRA
   HAJIPUR
+  HYDERABAD
 }
 
 input PasswordRequestInput {
@@ -708,7 +709,7 @@ input WithdraWalletMoney {
 }
 
 input projectDataInput {
-  """Project Payment Name Just Select Hajupir , Agra ETC"""
+  """Project Payment Name Just Select Hajupir , Agra,HYDERABAD ETC"""
   project_payment_name: PROJECT_PAYMENT!
 
   """ This is User Id"""

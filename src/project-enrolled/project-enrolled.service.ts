@@ -61,7 +61,6 @@ export class ProjectEnrolledService {
   // **************** Live Query For Project Enrollement ******* F
 
   async createlive(data: projectDataInput) {
-    console.log('here');
     const searchUser = await this.prisma.user.findFirst({
       where: {
         id: data.userId,
