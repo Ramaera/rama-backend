@@ -7,7 +7,7 @@ import { NomineeInput } from './createNominee.input';
 // ***************************************************************
 
 @InputType()
-export class UpdateUserInput {
+export class UpdateUserInputData {
   @Field({ nullable: true })
   name?: string;
 

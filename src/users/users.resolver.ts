@@ -14,7 +14,10 @@ import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
 import { UsersService } from './users.service';
 import { KYCHANDLER, User } from './models/user.model';
 import { ChangePasswordInput } from './dto/change-password.input';
-import { UpdateUserInput, UpdateUserRoleInput } from './dto/update-user.input';
+import {
+  UpdateUserInputData,
+  UpdateUserRoleInput,
+} from './dto/update-user.input';
 import {
   UpdateLicenseDetailsInput,
   UpdateNomineeInputByAdmin,
@@ -124,7 +127,7 @@ export class UsersResolver {
   @Mutation(() => User)
   async updateUser(
     @UserEntity() user: User,
-    @Args('data') newUserData: UpdateUserInput
+    @Args('data') newUserData: UpdateUserInputData
   ) {
     return this.usersService.updateUser(user.id, newUserData);
   }

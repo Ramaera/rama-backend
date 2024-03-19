@@ -258,7 +258,7 @@ type Mutation {
   updateSalesChannel(updateSalesChannelInput: UpdateSalesChannelInput!): SalesChannel!
   updateShareholding(data: UpdateShareholdingInput!): Shareholding!
   updateStatus(data: UpdateUserStatusAdmin!): User!
-  updateUser(data: UpdateUserInput!): User!
+  updateUser(data: UpdateUserInputData!): User!
   updateuserRole(data: UpdateUserRoleInput!): User!
   upsertNominee(data: NomineeInput!): Nominee!
   withdrawlRequest(data: WithdraWalletMoney!): withdrawlRequest!
@@ -577,19 +577,6 @@ input UpdateShareholdingInput {
   userPWId: String
 }
 
-input UpdateUserInput {
-  Address: String
-  aadharCardNumber: String
-  alternate_mobile_number: String
-  date_of_birth: String
-  demat_account: String
-  email: String
-  father_or_husband_name: String
-  mobile_number: String
-  name: String
-  panCardNumber: String
-}
-
 input UpdateUserInputByAdmin {
   alternate_mobile_number: String
   amount: Int
@@ -606,6 +593,19 @@ input UpdateUserInputByAdmin {
   nomineeRelationship: String
   url: String
   utrNo: String
+}
+
+input UpdateUserInputData {
+  Address: String
+  aadharCardNumber: String
+  alternate_mobile_number: String
+  date_of_birth: String
+  demat_account: String
+  email: String
+  father_or_husband_name: String
+  mobile_number: String
+  name: String
+  panCardNumber: String
 }
 
 input UpdateUserMembershipAdmin {

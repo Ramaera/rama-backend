@@ -7,7 +7,10 @@ import {
 } from '@nestjs/common';
 import { PasswordService } from 'src/auth/password.service';
 import { ChangePasswordInput } from './dto/change-password.input';
-import { UpdateUserInput, UpdateUserRoleInput } from './dto/update-user.input';
+import {
+  UpdateUserInputData,
+  UpdateUserRoleInput,
+} from './dto/update-user.input';
 import { NomineeInput } from './dto/createNominee.input';
 import { saveAs } from 'file-saver';
 
@@ -37,7 +40,7 @@ export class UsersService {
 
   // ************************* Update User Details *****************
 
-  async updateUser(userId: string, newUserData: UpdateUserInput) {
+  async updateUser(userId: string, newUserData: UpdateUserInputData) {
     const updated_user = this.prisma.user.update({
       data: newUserData,
       where: {
