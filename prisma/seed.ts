@@ -130,7 +130,7 @@ const SeedCommand = async () => {
         },
         { status: 'APPROVED' },
 
-        { user: { referralAgencyCode: 'RLI467186', isKycAgent: false } },
+        { user: { referralAgencyCode: 'RLI147024', isKycAgent: false } },
       ],
     },
     include: {

@@ -22,7 +22,7 @@ export class Wallet {
   @Field({ description: ' Type of Transaction DEPOSIT or WITHDRAWL' })
   type: string;
 
-  @Field({ description: 'Final Balance' })
+  @Field({ description: 'Final Balance', nullable: true })
   finalBalance: number;
 
   @Field({ nullable: true })

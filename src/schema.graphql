@@ -674,7 +674,7 @@ type Wallet {
   createdAt: DateTime!
 
   """Final Balance"""
-  finalBalance: Int!
+  finalBalance: Int
 
   """Id of Transaction"""
   id: Int!
