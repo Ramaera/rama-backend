@@ -43,6 +43,7 @@ import { UpdateBasicDetailsInput } from './dto/update-BasicDetails.input';
 import { UpdateDematDocumentsInput } from './dto/update-dematDocument.input';
 import { UpdateNomineeDetailsInput } from './dto/update-nominee.input';
 import { AgreementData } from './entities/agreementData.entity';
+import { updateUserDemat } from './dto/update-user-demat.input';
 
 @Resolver(() => User)
 @UseGuards(GqlAuthGuard)
@@ -132,6 +133,16 @@ export class UsersResolver {
     return this.usersService.updateUser(user.id, newUserData);
   }
 
+  // ********************************* Updated  User details ********************
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => User)
+  async updateUserDemat(
+    @UserEntity() user: User,
+    @Args('data') newUserData: updateUserDemat
+  ) {
+    return this.usersService.updateUserDemat(user.id, newUserData);
+  }
   // ********************************* Updated  Nominee details ********************
 
   @UseGuards(GqlAuthGuard)

@@ -259,6 +259,7 @@ type Mutation {
   updateShareholding(data: UpdateShareholdingInput!): Shareholding!
   updateStatus(data: UpdateUserStatusAdmin!): User!
   updateUser(data: UpdateUserInputData!): User!
+  updateUserDemat(data: updateUserDemat!): User!
   updateuserRole(data: UpdateUserRoleInput!): User!
   upsertNominee(data: NomineeInput!): Nominee!
   withdrawlRequest(data: WithdraWalletMoney!): withdrawlRequest!
@@ -720,6 +721,10 @@ type projectPaymentDTO {
   ProjectAgraAmountReceived: Int
   ProjectHajipurAmountReceived: Int
   ProjectHyderabadAmountReceived: Int
+}
+
+input updateUserDemat {
+  demat_account: String
 }
 
 type withdrawlRequest {
