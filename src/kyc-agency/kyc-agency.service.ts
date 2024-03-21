@@ -66,7 +66,6 @@ export class KycAgencyService {
 
   async findAgency(agencyCode) {
     try {
-      console.log('Before');
       const AgencyHolder = await this.prisma.kycAgency.findUnique({
         where: {
           agencyCode: agencyCode.toLocaleUpperCase(),
@@ -166,29 +165,6 @@ export class KycAgencyService {
         },
       });
 
-      // basicKYCAmount = BasicKycApprovedUser.length * 200;
-
-      // const AdvanceKycApprovedUser = await this.prisma.user.findMany({
-      //   where: {
-      //     referralAgencyCode: AgencyCode,
-      //     membership: 'ADVANCE',
-      //     kyc: 'APPROVED',
-      //     createdAt: {
-      //       gte: agencyCreationDate.createdAt,
-      //     },
-      //     documents: {
-      //       some: {
-      //         status: 'APPROVED',
-      //         title: 'demat_document',
-      //         approvalDocumentDate: {
-      //           gte: getLocalDateData.startDate,
-      //           lte: getLocalDateData.endDate,
-      //         },
-      //       },
-      //     },
-      //   },
-      // });
-
       totalKycUser = KycApprovedUser.length;
 
       const kycRewardAmount =
@@ -208,7 +184,7 @@ export class KycAgencyService {
         'agra',
         AgencyCode
       );
-      const HyderabadprojectDocument = await this.getProjectReferralAmount(
+      const HyderabadprojectDocument = await this.getPromoterReferralAmount(
         month,
         year,
         'hyderabad',
@@ -216,7 +192,7 @@ export class KycAgencyService {
       );
 
       const {
-        finalProjectAmount: selfAgencyHajipurPaymentAmount,
+        projectAmount: selfAgencyHajipurAmount,
         paymentDocument: selfHajipurInvestmentDocument,
       } = await this.getSelfAgencyPaymentDetails(
         month,
@@ -225,7 +201,7 @@ export class KycAgencyService {
         'hajipur'
       );
       const {
-        finalProjectAmount: selfAgencyAgraPaymentAmount,
+        projectAmount: selfAgencyAgraAmount,
         paymentDocument: selfAgraInvestmentDocument,
       } = await this.getSelfAgencyPaymentDetails(
         month,
@@ -235,7 +211,7 @@ export class KycAgencyService {
       );
 
       const {
-        finalProjectAmount: selfAgencyHyderabadPaymentAmount,
+        projectAmount: selfAgencyHyderabadAmount,
         paymentDocument: selfHyderabadInvestmentDocument,
       } = await this.getSelfAgencyPaymentDetails(
         month,
@@ -243,6 +219,9 @@ export class KycAgencyService {
         AgencyCode,
         'hyderabad'
       );
+      const selfAgencyAgraPaymentAmount = selfAgencyAgraAmount * 0.01;
+      const selfAgencyHajipurPaymentAmount = selfAgencyHajipurAmount * 0.1;
+      const selfAgencyHyderabadPaymentAmount = selfAgencyHyderabadAmount * 0.1;
 
       let HajipurAmount = 0;
       HajipurprojectDocument.map((data) => {
@@ -332,34 +311,6 @@ export class KycAgencyService {
       },
     });
 
-    // const advanceHajipurprojectDocument = await this.prisma.document.findMany({
-    //   where: {
-    //     approvalDocumentDate: {
-    //       gte: getLocalDateData.startDate,
-    //       lte: getLocalDateData.endDate,
-    //     },
-    //     title: {
-    //       contains: 'hajipur',
-    //     },
-    //     status: 'APPROVED',
-    //     user: {
-    //       referralAgencyCode: AgencyCode,
-    //       membership: 'ADVANCE',
-    //       documents: {
-    //         some: {
-    //           title: {
-    //             contains: 'demat_document',
-    //           },
-    //           status: 'APPROVED',
-    //         },
-    //       },
-    //     },
-    //   },
-    //   include: {
-    //     user: true,
-    //   },
-    // });
-
     const AgraprojectDocument = await this.prisma.document.findMany({
       where: {
         approvalDocumentDate: {
@@ -442,7 +393,53 @@ export class KycAgencyService {
           contains: projectTitle,
         },
         status: 'APPROVED',
+        user: {
+          referralAgencyCode: agencyCode.toLocaleUpperCase(),
+          isKycAgent: false,
+        },
+      },
+      include: {
+        user: true,
+      },
+    });
+    return projectDocumentData;
+  }
+
+  async getPromoterReferralAmount(month, year, projectTitle, agencyCode) {
+    const getLocalDateData = getStartAndEndDate(month, year);
+
+    const projectDocumentWithoutPromoterData =
+      await this.prisma.document.findMany({
+        where: {
+          approvalDocumentDate: {
+            gte: getLocalDateData.startDate,
+            lte: getLocalDateData.endDate,
+          },
+          referralAgencyCode: null,
+          title: {
+            contains: projectTitle,
+          },
+          status: 'APPROVED',
+          user: {
+            referralAgencyCode: agencyCode.toLocaleUpperCase(),
+            isKycAgent: false,
+          },
+        },
+        include: {
+          user: true,
+        },
+      });
+    const projectDocumentWithPromoter = await this.prisma.document.findMany({
+      where: {
+        approvalDocumentDate: {
+          gte: getLocalDateData.startDate,
+          lte: getLocalDateData.endDate,
+        },
         referralAgencyCode: agencyCode.toLocaleUpperCase(),
+        title: {
+          contains: projectTitle,
+        },
+        status: 'APPROVED',
         user: {
           isKycAgent: false,
         },
@@ -451,6 +448,12 @@ export class KycAgencyService {
         user: true,
       },
     });
+
+    const projectDocumentData = [
+      ...projectDocumentWithoutPromoterData,
+      ...projectDocumentWithPromoter,
+    ];
+
     return projectDocumentData;
   }
 
@@ -502,9 +505,9 @@ export class KycAgencyService {
     let projectAmount = 0;
     paymentDocument.map((doc) => (projectAmount += doc.amount));
 
-    const finalProjectAmount = projectAmount * 0.01;
+    projectAmount;
 
-    return { finalProjectAmount, paymentDocument };
+    return { projectAmount, paymentDocument };
   }
 
   async findAllKycAgnecyuser(code: GetAllUserofSpecificKycAgency) {
