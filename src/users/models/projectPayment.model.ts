@@ -10,4 +10,7 @@ export class projectPaymentDTO {
 
   @Field(() => Int)
   ProjectHyderabadAmountReceived?: number;
+
+  @Field(() => Int)
+  ProjectFundingReplacementAmountReceived?: number;
 }

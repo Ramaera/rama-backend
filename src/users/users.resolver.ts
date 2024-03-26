@@ -270,6 +270,8 @@ export class UsersResolver {
       ProjectHajipurAmountReceived: totalpayment.totalHajipurAmount,
       ProjectAgraAmountReceived: totalpayment.totalAgraAmount,
       ProjectHyderabadAmountReceived: totalpayment.totalHyderabadAmount,
+      ProjectFundingReplacementAmountReceived:
+        totalpayment.totalFundingReplacementAmount,
     };
   }
 
