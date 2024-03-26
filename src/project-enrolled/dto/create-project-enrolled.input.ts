@@ -22,6 +22,7 @@ export const PROJECT_PAYMENT = {
   HAJIPUR: 'hajipur_project_payment',
   AGRA: 'agra_project_payment',
   HYDERABAD: 'hyderabad_project_payment',
+  FUNDINGREPLACEMENT: 'fundingreplacement_project_payment',
 };
 
 export type PROJECT_PAYMENT =
