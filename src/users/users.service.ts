@@ -476,7 +476,7 @@ export class UsersService {
     const fundingReplacementDocuments = await this.prisma.document.findMany({
       where: {
         title: {
-          contains: 'hyderabad', // Case-insensitive search for "hajipur" in title
+          contains: 'fundingreplacement', // Case-insensitive search for "hajipur" in title
         },
         status: 'APPROVED',
       },
