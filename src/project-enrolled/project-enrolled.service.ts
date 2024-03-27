@@ -246,4 +246,21 @@ export class ProjectEnrolledService {
   remove(id: number) {
     return `This action removes a #${id} projectEnrolled`;
   }
+
+  async findUsers(projectName: string) {
+    return await this.prisma.user.findMany({
+      where: {
+        documents: {
+          some: {
+            title: {
+              contains: projectName,
+            },
+          },
+        },
+      },
+      include: {
+        documents: true,
+      },
+    });
+  }
 }

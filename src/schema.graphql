@@ -363,6 +363,7 @@ type Query {
   checkAgreementDataStatus(pwid: String!): AgreementData!
   dsc(id: Int!): DscOutputDataField!
   findAgency(AgencyCode: String!): KycAgency!
+  findUsersinProject(projectName: String!): [User!]!
   findreferralKycTransaction(userId: String!): KYCREFERRAL!
   findreferralProjectTransaction(documentId: String!): KYCREFERRAL!
   getAgreementData(PWID: String!): AgreementData!

@@ -326,12 +326,6 @@ export class UsersService {
   // ########## Get All User #####################
 
   async getAllUser({ skip, take }) {
-    // const cacheKey = `getAllUser:${skip}:${take}`;
-    // const cachedUserData: any = await this.cacheManager.get(cacheKey);
-    // if (cachedUserData) {
-    //   console.log('returning data from cache');
-    //   return JSON.parse(cachedUserData);
-    // }
     const allUser = await this.prisma.user.findMany({
       take,
       skip,
@@ -343,8 +337,6 @@ export class UsersService {
         ProjectEnrolledStatus: true,
       },
     });
-
-    // await this.cacheManager.set(cacheKey, 'unknown', 3600);
     return allUser;
   }
 

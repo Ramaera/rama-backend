@@ -7,6 +7,7 @@ import {
   projectDataInput,
 } from './dto/create-project-enrolled.input';
 import { UpdateProjectEnrolledInput } from './dto/update-project-enrolled.input';
+import { User } from 'src/users/models/user.model';
 
 @Resolver(() => ProjectEnrolled)
 export class ProjectEnrolledResolver {
@@ -47,6 +48,11 @@ export class ProjectEnrolledResolver {
       updateProjectEnrolledInput.id,
       updateProjectEnrolledInput
     );
+  }
+
+  @Query(() => [User])
+  findUsersinProject(@Args('projectName') projectName: string) {
+    return this.projectEnrolledService.findUsers(projectName);
   }
 
   @Mutation(() => ProjectEnrolled)
