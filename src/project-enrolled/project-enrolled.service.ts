@@ -260,6 +260,7 @@ export class ProjectEnrolledService {
       },
       include: {
         documents: true,
+        nominee: true,
       },
     });
   }
