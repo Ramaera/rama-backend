@@ -97,3 +97,38 @@
       console.log('finished');
       console.log('duplicate', duplicate);
     });
+
+
+
+
+    // AGENCY DETAILS
+      const allPayment = await prisma.document.findMany({
+    where: {
+      AND: [
+        {
+          OR: [
+            { title: { contains: 'hajipur' } },
+            { title: { contains: 'agra' } },
+          ],
+        },
+        { status: 'APPROVED' },
+
+        { user: { referralAgencyCode: 'RLI147024', isKycAgent: false } },
+      ],
+    },
+    include: {
+      user: true,
+    },
+  });
+  let csvContent = 'Title,Approval Document Date,Amount,PW ID\n';
+  allPayment.forEach((payment) => {
+    csvContent += `${payment.title},${payment.approvalDocumentDate},${payment.amount},${payment.user.pw_id}\n`;
+  });
+  // Write CSV content to a file
+  fs.writeFile('payments.csv', csvContent, (err) => {
+    if (err) {
+      console.error('Error writing CSV file:', err);
+    } else {
+      console.log('CSV file has been saved successfully.');
+    }
+  });

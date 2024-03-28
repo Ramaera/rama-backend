@@ -55,6 +55,7 @@ model KycAgency {
   agencyCode                 String                       @unique
   userId                     String                       @unique
   licenseValidityInYear      Int?
+  agencyExpiryDate           DateTime?
   AgencyIncome               AgencyIncome[]
   user                       User                         @relation(fields: [userId], references: [id])
   ReferralKYCTransaction     ReferralKYCTransaction[]

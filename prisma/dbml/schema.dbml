@@ -44,6 +44,7 @@ Table KycAgency {
   agencyCode String [unique, not null]
   userId String [unique, not null]
   licenseValidityInYear Int
+  agencyExpiryDate DateTime
   AgencyIncome AgencyIncome [not null]
   user User [not null]
   ReferralKYCTransaction ReferralKYCTransaction [not null]

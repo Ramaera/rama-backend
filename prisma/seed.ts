@@ -119,45 +119,50 @@ function getMonthDates(monthNumber) {
 const fs = require('fs');
 const { parse } = require('csv-parse');
 const SeedCommand = async () => {
-  const allPayment = await prisma.document.findMany({
+  const data = await prisma.shareHoldingType.updateMany({
     where: {
-      AND: [
-        {
-          OR: [
-            { title: { contains: 'hajipur' } },
-            { title: { contains: 'agra' } },
-          ],
-        },
-        { status: 'APPROVED' },
-
-        { user: { referralAgencyCode: 'RLI147024', isKycAgent: false } },
-      ],
+      status: 'UNDER_PROCESS',
     },
-    include: {
-      user: true,
+    data: {
+      status: 'TRANSFERRED',
     },
   });
-  let csvContent = 'Title,Approval Document Date,Amount,PW ID\n';
-  allPayment.forEach((payment) => {
-    csvContent += `${payment.title},${payment.approvalDocumentDate},${payment.amount},${payment.user.pw_id}\n`;
-  });
-  // Write CSV content to a file
-  fs.writeFile('payments.csv', csvContent, (err) => {
-    if (err) {
-      console.error('Error writing CSV file:', err);
-    } else {
-      console.log('CSV file has been saved successfully.');
-    }
-  });
+  console.log('done', data);
+  // fs.createReadStream('prisma/KYCOLDDATA.csv')
+  //   .pipe(parse({ delimiter: ',', from_line: 2 }))
+  //   .on('data', async function (row) {
+  //     try {
+  //       const userId = await prisma.user.findFirst({
+  //         where: {
+  //           pw_id: row[8].toUpperCase(),
+  //         },
+  //       });
+  //       const agencyCOdeId = await prisma.kycAgency.findUnique({
+  //         where: {
+  //           agencyCode: row[1],
+  //         },
+  //       });
 
-  // allPayment.map((payment) =>
-  //   console.log(
-  //     payment.title,
-  //     payment.approvalDocumentDate,
-  //     payment.amount,
-  //     payment.user.pw_id
-  //   )
-  // );
+  //       await prisma.referralProjectTransaction.create({
+  //         data: {
+  //           userId: userId.id,
+  //           documentId: '',
+  //           pwID: row[8],
+  //           agencyCode: row[1],
+  //           kycAgencyId: agencyCOdeId.id,
+  //           transferDate: new Date(row[3]),
+  //         },
+  //       });
+  //     } catch (err) {
+  //       console.log('err', err);
+  //     }
+  //   })
+  //   .on('error', function (error) {
+  //     console.log(error.message);
+  //   })
+  //   .on('end', function () {
+  //     console.log('finished');
+  //   });
 };
 
 async function main() {
