@@ -730,7 +730,7 @@ export class KycAgencyService {
     });
 
     if (!UserDetails) {
-      throw new NotFoundException(`No user found for PW_Id: ${referralCode}`);
+      throw new NotFoundException(`No user found for : ${referralCode}`);
     }
 
     return UserDetails;

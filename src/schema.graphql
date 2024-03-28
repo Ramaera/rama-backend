@@ -208,6 +208,7 @@ type KycAgency {
 
 type KycAgencyModel {
   agencyCode: String
+  agencyExpiryDate: DateTime
   createdAt: DateTime
   id: String!
   updatedAt: DateTime
