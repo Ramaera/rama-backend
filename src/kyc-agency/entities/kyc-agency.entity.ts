@@ -46,14 +46,8 @@ export class KycAgency extends BaseModel {
   @Field(() => Date)
   updatedAt!: Date;
 
-  @Field(() => String, { nullable: true })
-  name?: string;
-
-  @Field(() => Role)
-  role: Role;
-
-  @Field(() => String, { nullable: true })
-  rm_id: string;
+  @Field(() => Date)
+  agencyExpiryDate!: Date;
 
   @Field(() => User)
   user: User;

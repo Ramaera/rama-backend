@@ -197,11 +197,9 @@ type KYCREFERRAL {
 
 type KycAgency {
   agencyCode: String
+  agencyExpiryDate: DateTime!
   createdAt: DateTime!
   id: String!
-  name: String
-  rm_id: String
-  role: Role!
   updatedAt: DateTime!
   user: User!
 }
