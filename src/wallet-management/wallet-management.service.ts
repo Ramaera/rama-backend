@@ -5,7 +5,7 @@ import { WalletTransactionInput } from './dto/walletTransaction.input.dto';
 import { PrismaService } from 'nestjs-prisma';
 import { WalletBalance } from './entities/wallet-balance.entity';
 import { UsersService } from 'src/users/users.service';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, WITHDRAW_STATUS } from '@prisma/client';
 import { WithdraWalletMoney } from './dto/withdrawlRequest.input.dto';
 
 @Injectable()
@@ -95,7 +95,6 @@ export class WalletManagementService {
 
         return totalDetails;
       });
-
       return data;
     } catch (err) {
       throw new Error(err.message);
@@ -222,6 +221,17 @@ export class WalletManagementService {
     return this.prisma.referralProjectTransaction.findUnique({
       where: {
         documentId,
+      },
+    });
+  }
+
+  async updateWithdrawlRequestStatus(id: string, status: WITHDRAW_STATUS) {
+    return this.prisma.withdrawlRequest.update({
+      where: {
+        id,
+      },
+      data: {
+        status,
       },
     });
   }

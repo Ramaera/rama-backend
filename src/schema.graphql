@@ -259,6 +259,7 @@ type Mutation {
   updateStatus(data: UpdateUserStatusAdmin!): User!
   updateUser(data: UpdateUserInputData!): User!
   updateUserDemat(data: updateUserDemat!): User!
+  updateWithdrawlRequestStatus(id: String!, status: String!): withdrawlRequest!
   updateuserRole(data: UpdateUserRoleInput!): User!
   upsertNominee(data: NomineeInput!): Nominee!
   withdrawlRequest(data: WithdraWalletMoney!): withdrawlRequest!
@@ -738,4 +739,10 @@ type withdrawlRequest {
 
   """Final Balance"""
   createdAt: DateTime!
+
+  """id """
+  id: String!
+
+  """status"""
+  status: String!
 }

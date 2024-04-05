@@ -405,6 +405,21 @@ export class KycAgencyService {
     return projectDocumentData;
   }
 
+  async getagencyReferredAmount(month, year, agencyCode) {
+    const getLocalDateData = getStartAndEndDate(month, year);
+    const newAgencies = await this.prisma.user.findMany({
+      where: {
+        referralAgencyCode: agencyCode,
+        isKycAgent: true,
+        KycAgency: {
+          createdAt: {
+            gte: '2024-02-01T00:00:00.000Z',
+          },
+        },
+      },
+    });
+  }
+
   async getPromoterReferralAmount(month, year, projectTitle, agencyCode) {
     const getLocalDateData = getStartAndEndDate(month, year);
 

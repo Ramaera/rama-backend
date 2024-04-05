@@ -11,6 +11,7 @@ import { PROJECTREFERRAL } from './entities/project-referral.entity';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
 import { WithdraWalletMoney } from './dto/withdrawlRequest.input.dto';
+import { WITHDRAW_STATUS } from '@prisma/client';
 
 @Resolver(() => Wallet)
 export class WalletManagementResolver {
@@ -50,27 +51,40 @@ export class WalletManagementResolver {
   findAll(@Args('agencyCode', { type: () => String }) agencyCode: string) {
     return this.walletService.AgencyWalletHistory(agencyCode);
   }
+
   @UseGuards(GqlAuthGuard)
   @Query(() => [KYCREFERRAL], { name: 'getAllKycReferral' })
   findAllKycReferral() {
     return this.walletService.findAllKycReferral();
   }
+
   @UseGuards(GqlAuthGuard)
   @Query(() => [PROJECTREFERRAL], { name: 'getAllProjectReferral' })
   findAllProjectReferral() {
     return this.walletService.findAllProjectReferral();
   }
 
+  @UseGuards(GqlAuthGuard)
   @Mutation(() => withdrawlRequest)
   async withdrawlRequest(@Args('data') data: WithdraWalletMoney) {
     return this.walletService.WithdrawlRequest(data);
   }
 
+  @UseGuards(GqlAuthGuard)
   @Query(() => [withdrawlRequest])
   async agencyWithdrawlRequest(
     @Args('agencyCode', { type: () => String }) agencyCode: string
   ) {
     return this.walletService.agencyWithdrawlRequest(agencyCode);
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => withdrawlRequest)
+  async updateWithdrawlRequestStatus(
+    @Args('id', { type: () => String }) id: string,
+    @Args('status', { type: () => String }) status: WITHDRAW_STATUS
+  ) {
+    return this.walletService.updateWithdrawlRequestStatus(id, status);
   }
 
   // @Mutation(() => WalletManagement)

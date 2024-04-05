@@ -78,6 +78,9 @@ export class DocumentsService {
       take,
       where: {
         status: 'PENDING',
+        user: {
+          kyc: 'AGENT_APPROVED',
+        },
       },
       include: {
         user: true,

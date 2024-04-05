@@ -17,6 +17,12 @@ export class withdrawlRequest {
   @Field({ description: 'Final Balance' })
   amount: number;
 
+  @Field({ description: 'id ' })
+  id: string;
+
+  @Field({ description: 'status' })
+  status: string;
+
   @Field({ description: 'Final Balance' })
   createdAt: Date;
 }
