@@ -119,15 +119,36 @@ function getMonthDates(monthNumber) {
 const fs = require('fs');
 const { parse } = require('csv-parse');
 const SeedCommand = async () => {
-  const data = await prisma.shareHoldingType.updateMany({
+  const usersBeforeAgency = await prisma.user.findMany({
     where: {
-      status: 'UNDER_PROCESS',
-    },
-    data: {
-      status: 'TRANSFERRED',
+      referralAgencyCode: {
+        contains: 'RLI',
+      },
     },
   });
-  console.log('done', data);
+
+  let csvContent = 'Title,Approval Document Date,Amount,PW ID\n';
+  // usersBeforeAgency.forEach((payment) => {
+  //   csvContent += `${payment.user.pw_id},${payment.user?.name},${payment.title},${payment.approvalDocumentDate},${payment.amount}\n`;
+  // });
+  // Write CSV content to a file
+  // fs.writeFile('hajipurData.csv', csvContent, (err) => {
+  //   if (err) {
+  //     console.error('Error writing CSV file:', err);
+  //   } else {
+  //     console.log('CSV file has been saved successfully.');
+  //   }
+  // });
+
+  // const data = await prisma.shareHoldingType.updateMany({
+  //   where: {
+  //     status: 'UNDER_PROCESS',
+  //   },
+  //   data: {
+  //     status: 'TRANSFERRED',
+  //   },
+  // });
+  // console.log('done', data);
   // fs.createReadStream('prisma/KYCOLDDATA.csv')
   //   .pipe(parse({ delimiter: ',', from_line: 2 }))
   //   .on('data', async function (row) {

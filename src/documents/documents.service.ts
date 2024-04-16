@@ -98,8 +98,15 @@ export class DocumentsService {
         updatedAt: 'desc',
       },
     });
-    // console.log('pendingTask', pendingTask);
 
     return pendingTask;
+  }
+
+  async deleteDocument(id: string) {
+    return await this.prisma.document.delete({
+      where: {
+        id,
+      },
+    });
   }
 }
