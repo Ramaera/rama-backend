@@ -126,7 +126,7 @@ export class DocumentsResolver {
     return this.documentsService.showDocumentDetails(id);
   }
 
-  @Query(() => Document)
+  @Mutation(() => Document)
   deleteDocumet(@Args({ name: 'id', type: () => String }) id: string) {
     return this.documentsService.deleteDocument(id);
   }
