@@ -22,7 +22,7 @@ import {
 import { DocumentIdArgs } from './args/document-id.args';
 import { User } from 'src/users/models/user.model';
 import { UserIdArgs } from 'src/users/args/user-id.args';
-import { CreateDocumentInputByAdmin } from './dto/createDocument.inputByAdmin';
+import { CreateDocumentByAdmin } from './dto/createDocumentinputByAdmin';
 
 @Resolver(() => Document)
 export class DocumentsResolver {
@@ -53,18 +53,20 @@ export class DocumentsResolver {
     return newDocument;
   }
 
-  @UseGuards(GqlAuthGuard) // Gql Authentication Guards
+  // @UseGuards(GqlAuthGuard) // Gql Authentication Guards
   @Mutation(() => Document) // Mutation  --> Document Object Types (title , url)
   async createDocumentByAdmin(
     @Args('data')
-    data: CreateDocumentInputByAdmin
+    data: CreateDocumentByAdmin
   ) {
-    const newDocument = this.prisma.document.create({
+    const newDocument = await this.prisma.document.create({
       data: {
         title: data.title,
         url: data.url,
-        referralAgencyCode: data.referralAgencyCode,
         userId: data.userId,
+      },
+      include: {
+        user: true,
       },
     });
 

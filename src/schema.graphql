@@ -33,6 +33,12 @@ input ChangePasswordWithPrivateKeyInput {
   pwId: String
 }
 
+input CreateDocumentByAdmin {
+  title: String!
+  url: String!
+  userId: String!
+}
+
 input CreateDocumentInput {
   referralAgencyCode: String
   title: String!
@@ -228,11 +234,13 @@ type Mutation {
   UpdateLicenseDetails(data: UpdateLicenseDetailsInput!): User!
   changePassword(data: ChangePasswordInput!): User!
   createDocument(data: CreateDocumentInput!): Document!
+  createDocumentByAdmin(data: CreateDocumentByAdmin!): Document!
   createDsc(createDscInput: CreateDscInput!): DscOutputDataField!
   createKycAgency(data: CreateKycAgencyCodeInput!): AllKycAgency!
   createProjectEnrolled(projectData: projectDataInput!): ProjectEnrolled!
   createSalesPerson(data: CreateSalesPerson!): SalesPersonOutPut!
   createShareholding(data: CreateShareholdingInput!): Shareholding!
+  deleteDocumet(id: String!): Document!
   forgetPasswordWithPrivateKey(data: ChangePasswordWithPrivateKeyInput!): EmptyModal!
   getSponserDetails(data: SponserDetails!): Sponser!
   login(data: LoginInput!): Auth!
