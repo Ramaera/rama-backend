@@ -383,7 +383,7 @@ type Query {
   getAllUsersCount: UserCountDTO!
   getDocumentDetails(id: String!): Document!
   getProjectUserCount(title: String!): UserCountDTO!
-  getProjectsPayment: projectPaymentDTO!
+  getProjectsPayment(projectName: String!): projectPaymentDTO!
   getUserDetails(id: String!): User!
   hello(name: String!): String!
   helloWorld: String!
@@ -728,10 +728,7 @@ input projectDataInput {
 }
 
 type projectPaymentDTO {
-  ProjectAgraAmountReceived: Int
-  ProjectFundingReplacementAmountReceived: Int
-  ProjectHajipurAmountReceived: Int
-  ProjectHyderabadAmountReceived: Int
+  ProjectAmountReceived: Int
 }
 
 input updateUserDemat {

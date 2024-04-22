@@ -426,11 +426,11 @@ export class UsersService {
 
   // *********************** Amount Received *************************
 
-  async projectAmountReceived() {
-    const hajipurDocuments = await this.prisma.document.findMany({
+  async projectAmountReceived(projectName) {
+    const projectDocuments = await this.prisma.document.findMany({
       where: {
         title: {
-          contains: 'hajipur', // Case-insensitive search for "hajipur" in title
+          contains: projectName, // Case-insensitive search for "hajipur" in title
         },
         status: 'APPROVED',
         NOT: {
@@ -442,65 +442,62 @@ export class UsersService {
       },
     });
 
-    const agraDocuments = await this.prisma.document.findMany({
-      where: {
-        title: {
-          contains: 'agra', // Case-insensitive search for "hajipur" in title
-        },
-        status: 'APPROVED',
-      },
-      select: {
-        amount: true, // Select the "amount" field
-      },
-    });
-    const hyderabadDocuments = await this.prisma.document.findMany({
-      where: {
-        title: {
-          contains: 'hyderabad', // Case-insensitive search for "hajipur" in title
-        },
-        status: 'APPROVED',
-      },
-      select: {
-        amount: true, // Select the "amount" field
-      },
-    });
+    // const agraDocuments = await this.prisma.document.findMany({
+    //   where: {
+    //     title: {
+    //       contains: 'agra', // Case-insensitive search for "hajipur" in title
+    //     },
+    //     status: 'APPROVED',
+    //   },
+    //   select: {
+    //     amount: true, // Select the "amount" field
+    //   },
+    // });
+    // const hyderabadDocuments = await this.prisma.document.findMany({
+    //   where: {
+    //     title: {
+    //       contains: 'hyderabad', // Case-insensitive search for "hajipur" in title
+    //     },
+    //     status: 'APPROVED',
+    //   },
+    //   select: {
+    //     amount: true, // Select the "amount" field
+    //   },
+    // });
 
-    const fundingReplacementDocuments = await this.prisma.document.findMany({
-      where: {
-        title: {
-          contains: 'fundingreplacement', // Case-insensitive search for "hajipur" in title
-        },
-        status: 'APPROVED',
-      },
-      select: {
-        amount: true, // Select the "amount" field
-      },
-    });
+    // const fundingReplacementDocuments = await this.prisma.document.findMany({
+    //   where: {
+    //     title: {
+    //       contains: 'fundingreplacement', // Case-insensitive search for "hajipur" in title
+    //     },
+    //     status: 'APPROVED',
+    //   },
+    //   select: {
+    //     amount: true, // Select the "amount" field
+    //   },
+    // });
 
     // Calculate the sum of "amount" for the filtered documents
-    const totalHajipurAmount = hajipurDocuments.reduce(
+    const totalProjectAmount = projectDocuments.reduce(
       (sum, document) => sum + document.amount,
       0
     );
-    const totalAgraAmount = agraDocuments.reduce(
-      (sum, document) => sum + document.amount,
-      0
-    );
-    const totalHyderabadAmount = hyderabadDocuments.reduce(
-      (sum, document) => sum + document.amount,
-      0
-    );
+    // const totalAgraAmount = agraDocuments.reduce(
+    //   (sum, document) => sum + document.amount,
+    //   0
+    // );
+    // const totalHyderabadAmount = hyderabadDocuments.reduce(
+    //   (sum, document) => sum + document.amount,
+    //   0
+    // );
 
-    const totalFundingReplacementAmount = fundingReplacementDocuments.reduce(
-      (sum, document) => sum + document.amount,
-      0
-    );
+    // const totalFundingReplacementAmount = fundingReplacementDocuments.reduce(
+    //   (sum, document) => sum + document.amount,
+    //   0
+    // );
 
     return {
-      totalHajipurAmount,
-      totalAgraAmount,
-      totalHyderabadAmount,
-      totalFundingReplacementAmount,
+      totalProjectAmount,
     };
   }
 

@@ -263,15 +263,18 @@ export class UsersResolver {
 
   // ******************************* Amount Received Per Project ***************************
   @Query(() => projectPaymentDTO)
-  async getProjectsPayment() {
-    const totalpayment = await this.usersService.projectAmountReceived();
+  async getProjectsPayment(@Args('projectName') projectName: string) {
+    const totalpayment = await this.usersService.projectAmountReceived(
+      projectName
+    );
 
     return {
-      ProjectHajipurAmountReceived: totalpayment.totalHajipurAmount,
-      ProjectAgraAmountReceived: totalpayment.totalAgraAmount,
-      ProjectHyderabadAmountReceived: totalpayment.totalHyderabadAmount,
-      ProjectFundingReplacementAmountReceived:
-        totalpayment.totalFundingReplacementAmount,
+      ProjectAmountReceived: totalpayment.totalProjectAmount,
+      // ProjectHajipurAmountReceived: totalpayment.totalHajipurAmount,
+      // ProjectAgraAmountReceived: totalpayment.totalAgraAmount,
+      // ProjectHyderabadAmountReceived: totalpayment.totalHyderabadAmount,
+      // ProjectFundingReplacementAmountReceived:
+      //   totalpayment.totalFundingReplacementAmount,
     };
   }
 
@@ -325,8 +328,8 @@ export class UsersResolver {
 
   @Query(() => User)
   async ChangeAmountOfRamaeraLegalInfoTech() {
-    let projectAmounts = await this.getProjectsPayment();
-    let hajipur_total_received = projectAmounts['ProjectHajipurAmountReceived'];
+    let projectAmounts = await this.getProjectsPayment('hajipur');
+    let hajipur_total_received = projectAmounts.ProjectAmountReceived;
     const _user = await this.usersService.changeAmountofRamaeraLegal(
       hajipur_total_received
     );

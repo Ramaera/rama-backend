@@ -167,32 +167,6 @@ export class ProjectEnrolledService {
     // Convert the map values to an array
     const result = Array.from(userEnrollmentsMap.values());
     return result;
-
-    // console.log('Enrolled Users with Projects:', result);
-
-    // const enrolledUsersWithProjects =
-    //   await this.prisma.projectEnrolledStatus.findMany({
-    //     where: {
-    //       projectStatus: 'ENROLLED', // Assuming 'ENROLLED' is the status for enrolled projects
-    //     },
-    //     include: {
-    //       user: true, // Include user details
-    //     },
-    //   });
-
-    // // Process the result to get the desired information
-    // const result = enrolledUsersWithProjects.map((enrollment) => {
-    //   return {
-    //     userId: enrollment.user.id,
-    //     userName: enrollment.user.name, // Assuming 'name' is a field in the User model
-    //     projectName: enrollment.projectName,
-    //     totalInvestedAmount: enrollment.totalInvestedAmountinProject || '0', // Default to '0' if not provided
-    //   };
-    // });
-
-    // console.log('Enrolled Users with Projects and Amount:', result);
-
-    // return
   }
 
   async findOne(id: string) {
@@ -207,44 +181,7 @@ export class ProjectEnrolledService {
       }
     );
 
-    console.log(enrolledInProjects);
-
     return enrolledInProjects;
-
-    // Create a map to group enrollments by user
-    // const userEnrollmentsMap = new Map<string, any>();
-
-    // for (const enrollment of enrolledInProjects) {
-    //   const userId = enrollment.user.id;
-
-    //   if (!userEnrollmentsMap.has(userId)) {
-    //     // Initialize an entry for the user
-    //     userEnrollmentsMap.set(userId, {
-    //       userId: userId,
-    //       userName: enrollment.user.name, // Assuming 'name' is a field in the User model
-    //       projects: [],
-    //     });
-    //   }
-
-    //   // Add the project enrollment to the user's list of projects
-    //   userEnrollmentsMap.get(userId).projects.push({
-    //     projectName: enrollment.projectName,
-    //     totalInvestedAmount: enrollment.totalInvestedAmountinProject || '0', // Default to '0' if not provided
-    //   });
-    // }
-
-    // Convert the map values to an array
-    // const result = Array.from(userEnrollmentsMap.values());
-    // return result;
-    // return `This action returns a #${id} projectEnrolled`;
-  }
-
-  update(id: number, updateProjectEnrolledInput: UpdateProjectEnrolledInput) {
-    return `This action updates a #${id} projectEnrolled`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} projectEnrolled`;
   }
 
   async findUsers(projectName: string) {
