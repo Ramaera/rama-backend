@@ -39,24 +39,19 @@ export class ProjectEnrolledResolver {
     return this.projectEnrolledService.findOne(id);
   }
 
-  @Mutation(() => ProjectEnrolled)
-  updateProjectEnrolled(
-    @Args('updateProjectEnrolledInput')
-    updateProjectEnrolledInput: UpdateProjectEnrolledInput
-  ) {
-    return this.projectEnrolledService.update(
-      updateProjectEnrolledInput.id,
-      updateProjectEnrolledInput
-    );
-  }
+  // @Mutation(() => ProjectEnrolled)
+  // updateProjectEnrolled(
+  //   @Args('updateProjectEnrolledInput')
+  //   updateProjectEnrolledInput: UpdateProjectEnrolledInput
+  // ) {
+  //   return this.projectEnrolledService.update(
+  //     updateProjectEnrolledInput.id,
+  //     updateProjectEnrolledInput
+  //   );
+  // }
 
   @Query(() => [User])
   findUsersinProject(@Args('projectName') projectName: string) {
     return this.projectEnrolledService.findUsers(projectName);
-  }
-
-  @Mutation(() => ProjectEnrolled)
-  removeProjectEnrolled(@Args('id', { type: () => Int }) id: number) {
-    return this.projectEnrolledService.remove(id);
   }
 }
