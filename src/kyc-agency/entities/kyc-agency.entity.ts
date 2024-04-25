@@ -59,6 +59,12 @@ export class KYCAGENYCPAYMENT {
   hajipurProjectAmount: number;
 
   @Field(() => Int, { nullable: true })
+  chapraProjectAmount: number;
+
+  @Field(() => Int, { nullable: true })
+  jhansiProjectAmount: number;
+
+  @Field(() => Int, { nullable: true })
   agraProjectAmount: number;
 
   @Field(() => Int, { nullable: true })
@@ -74,10 +80,20 @@ export class KYCAGENYCPAYMENT {
   HajipurprojectDocument: DocumentModal[];
 
   @Field(() => [DocumentModal], { nullable: true })
+  JhansiprojectDocument: DocumentModal[];
+  @Field(() => [DocumentModal], { nullable: true })
+  ChapraprojectDocument: DocumentModal[];
+  @Field(() => [DocumentModal], { nullable: true })
   selfAgraInvestmentDocument: DocumentModal[];
 
   @Field(() => [DocumentModal], { nullable: true })
   selfHajipurInvestmentDocument: DocumentModal[];
+
+  @Field(() => [DocumentModal], { nullable: true })
+  selfJhansiInvestmentDocument: DocumentModal[];
+
+  @Field(() => [DocumentModal], { nullable: true })
+  selfChapraInvestmentDocument: DocumentModal[];
 
   @Field(() => [DocumentModal], { nullable: true })
   AgraprojectDocument: DocumentModal[];
@@ -90,6 +106,12 @@ export class KYCAGENYCPAYMENT {
 
   @Field(() => Int, { nullable: true })
   selfAgencyHajipurPaymentAmount: number;
+
+  @Field(() => Int, { nullable: true })
+  selfAgencyJhansiPaymentAmount: number;
+
+  @Field(() => Int, { nullable: true })
+  selfAgencyChapraPaymentAmount: number;
 
   @Field(() => Int, { nullable: true })
   selfAgencyAgraPaymentAmount: number;

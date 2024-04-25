@@ -136,13 +136,15 @@ export class KycAgencyService {
     if (
       getStartAndEndDate(month, year).startDate >= '2023-11-01T00:00:00.000Z'
     ) {
-      let basicKYCAmount = 0;
-      let advanceKYCAmount = 0;
       let totalKycUser = 0;
       let kycAmount = 0;
       let selfProjectAmount = 0;
       let hajipurProjectAmount = 0;
       let hyderabadProjectAmount = 0;
+      let chapraProjectAmount = 0;
+
+      let jhansiProjectAmount = 0;
+
       let agraProjectAmount = 0;
 
       const KycApprovedUser = await this.prisma.user.findMany({
@@ -191,6 +193,20 @@ export class KycAgencyService {
         AgencyCode
       );
 
+      const JhansiprojectDocument = await this.getPromoterReferralAmount(
+        month,
+        year,
+        'jhansi',
+        AgencyCode
+      );
+
+      const ChapraprojectDocument = await this.getPromoterReferralAmount(
+        month,
+        year,
+        'chapra',
+        AgencyCode
+      );
+
       const {
         projectAmount: selfAgencyHajipurAmount,
         paymentDocument: selfHajipurInvestmentDocument,
@@ -219,9 +235,29 @@ export class KycAgencyService {
         AgencyCode,
         'hyderabad'
       );
+      const {
+        projectAmount: selfAgencyChapraAmount,
+        paymentDocument: selfChapraInvestmentDocument,
+      } = await this.getSelfAgencyPaymentDetails(
+        month,
+        year,
+        AgencyCode,
+        'chapra'
+      );
+      const {
+        projectAmount: selfAgencyJhansiAmount,
+        paymentDocument: selfJhansiInvestmentDocument,
+      } = await this.getSelfAgencyPaymentDetails(
+        month,
+        year,
+        AgencyCode,
+        'jhansi'
+      );
       const selfAgencyAgraPaymentAmount = selfAgencyAgraAmount * 0.01;
       const selfAgencyHajipurPaymentAmount = selfAgencyHajipurAmount * 0.1;
       const selfAgencyHyderabadPaymentAmount = selfAgencyHyderabadAmount * 0.1;
+      const selfAgencyChapraPaymentAmount = selfAgencyChapraAmount * 0.05;
+      const selfAgencyJhansiPaymentAmount = selfAgencyJhansiAmount * 0.05;
 
       let HajipurAmount = 0;
       HajipurprojectDocument.map((data) => {
@@ -232,31 +268,53 @@ export class KycAgencyService {
       AgraprojectDocument.map((data) => {
         AgraAmount += data?.amount;
       });
+
       let HyderabadAmount = 0;
       HyderabadprojectDocument.map((data) => {
         HyderabadAmount += data?.amount;
+      });
+      let JhansiAmount = 0;
+      JhansiprojectDocument.map((data) => {
+        JhansiAmount += data?.amount;
+      });
+
+      let ChapraAmount = 0;
+      ChapraprojectDocument.map((data) => {
+        ChapraAmount += data?.amount;
       });
 
       hajipurProjectAmount = HajipurAmount * 0.01;
       agraProjectAmount = AgraAmount * 0.1;
       hyderabadProjectAmount = HyderabadAmount * 0.1;
+      chapraProjectAmount = ChapraAmount * 0.05;
+      jhansiProjectAmount = JhansiAmount * 0.05;
+
       kycAmount = totalKycUser * kycRewardAmount;
       return {
         kycRewardAmount,
-        hajipurProjectAmount,
-        agraProjectAmount,
         kycAmount,
         KycApprovedUser,
+        hajipurProjectAmount,
+        agraProjectAmount,
         hyderabadProjectAmount,
-        selfAgencyHyderabadPaymentAmount,
+        jhansiProjectAmount,
+        chapraProjectAmount,
         selfAgencyHajipurPaymentAmount,
-        selfHyderabadInvestmentDocument,
         selfAgencyAgraPaymentAmount,
+        selfAgencyHyderabadPaymentAmount,
         selfHajipurInvestmentDocument,
         selfAgraInvestmentDocument,
+        selfHyderabadInvestmentDocument,
+        selfJhansiInvestmentDocument,
+        selfChapraInvestmentDocument,
+        selfAgencyJhansiPaymentAmount,
+        selfAgencyChapraPaymentAmount,
+        selfAgencyAgraAmount,
         HajipurprojectDocument,
         AgraprojectDocument,
         HyderabadprojectDocument,
+        JhansiprojectDocument,
+        ChapraprojectDocument,
       };
     }
     // let basicKYCAmount = 0;

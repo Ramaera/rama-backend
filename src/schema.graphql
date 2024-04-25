@@ -156,20 +156,28 @@ enum KYC {
 
 type KYCAGENYCPAYMENT {
   AgraprojectDocument: [DocumentModal!]
+  ChapraprojectDocument: [DocumentModal!]
   HajipurprojectDocument: [DocumentModal!]
   HyderabadprojectDocument: [DocumentModal!]
+  JhansiprojectDocument: [DocumentModal!]
   KycApprovedUser: [User!]
   agraProjectAmount: Int
+  chapraProjectAmount: Int
   hajipurProjectAmount: Int
   hyderabadProjectAmount: Int
+  jhansiProjectAmount: Int
   kycAmount: Int
   kycRewardAmount: Int
   selfAgencyAgraPaymentAmount: Int
+  selfAgencyChapraPaymentAmount: Int
   selfAgencyHajipurPaymentAmount: Int
   selfAgencyHyderabadPaymentAmount: Int
+  selfAgencyJhansiPaymentAmount: Int
   selfAgraInvestmentDocument: [DocumentModal!]
+  selfChapraInvestmentDocument: [DocumentModal!]
   selfHajipurInvestmentDocument: [DocumentModal!]
   selfHyderabadInvestmentDocument: [DocumentModal!]
+  selfJhansiInvestmentDocument: [DocumentModal!]
 }
 
 type KYCHANDLER {
@@ -248,7 +256,6 @@ type Mutation {
   refreshToken(token: JWT!): Token!
   removeDsc(id: Int!): DscOutputDataField!
   removeKycAgency(id: Int!): KycAgency!
-  removeProjectEnrolled(id: Int!): ProjectEnrolled!
   removeSalesChannel(id: Int!): SalesChannel!
   removeShareholding(id: Int!): Shareholding!
   signup(data: SignupInput!): Auth!
@@ -261,7 +268,6 @@ type Mutation {
   updateDocumentUTR(data: UpdateDocumentUTRandAmountInput!): Document!
   updateMembership(data: UpdateUserMembershipAdmin!): User!
   updateNomineeDetailByAdmin(data: UpdateNomineeDetailsInput!): User!
-  updateProjectEnrolled(updateProjectEnrolledInput: UpdateProjectEnrolledInput!): ProjectEnrolled!
   updateSalesChannel(updateSalesChannelInput: UpdateSalesChannelInput!): SalesChannel!
   updateShareholding(data: UpdateShareholdingInput!): Shareholding!
   updateStatus(data: UpdateUserStatusAdmin!): User!
@@ -566,12 +572,6 @@ input UpdateNomineeDetailsInput {
   name: String
   relationship: String
   userId: String
-}
-
-input UpdateProjectEnrolledInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
 }
 
 input UpdateSalesChannelInput {
