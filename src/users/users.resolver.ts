@@ -33,7 +33,11 @@ import { Nominee } from './entities/nominee.entity';
 import { UserIdArgs } from './args/user-id.args';
 import { DocumentModal } from 'src/documents/models/document.models';
 import { SearchInput, SearchMembershipInput } from './dto/search-user.input';
-import { ShareHolderCountDTO, UserCountDTO } from './models/countUsers.model';
+import {
+  ProjectSubscriberCount,
+  ShareHolderCountDTO,
+  UserCountDTO,
+} from './models/countUsers.model';
 import { projectPaymentDTO } from './models/projectPayment.model';
 import { Document } from 'src/documents/entities/document.entity';
 import { ProjectEnrolled } from 'src/project-enrolled/entities/project-enrolled.entity';
@@ -243,9 +247,9 @@ export class UsersResolver {
       totalHyderabadSubscribers: totalUser.totalHyderbadMartSubscribers,
     };
   }
-  @Query(() => UserCountDTO)
+  @Query(() => ProjectSubscriberCount)
   async getProjectUserCount(@Args('title') title: string) {
-    return this.usersService.totalProjectSubscribers(title);
+    return await this.usersService.totalProjectSubscribers(title);
   }
 
   //  ************************** Get All Users Count( With Basic Subscribers, Advance Subscribers, Hajipur Subscribers, Agra Subscribers) **************************

@@ -352,6 +352,10 @@ type ProjectEnrolledForAllUser {
   updatedAt: DateTime!
 }
 
+type ProjectSubscriberCount {
+  ProjectSubscriberCount: Int
+}
+
 type Projects {
   """Project Name"""
   projectName: String
@@ -388,7 +392,7 @@ type Query {
   getAllUser(skip: Int! = 0, take: Int! = 5000): [User!]!
   getAllUsersCount: UserCountDTO!
   getDocumentDetails(id: String!): Document!
-  getProjectUserCount(title: String!): UserCountDTO!
+  getProjectUserCount(title: String!): ProjectSubscriberCount!
   getProjectsPayment(projectName: String!): projectPaymentDTO!
   getUserDetails(id: String!): User!
   hello(name: String!): String!

@@ -384,7 +384,7 @@ export class UsersService {
         },
       },
     });
-    return SubscribersCount;
+    return { ProjectSubscriberCount: SubscribersCount };
   }
 
   // ************************* shareHolders Counts  ***********************

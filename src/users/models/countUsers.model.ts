@@ -35,3 +35,9 @@ export class ShareHolderCountDTO {
   @Field(() => Int)
   TotalHajipurShareHolder?: number;
 }
+
+@ObjectType()
+export class ProjectSubscriberCount {
+  @Field(() => Int)
+  ProjectSubscriberCount?: number;
+}
