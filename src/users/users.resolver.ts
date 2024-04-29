@@ -233,7 +233,7 @@ export class UsersResolver {
     return this.prisma.user.findUnique({ where: { id: id.userId } }).nominee();
   }
 
-  //  ************************** Get All Users Count( With Basic Subscribers, Advance Subscribers, Hajipur Subscribers, Agra Subscribers) **************************
+  //  ************************** Get All Users Count( With Basic Subscribers, Advance Subscribers) **************************
 
   @Query(() => UserCountDTO)
   async getAllUsersCount() {
@@ -242,9 +242,6 @@ export class UsersResolver {
       totalSubscribers: totalUser.totalSubscribers,
       totalBasicSubscribers: totalUser.totalBasicSubscribers,
       totalAdvanceSubscribers: totalUser.totalAdvanceSubscribers,
-      totalHajipurSubscribers: totalUser.totalHajipurSubscribers,
-      totalAgraSubscribers: totalUser.totalAgraMartSubscribers,
-      totalHyderabadSubscribers: totalUser.totalHyderbadMartSubscribers,
     };
   }
   @Query(() => ProjectSubscriberCount)

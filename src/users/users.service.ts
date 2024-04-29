@@ -356,18 +356,10 @@ export class UsersService {
       },
     });
 
-    const totalHajipurSubscribers = this.totalProjectSubscribers('hajipur');
-    const totalAgraMartSubscribers = this.totalProjectSubscribers('agra');
-    const totalHyderbadMartSubscribers =
-      this.totalProjectSubscribers('hyderabad');
-
     return {
       totalSubscribers,
       totalBasicSubscribers,
       totalAdvanceSubscribers,
-      totalHajipurSubscribers,
-      totalAgraMartSubscribers,
-      totalHyderbadMartSubscribers,
     };
   }
 
