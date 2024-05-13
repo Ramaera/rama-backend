@@ -19,6 +19,7 @@ Table User {
   kyc KYC [not null, default: 'NOT_INITIALIZED']
   role Role [not null]
   membership Membership [not null, default: 'BASIC']
+  isCommonMembership500 Boolean [not null, default: false]
   referralAgencyCode String
   date_of_birth String
   isKycAgent Boolean [not null, default: false]

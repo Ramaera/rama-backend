@@ -635,6 +635,17 @@ export class UsersService {
     });
   }
 
+  async changeKyc500Status(userId: string) {
+    return await this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        isCommonMembership500: true,
+      },
+    });
+  }
+
   async checkAgreementStatus(pwid) {
     return await this.prisma.aGREEMENT_DATA.findUnique({
       where: {

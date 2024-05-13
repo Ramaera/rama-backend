@@ -29,6 +29,7 @@ model User {
   kyc                       KYC                          @default(NOT_INITIALIZED)
   role                      Role
   membership                Membership                   @default(BASIC)
+  isCommonMembership500     Boolean                      @default(false)
   referralAgencyCode        String?
   date_of_birth             String?
   // stepCompleted           Int?                    @default(0)

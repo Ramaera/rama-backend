@@ -6,6 +6,15 @@ import {
 import { UpdateProjectEnrolledInput } from './dto/update-project-enrolled.input';
 import { PrismaService } from 'nestjs-prisma';
 
+const projectsList = [
+  'hajipur_project_payment',
+  'agra_project_payment',
+  'fundingreplacement_project_payment',
+  'chapra_project_payment',
+  'jhansi_project_payment',
+  'hyderabad_project_payment',
+];
+
 @Injectable()
 export class ProjectEnrolledService {
   constructor(private prisma: PrismaService) {}
@@ -92,6 +101,10 @@ export class ProjectEnrolledService {
               ? 'Agra_Mart_Project'
               : data.project_payment_name === 'hyderabad_project_payment'
               ? 'Hyderabad_Mart_Project'
+              : data.project_payment_name === 'chapra_project_payment'
+              ? 'CHAPRA_WATER_PROJECT'
+              : data.project_payment_name === 'jhansi_project_payment'
+              ? 'CHAPRA_WATER_PROJECT'
               : 'Not in Project',
         },
       });
@@ -120,6 +133,10 @@ export class ProjectEnrolledService {
               ? 'Agra_Mart_Project'
               : data.project_payment_name === 'hyderabad_project_payment'
               ? 'Hyderabad_Mart_Project'
+              : data.project_payment_name === 'chapra_project_payment'
+              ? 'CHAPRA_WATER_PROJECT'
+              : data.project_payment_name === 'jhansi_project_payment'
+              ? 'CHAPRA_WATER_PROJECT'
               : 'Not in Project',
           projectStatus: 'ENROLLED',
           userId: searchUser.id,
@@ -129,6 +146,21 @@ export class ProjectEnrolledService {
     }
 
     return 'This';
+  }
+
+  async totalEnrolledInProject(pwId: string) {
+    const totalProjectDocuments = await this.prisma.document.findMany({
+      where: {
+        user: {
+          pw_id: pwId,
+        },
+        title: {
+          in: projectsList,
+        },
+        status: 'APPROVED',
+      },
+    });
+    return totalProjectDocuments;
   }
 
   async findAll() {

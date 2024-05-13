@@ -161,11 +161,14 @@ type KYCAGENYCPAYMENT {
   HyderabadprojectDocument: [DocumentModal!]
   JhansiprojectDocument: [DocumentModal!]
   KycApprovedUser: [User!]
+  KycCommon500ApprovedUser: [User!]
   agraProjectAmount: Int
   chapraProjectAmount: Int
   hajipurProjectAmount: Int
   hyderabadProjectAmount: Int
   jhansiProjectAmount: Int
+  kyc500Amount: Int
+  kyc500RewardAmount: Int
   kycAmount: Int
   kycRewardAmount: Int
   selfAgencyAgraPaymentAmount: Int
@@ -240,6 +243,7 @@ type Mutation {
   TransactionToWallet(transactionToWallet: WalletTransactionInput!): Wallet!
   UpdateAgreementData(PWID: String!, url: String!): AgreementData!
   UpdateLicenseDetails(data: UpdateLicenseDetailsInput!): User!
+  changeKyc500Status(id: String!): AgreementData!
   changePassword(data: ChangePasswordInput!): User!
   createDocument(data: CreateDocumentInput!): Document!
   createDocumentByAdmin(data: CreateDocumentByAdmin!): Document!
@@ -381,6 +385,7 @@ type Query {
   checkAgreementDataStatus(pwid: String!): AgreementData!
   dsc(id: Int!): DscOutputDataField!
   findAgency(AgencyCode: String!): KycAgency!
+  findTotalProjectEnrolled(pwid: String!): [Document!]!
   findUsersinProject(projectName: String!): [User!]!
   findreferralKycTransaction(userId: String!): KYCREFERRAL!
   findreferralProjectTransaction(documentId: String!): KYCREFERRAL!
@@ -670,10 +675,7 @@ type User {
 
 type UserCountDTO {
   totalAdvanceSubscribers: Int
-  totalAgraSubscribers: Int
   totalBasicSubscribers: Int
-  totalHajipurSubscribers: Int
-  totalHyderabadSubscribers: Int
   totalSubscribers: Int
 }
 

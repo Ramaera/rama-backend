@@ -73,8 +73,14 @@ export class KYCAGENYCPAYMENT {
   @Field(() => Int, { nullable: true })
   kycAmount: number;
 
+  @Field(() => Int, { nullable: true })
+  kyc500Amount: number;
+
   @Field(() => [User], { nullable: true })
   KycApprovedUser: User[];
+
+  @Field(() => [User], { nullable: true })
+  KycCommon500ApprovedUser: User[];
 
   @Field(() => [DocumentModal], { nullable: true })
   HajipurprojectDocument: DocumentModal[];
@@ -121,4 +127,7 @@ export class KYCAGENYCPAYMENT {
 
   @Field(() => Int, { nullable: true })
   kycRewardAmount?: number;
+
+  @Field(() => Int, { nullable: true })
+  kyc500RewardAmount?: number;
 }

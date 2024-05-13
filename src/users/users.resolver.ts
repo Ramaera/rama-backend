@@ -345,6 +345,11 @@ export class UsersResolver {
     return this.usersService.updateAgreemnetData(agreementUrl, pwid);
   }
 
+  @Mutation(() => AgreementData)
+  async changeKyc500Status(@Args('id') userId: string) {
+    return this.usersService.changeKyc500Status(userId);
+  }
+
   @Query(() => AgreementData)
   async checkAgreementDataStatus(@Args('pwid') pwid: string) {
     return this.usersService.checkAgreementStatus(pwid);

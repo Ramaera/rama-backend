@@ -11,6 +11,7 @@ import {
   GetKycAgency,
 } from './dto/get-kyc-agency.input';
 import { CreateSalesPerson } from './dto/create-salesPerson.input';
+import { title } from 'process';
 var AgencyList = [];
 const getStartAndEndDate = (month, year) => {
   if (isNaN(month) || month < 1 || month > 12) {
@@ -137,7 +138,10 @@ export class KycAgencyService {
       getStartAndEndDate(month, year).startDate >= '2023-11-01T00:00:00.000Z'
     ) {
       let totalKycUser = 0;
+      let totalKYC500User = 0;
       let kycAmount = 0;
+      let kyc500Amount = 0;
+
       let selfProjectAmount = 0;
       let hajipurProjectAmount = 0;
       let hyderabadProjectAmount = 0;
@@ -151,6 +155,7 @@ export class KycAgencyService {
         where: {
           referralAgencyCode: AgencyCode,
           kyc: 'APPROVED',
+          isCommonMembership500: false,
           createdAt: {
             gte: agencyCreationDate.createdAt,
           },
@@ -167,12 +172,39 @@ export class KycAgencyService {
         },
       });
 
+      const KycCommon500ApprovedUser = await this.prisma.user.findMany({
+        where: {
+          referralAgencyCode: AgencyCode,
+          kyc: 'APPROVED',
+          isCommonMembership500: true,
+          createdAt: {
+            gte: agencyCreationDate.createdAt,
+          },
+          documents: {
+            some: {
+              status: 'APPROVED',
+              title: 'demat_document',
+              approvalDocumentDate: {
+                gte: getLocalDateData.startDate,
+                lte: getLocalDateData.endDate,
+              },
+            },
+          },
+        },
+      });
+
+      totalKYC500User = KycCommon500ApprovedUser.length;
+
       totalKycUser = KycApprovedUser.length;
 
       const kycRewardAmount =
         getStartAndEndDate(month, year).startDate >= '2024-02-01T00:00:00.000Z'
           ? await this.getKycReferralAmount(totalKycUser)
           : 200;
+
+      const kyc500RewardAmount = await this.getKyc500ReferralAmount(
+        totalKYC500User
+      );
 
       const HajipurprojectDocument = await this.getProjectReferralAmount(
         month,
@@ -290,10 +322,15 @@ export class KycAgencyService {
       jhansiProjectAmount = JhansiAmount * 0.05;
 
       kycAmount = totalKycUser * kycRewardAmount;
+      kyc500Amount = totalKYC500User * kyc500RewardAmount;
       return {
         kycRewardAmount,
         kycAmount,
+
         KycApprovedUser,
+        kyc500RewardAmount,
+        kyc500Amount,
+        KycCommon500ApprovedUser,
         hajipurProjectAmount,
         agraProjectAmount,
         hyderabadProjectAmount,
@@ -430,6 +467,22 @@ export class KycAgencyService {
       { min: 15, max: 20, amount: 600 },
       { min: 21, max: 25, amount: 800 },
       { min: 26, max: 500, amount: 1000 },
+    ];
+
+    for (const range of ranges) {
+      if (kycUsers >= range.min && kycUsers <= range.max) {
+        return range.amount;
+      }
+    }
+  }
+
+  async getKyc500ReferralAmount(kycUsers) {
+    const ranges = [
+      { min: 0, max: 5, amount: 100 },
+      { min: 6, max: 10, amount: 130 },
+      { min: 11, max: 15, amount: 150 },
+      { min: 15, max: 20, amount: 170 },
+      { min: 21, max: 500, amount: 200 },
     ];
 
     for (const range of ranges) {

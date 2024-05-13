@@ -110,19 +110,13 @@ export class KycAgencyResolver {
   }
 
   // @Query(() => KYCAGENYCPAYMENT)
-  // getSelfPayment(
+  // getKYCData(
   //   @Args('month', { type: () => Int }) month: number,
 
   //   @Args('year', { type: () => Int }) year: number,
-  //   @Args('agencyCode', { type: () => String }) agencyCode: string,
-  //   @Args('project', { type: () => String }) project: string
+  //   @Args('agencyCode', { type: () => String }) agencyCode: string
   // ) {
-  //   return this.kycAgencyService.getSelfAgencyPaymentDetails(
-  //     month,
-  //     year,
-  //     agencyCode,
-  //     project
-  //   );
+  //   return this.kycAgencyService.kycnot500(month, year, agencyCode);
   // }
 
   // ********************* Star Of the Week ******************************

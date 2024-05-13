@@ -1,6 +1,7 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { ProjectEnrolledService } from './project-enrolled.service';
 import { ProjectEnrolled, Projects } from './entities/project-enrolled.entity';
+import { Document } from 'src/documents/entities/document.entity';
 // import {Projects }
 import {
   CreateProjectEnrolledInput,
@@ -49,6 +50,11 @@ export class ProjectEnrolledResolver {
   //     updateProjectEnrolledInput
   //   );
   // }
+
+  @Query(() => [Document])
+  async findTotalProjectEnrolled(@Args('pwid') pwID: string) {
+    return await this.projectEnrolledService.totalEnrolledInProject(pwID);
+  }
 
   @Query(() => [User])
   findUsersinProject(@Args('projectName') projectName: string) {
