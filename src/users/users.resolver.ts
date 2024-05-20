@@ -51,6 +51,7 @@ import { updateUserDemat } from './dto/update-user-demat.input';
 import { BankDetailsInput } from './dto/create-bankDetails.input';
 import { BankDetails } from './entities/bankDetails.entity';
 import { STATUS } from '@prisma/client';
+import { UpdateBankDetailsInput } from './dto/update-bankDetails.input';
 
 @Resolver(() => User)
 @UseGuards(GqlAuthGuard)

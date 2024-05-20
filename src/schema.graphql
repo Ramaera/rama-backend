@@ -280,7 +280,7 @@ type Mutation {
   removeSalesChannel(id: Int!): SalesChannel!
   removeShareholding(id: Int!): Shareholding!
   signup(data: SignupInput!): Auth!
-  updateBankDetails(data: BankDetailsInput!): BankDetails!
+  updateBankDetails(data: UpdateBankDetailsInput!): BankDetails!
   updateBasicDetailsByAdmin(data: UpdateBasicDetailsInput!): User!
   updateDataByAdmin(data: UpdateUserInputByAdmin!): User!
   updateDematDetailsByAdmin(data: UpdateDematDocumentsInput!): User!
@@ -545,6 +545,14 @@ type Token {
   refreshToken: JWT!
 }
 
+input UpdateBankDetailsInput {
+  accountNumber: String
+  bankName: String
+  ifscCode: String
+  status: STATUS
+  userId: String
+}
+
 input UpdateBasicDetailsInput {
   Address: String
   aadharCardNumber: String
@@ -663,6 +671,7 @@ input UpdateUserStatusAdmin {
 
 type User {
   Address: String
+  BankDetails: [BankDetails!]
   DSCDetails: [DscOutputDataField!]
   ProjectEnrolledStatus: [ProjectEnrolledForAllUser!]
   aadharCardNumber: String

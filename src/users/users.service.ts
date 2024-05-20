@@ -314,6 +314,7 @@ export class UsersService {
         DSCDetails: true,
         ProjectEnrolledStatus: true,
         shareHoldingType: true,
+        BankDetails: true,
       },
     });
 

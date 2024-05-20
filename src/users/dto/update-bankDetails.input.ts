@@ -17,7 +17,7 @@ export class UpdateBankDetailsInput {
   ifscCode: string;
 
   @Field(() => STATUS)
-  status: STATUS;
+  status?: STATUS;
 }
 
 registerEnumType(STATUS, {

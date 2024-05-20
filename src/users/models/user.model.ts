@@ -19,6 +19,7 @@ import {
   ProjectEnrolledForAllUser,
 } from 'src/project-enrolled/entities/project-enrolled.entity';
 import { Shareholding } from 'src/shareholding/entities/shareholding.entity';
+import { BankDetails } from '../entities/bankDetails.entity';
 
 registerEnumType(Role, {
   name: 'Role',
@@ -83,6 +84,9 @@ export class User extends BaseModel {
 
   @Field(() => [DscOutputDataField])
   DSCDetails?: DscOutputDataField[] | null;
+
+  @Field(() => [BankDetails])
+  BankDetails?: BankDetails[] | null;
 
   @Field(() => [ProjectEnrolledForAllUser])
   ProjectEnrolledStatus?: ProjectEnrolledForAllUser[];
