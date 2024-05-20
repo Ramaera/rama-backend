@@ -128,104 +128,98 @@ const projectsList = [
   'jhansi_project_payment',
   'hyderabad_project_payment',
 ];
+// const SeedCommand = async () => {
+//   // const KycApprovedUser = await prisma.user.findMany({
+//   //   where: {
+//   //     AND: [
+//   //       {
+//   //         kyc: 'APPROVED',
+//   //         documents: {
+//   //           some: {
+//   //             status: 'APPROVED',
+//   //             title: 'demat_document',
+//   //           },
+//   //         },
+//   //       },
+//   //       {
+//   //         documents: {
+//   //           some: {
+//   //             title: 'payment_proof',
+//   //             amount: {
+//   //               equals: 500,
+//   //             },
+//   //             status: 'APPROVED',
+//   //           },
+//   //         },
+//   //       },
+//   //     ],
+//   //     // referralAgencyCode:,
+//   //   },
+//   // });
+
+//   console.log('totalProject ', KycApprovedUser);
+// };
 const SeedCommand = async () => {
-  const KycApprovedUser = await prisma.user.findMany({
-    where: {
-      AND: [
-        {
-          kyc: 'APPROVED',
-          documents: {
-            some: {
-              status: 'APPROVED',
-              title: 'demat_document',
-            },
-          },
-        },
-        {
-          documents: {
-            some: {
-              title: 'payment_proof',
-              amount: {
-                equals: 500,
-              },
-              status: 'APPROVED',
-            },
-          },
-        },
-      ],
-      // referralAgencyCode:,
-    },
+  const usersInAgency = await prisma.user.findMany({});
+
+  let csvContent = 'PWID\n';
+  usersInAgency.forEach((user) => {
+    csvContent += ` ${user.pw_id}\n`;
+  });
+  // Write CSV content to a file
+  fs.writeFile('PWIDnotInRamaera.csv', csvContent, (err) => {
+    if (err) {
+      console.error('Error writing CSV file:', err);
+    } else {
+      console.log('CSV file has been saved successfully.');
+    }
   });
 
-  console.log('totalProject ', KycApprovedUser);
+  // const data = await prisma.shareHoldingType.updateMany({
+  //   where: {
+  //     status: 'UNDER_PROCESS',
+  //   },
+  //   data: {
+  //     status: 'TRANSFERRED',
+  //   },
+  // });
+  // console.log('done', data);
+  // fs.createReadStream('prisma/KYCOLDDATA.csv')
+  //   .pipe(parse({ delimiter: ',', from_line: 2 }))
+  //   .on('data', async function (row) {
+  //     try {
+  //       const userId = await prisma.user.findFirst({
+  //         where: {
+  //           pw_id: row[8].toUpperCase(),
+  //         },
+  //       });
+  //       const agencyCOdeId = await prisma.kycAgency.findUnique({
+  //         where: {
+  //           agencyCode: row[1],
+  //         },
+  //       });
+
+  //       await prisma.referralProjectTransaction.create({
+  //         data: {
+  //           userId: userId.id,
+  //           documentId: '',
+  //           pwID: row[8],
+  //           agencyCode: row[1],
+  //           kycAgencyId: agencyCOdeId.id,
+  //           transferDate: new Date(row[3]),
+  //         },
+  //       });
+  //     } catch (err) {
+  //       console.log('err', err);
+  //     }
+  //   })
+  //   .on('error', function (error) {
+  //     console.log(error.message);
+  //   })
+  //   .on('end', function () {
+  //     console.log('finished');
+  //   });
 };
-// const SeedCommand = async () => {
-//   const usersBeforeAgency = await prisma.user.findMany({
-//     where: {
-//       referralAgencyCode: {
-//         contains: 'RLI',
-//       },
-//     },
-//   });
-
-//   let csvContent = 'Title,Approval Document Date,Amount,PW ID\n';
-//   // usersBeforeAgency.forEach((payment) => {
-//   //   csvContent += `${payment.user.pw_id},${payment.user?.name},${payment.title},${payment.approvalDocumentDate},${payment.amount}\n`;
-//   // });
-//   // Write CSV content to a file
-//   // fs.writeFile('hajipurData.csv', csvContent, (err) => {
-//   //   if (err) {
-//   //     console.error('Error writing CSV file:', err);
-//   //   } else {
-//   //     console.log('CSV file has been saved successfully.');
-//   //   }
-//   // });
-
-//   // const data = await prisma.shareHoldingType.updateMany({
-//   //   where: {
-//   //     status: 'UNDER_PROCESS',
-//   //   },
-//   //   data: {
-//   //     status: 'TRANSFERRED',
-//   //   },
-//   // });
-//   // console.log('done', data);
-//   // fs.createReadStream('prisma/KYCOLDDATA.csv')
-//   //   .pipe(parse({ delimiter: ',', from_line: 2 }))
-//   //   .on('data', async function (row) {
-//   //     try {
-//   //       const userId = await prisma.user.findFirst({
-//   //         where: {
-//   //           pw_id: row[8].toUpperCase(),
-//   //         },
-//   //       });
-//   //       const agencyCOdeId = await prisma.kycAgency.findUnique({
-//   //         where: {
-//   //           agencyCode: row[1],
-//   //         },
-//   //       });
-
-//   //       await prisma.referralProjectTransaction.create({
-//   //         data: {
-//   //           userId: userId.id,
-//   //           documentId: '',
-//   //           pwID: row[8],
-//   //           agencyCode: row[1],
-//   //           kycAgencyId: agencyCOdeId.id,
-//   //           transferDate: new Date(row[3]),
-//   //         },
-//   //       });
-//   //     } catch (err) {
-//   //       console.log('err', err);
-//   //     }
-//   //   })
-//   //   .on('error', function (error) {
-//   //     console.log(error.message);
-//   //   })
-//   //   .on('end', function () {
-//   //     console.log('finished');
-//   //   });
-// };
 
 async function main() {
   const check = await SeedCommand();

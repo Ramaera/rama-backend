@@ -31,6 +31,8 @@ import { UpdateBasicDetailsInput } from './dto/update-BasicDetails.input';
 import { UpdateDematDocumentsInput } from './dto/update-dematDocument.input';
 import { UpdateNomineeDetailsInput } from './dto/update-nominee.input';
 import { updateUserDemat } from './dto/update-user-demat.input';
+import { BankDetailsInput } from './dto/create-bankDetails.input';
+import { UpdateBankDetailsInput } from './dto/update-bankDetails.input';
 
 @Injectable()
 export class UsersService {
@@ -650,6 +652,26 @@ export class UsersService {
     return await this.prisma.aGREEMENT_DATA.findUnique({
       where: {
         pwId: pwid,
+      },
+    });
+  }
+
+  async createBankDetails(bankData: BankDetailsInput) {
+    return await this.prisma.bankDetails.create({
+      data: { ...bankData },
+      include: {
+        user: true,
+      },
+    });
+  }
+  async updateBankDetails(bankData: UpdateBankDetailsInput) {
+    return await this.prisma.bankDetails.update({
+      data: { ...bankData },
+      where: {
+        userId: bankData.userId,
+      },
+      include: {
+        user: true,
       },
     });
   }

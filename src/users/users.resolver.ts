@@ -48,6 +48,9 @@ import { UpdateDematDocumentsInput } from './dto/update-dematDocument.input';
 import { UpdateNomineeDetailsInput } from './dto/update-nominee.input';
 import { AgreementData } from './entities/agreementData.entity';
 import { updateUserDemat } from './dto/update-user-demat.input';
+import { BankDetailsInput } from './dto/create-bankDetails.input';
+import { BankDetails } from './entities/bankDetails.entity';
+import { STATUS } from '@prisma/client';
 
 @Resolver(() => User)
 @UseGuards(GqlAuthGuard)
@@ -353,5 +356,15 @@ export class UsersResolver {
   @Query(() => AgreementData)
   async checkAgreementDataStatus(@Args('pwid') pwid: string) {
     return this.usersService.checkAgreementStatus(pwid);
+  }
+
+  @Mutation(() => BankDetails)
+  async CreateBankDetails(@Args('data') data: BankDetailsInput) {
+    return this.usersService.createBankDetails(data);
+  }
+
+  @Mutation(() => BankDetails)
+  async updateBankDetails(@Args('data') data: UpdateBankDetailsInput) {
+    return this.usersService.updateBankDetails(data);
   }
 }

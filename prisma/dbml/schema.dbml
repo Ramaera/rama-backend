@@ -36,6 +36,19 @@ Table User {
   ProjectEnrolledStatus ProjectEnrolledStatus [not null]
   ReferralKYCTransaction ReferralKYCTransaction [not null]
   ReferralProjectransaction ReferralProjectTransaction [not null]
+  BankDetails BankDetails [not null]
+}
+
+Table BankDetails {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+  bankName String
+  accountNumber String
+  ifscCode String
+  status STATUS [not null, default: 'PENDING']
+  userId String [unique, not null]
+  user User [not null]
 }
 
 Table KycAgency {
@@ -289,6 +302,8 @@ Enum STATUS {
   APPROVED
   REJECTED
 }
+
+Ref: BankDetails.userId > User.id
 
 Ref: KycAgency.userId - User.id
 

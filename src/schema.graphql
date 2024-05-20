@@ -23,6 +23,22 @@ type Auth {
   user: User!
 }
 
+type BankDetails {
+  accountNumber: String!
+  bankName: String!
+  id: String!
+  ifscCode: String!
+  status: String
+  userId: String!
+}
+
+input BankDetailsInput {
+  accountNumber: String
+  bankName: String
+  ifscCode: String
+  userId: String
+}
+
 input ChangePasswordInput {
   newPassword: String!
   oldpassword: String!
@@ -240,6 +256,7 @@ enum Membership {
 }
 
 type Mutation {
+  CreateBankDetails(data: BankDetailsInput!): BankDetails!
   TransactionToWallet(transactionToWallet: WalletTransactionInput!): Wallet!
   UpdateAgreementData(PWID: String!, url: String!): AgreementData!
   UpdateLicenseDetails(data: UpdateLicenseDetailsInput!): User!
@@ -263,6 +280,7 @@ type Mutation {
   removeSalesChannel(id: Int!): SalesChannel!
   removeShareholding(id: Int!): Shareholding!
   signup(data: SignupInput!): Auth!
+  updateBankDetails(data: BankDetailsInput!): BankDetails!
   updateBasicDetailsByAdmin(data: UpdateBasicDetailsInput!): User!
   updateDataByAdmin(data: UpdateUserInputByAdmin!): User!
   updateDematDetailsByAdmin(data: UpdateDematDocumentsInput!): User!

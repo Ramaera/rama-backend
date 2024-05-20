@@ -574,6 +574,10 @@ export class KycAgencyService {
         user: true,
       },
     });
+    console.log(
+      'projectDocumentWithoutPromoterData',
+      projectDocumentWithoutPromoterData
+    );
 
     const projectDocumentData = [
       ...projectDocumentWithoutPromoterData,
