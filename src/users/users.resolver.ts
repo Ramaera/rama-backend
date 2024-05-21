@@ -52,6 +52,7 @@ import { BankDetailsInput } from './dto/create-bankDetails.input';
 import { BankDetails } from './entities/bankDetails.entity';
 import { STATUS } from '@prisma/client';
 import { UpdateBankDetailsInput } from './dto/update-bankDetails.input';
+import { AllBankDetails } from './entities/AllbankDetails.entity';
 
 @Resolver(() => User)
 @UseGuards(GqlAuthGuard)
@@ -367,5 +368,13 @@ export class UsersResolver {
   @Mutation(() => BankDetails)
   async updateBankDetails(@Args('data') data: UpdateBankDetailsInput) {
     return this.usersService.updateBankDetails(data);
+  }
+
+  @Query(() => [AllBankDetails])
+  async BankDetails(
+    @Args({ name: 'take', type: () => Int, defaultValue: 100 }) take: number,
+    @Args({ name: 'skip', type: () => Int, defaultValue: 0 }) skip: number
+  ) {
+    return this.usersService.getAllBankDetails(skip, take);
   }
 }

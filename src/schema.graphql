@@ -9,6 +9,15 @@ type AgreementData {
   pwId: String!
 }
 
+type AllBankDetails {
+  accountNumber: String!
+  bankName: String!
+  id: String!
+  ifscCode: String!
+  status: String
+  user: User!
+}
+
 type AllKycAgency {
   agencyCode: String
   name: String
@@ -390,6 +399,7 @@ type Query {
   AgencyPayment(agencyCode: String!, month: Int!, year: Int!): KYCAGENYCPAYMENT!
   AgencyWalletHistory(agencyCode: String!): [Wallet!]!
   AllKycAgency: [KycAgency!]!
+  BankDetails(skip: Int! = 0, take: Int! = 100): [AllBankDetails!]!
   ChangeAmountOfRamaeraLegalInfoTech: User!
   DeleteUser: User!
   FeedProjectEnrolled: ProjectEnrolled!

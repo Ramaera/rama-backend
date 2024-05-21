@@ -676,4 +676,14 @@ export class UsersService {
       },
     });
   }
+
+  async getAllBankDetails(skip, take) {
+    return await this.prisma.bankDetails.findMany({
+      skip,
+      take,
+      include: {
+        user: true,
+      },
+    });
+  }
 }
