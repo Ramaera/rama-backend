@@ -13,3 +13,4 @@ docker-compose-db.yml
 
 uploads/
 pdfAgreement/
+prisma/PDBANK.csv

@@ -160,20 +160,20 @@ const projectsList = [
 //   console.log('totalProject ', KycApprovedUser);
 // };
 const SeedCommand = async () => {
-  const usersInAgency = await prisma.user.findMany({});
+  // const usersInAgency = await prisma.user.findMany({});
 
-  let csvContent = 'PWID\n';
-  usersInAgency.forEach((user) => {
-    csvContent += ` ${user.pw_id}\n`;
-  });
-  // Write CSV content to a file
-  fs.writeFile('PWIDnotInRamaera.csv', csvContent, (err) => {
-    if (err) {
-      console.error('Error writing CSV file:', err);
-    } else {
-      console.log('CSV file has been saved successfully.');
-    }
-  });
+  // let csvContent = 'PWID\n';
+  // usersInAgency.forEach((user) => {
+  //   csvContent += ` ${user.pw_id}\n`;
+  // });
+  // // Write CSV content to a file
+  // fs.writeFile('PWIDnotInRamaera.csv', csvContent, (err) => {
+  //   if (err) {
+  //     console.error('Error writing CSV file:', err);
+  //   } else {
+  //     console.log('CSV file has been saved successfully.');
+  //   }
+  // });
 
   // const data = await prisma.shareHoldingType.updateMany({
   //   where: {
@@ -184,41 +184,43 @@ const SeedCommand = async () => {
   //   },
   // });
   // console.log('done', data);
-  // fs.createReadStream('prisma/KYCOLDDATA.csv')
-  //   .pipe(parse({ delimiter: ',', from_line: 2 }))
-  //   .on('data', async function (row) {
-  //     try {
-  //       const userId = await prisma.user.findFirst({
-  //         where: {
-  //           pw_id: row[8].toUpperCase(),
-  //         },
-  //       });
-  //       const agencyCOdeId = await prisma.kycAgency.findUnique({
-  //         where: {
-  //           agencyCode: row[1],
-  //         },
-  //       });
+  fs.createReadStream('prisma/PDBANK.csv')
+    .pipe(parse({ delimiter: ',', from_line: 2 }))
+    .on('data', async function (row) {
+      try {
+        const userId = await prisma.user.findFirst({
+          where: {
+            pw_id: row[1].toUpperCase(),
+          },
+        });
 
-  //       await prisma.referralProjectTransaction.create({
-  //         data: {
-  //           userId: userId.id,
-  //           documentId: '',
-  //           pwID: row[8],
-  //           agencyCode: row[1],
-  //           kycAgencyId: agencyCOdeId.id,
-  //           transferDate: new Date(row[3]),
-  //         },
-  //       });
-  //     } catch (err) {
-  //       console.log('err', err);
-  //     }
-  //   })
-  //   .on('error', function (error) {
-  //     console.log(error.message);
-  //   })
-  //   .on('end', function () {
-  //     console.log('finished');
-  //   });
+        const bankDetails = await prisma.bankDetails.findUnique({
+          where: {
+            userId: userId.id,
+          },
+        });
+        console.log(row[13], row[14], row[15]);
+
+        if (!bankDetails) {
+          await prisma.bankDetails.create({
+            data: {
+              bankName: row[15],
+              ifscCode: row[14],
+              accountNumber: row[13],
+              userId: userId.id,
+            },
+          });
+        }
+      } catch (err) {
+        console.log('err', err);
+      }
+    })
+    .on('error', function (error) {
+      console.log(error.message);
+    })
+    .on('end', function () {
+      console.log('finished');
+    });
 };
 
 async function main() {

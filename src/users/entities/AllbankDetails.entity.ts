@@ -5,13 +5,13 @@ import { User } from '../models/user.model';
 export class AllBankDetails {
   @Field()
   id: string;
-  @Field()
+  @Field({ nullable: true })
   bankName: string;
 
-  @Field()
+  @Field({ nullable: true })
   accountNumber: string;
 
-  @Field()
+  @Field({ nullable: true })
   ifscCode: string;
 
   @Field()
