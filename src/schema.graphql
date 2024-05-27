@@ -10,10 +10,10 @@ type AgreementData {
 }
 
 type AllBankDetails {
-  accountNumber: String!
-  bankName: String!
+  accountNumber: String
+  bankName: String
   id: String!
-  ifscCode: String!
+  ifscCode: String
   status: String
   user: User!
 }

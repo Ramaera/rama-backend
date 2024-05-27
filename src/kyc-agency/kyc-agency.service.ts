@@ -55,10 +55,6 @@ const DateInGmt530 = () => {
   return newDateWithOffset;
 };
 
-// const { startDate, endDate } = getStartAndEndDate(11, 2023);
-// console.log('Start Date:', startDate);
-// console.log('End Date:', endDate);
-
 @Injectable()
 export class KycAgencyService {
   constructor(private prisma: PrismaService) {}
@@ -133,7 +129,7 @@ export class KycAgencyService {
       },
     });
 
-    // Condition for Novemeber because , Before Novemeber conditions for Self Project payment is Different
+                    // Condition for Novemeber because , Before Novemeber conditions for Self Project payment is Different
     if (
       getStartAndEndDate(month, year).startDate >= '2023-11-01T00:00:00.000Z'
     ) {
@@ -648,6 +644,7 @@ export class KycAgencyService {
       include: {
         nominee: true,
         documents: true,
+        BankDetails:true,
         KycAgency: true,
       },
     });
