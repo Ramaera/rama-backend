@@ -5,6 +5,7 @@ import {
   KYCAGENYCPAYMENT,
   KycAgency,
 } from './entities/kyc-agency.entity';
+import { User } from 'src/users/models/user.model';
 import { CreateKycAgencyCodeInput } from './dto/create-kyc-agency.input';
 import { UpdateKycAgencyInput } from './dto/update-kyc-agency.input';
 import {
@@ -15,10 +16,11 @@ import { UserEntity } from 'src/common/decorators/user.decorator';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
 
-import { User } from 'src/users/models/user.model';
 import { STOW } from './entities/STOW.entity';
 import { CreateSalesPerson } from './dto/create-salesPerson.input';
 import { SalesPersonOutPut } from './entities/salesperson.entity';
+import { UpdateBankDetailsInput } from 'src/users/dto/update-bankDetails.input';
+import { BankDetails } from 'src/users/entities/bankDetails.entity';
 
 @Resolver(() => KycAgency)
 export class KycAgencyResolver {
@@ -127,4 +129,29 @@ export class KycAgencyResolver {
   ) {
     return this.kycAgencyService.stow(saturdayDate, nextFridayDate);
   }
+
+
+  @Query(()=>[User],{ name: 'pendingBankDetails' })
+  bankDetailsofUserNotinAgency(){
+    return this.kycAgencyService.bankDetailsofUserNotinAgency()
+
+  }
+
+
+
+  @Mutation(()=>BankDetails)
+  @UseGuards(GqlAuthGuard)
+  updateBankDetailsOfUserByAgency(
+    @UserEntity() user: User,
+    @Args('userId', { type: () => String }) id: string,
+    @Args('data') data: UpdateBankDetailsInput
+  ){
+return this.kycAgencyService.updateBankDetailsOfUserByAgency(id,user.id,data)
+  }
+
+
+
+
+
+
 }

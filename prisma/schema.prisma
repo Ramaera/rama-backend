@@ -60,6 +60,9 @@ model BankDetails {
   status        STATUS   @default(PENDING)
   userId        String   @unique
   user          User     @relation(fields: [userId], references: [id])
+ metaData     Json?             @db.Json
+
+
 }
 
 model KycAgency {

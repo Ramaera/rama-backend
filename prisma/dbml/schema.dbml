@@ -49,6 +49,7 @@ Table BankDetails {
   status STATUS [not null, default: 'PENDING']
   userId String [unique, not null]
   user User [not null]
+  metaData Json
 }
 
 Table KycAgency {

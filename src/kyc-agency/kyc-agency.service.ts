@@ -12,6 +12,7 @@ import {
 } from './dto/get-kyc-agency.input';
 import { CreateSalesPerson } from './dto/create-salesPerson.input';
 import { title } from 'process';
+import { UpdateBankDetailsInput } from 'src/users/dto/update-bankDetails.input';
 var AgencyList = [];
 const getStartAndEndDate = (month, year) => {
   if (isNaN(month) || month < 1 || month > 12) {
@@ -984,4 +985,47 @@ export class KycAgencyService {
 
     return agenciesData;
   }
+
+
+
+  async bankDetailsofUserNotinAgency(){
+    const list = await this.prisma.user.findMany({
+      where:{
+   
+          referralAgencyCode:{
+            not:{
+              contains:"RLI"
+            }
+          },
+          BankDetails:undefined
+      },
+      include:{
+        BankDetails:true
+      }
+    })
+
+    return list
+  }
+
+
+
+async updateBankDetailsOfUserByAgency(userId:string,updaterid:string,data:UpdateBankDetailsInput){
+  const updateData=await this.prisma.bankDetails.update({
+    where:{
+      userId
+    },
+    data:{
+      bankName:data.bankName,
+      ifscCode:data.ifscCode,
+      accountNumber:data.ifscCode,
+      metaData:{"userId":updaterid}
+
+
+    }
+  })
+
+  return updateData
+}
+
+
 }

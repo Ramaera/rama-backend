@@ -4,16 +4,16 @@ import { ObjectType, Field, Int } from '@nestjs/graphql';
 export class BankDetails {
   @Field()
   id: string;
-  @Field()
+  @Field({nullable:true})
   bankName: string;
 
-  @Field()
+  @Field({nullable:true})
   accountNumber: string;
 
-  @Field()
+  @Field({nullable:true})
   ifscCode: string;
 
-  @Field()
+  @Field({nullable:true})
   userId: string;
 
   @Field({ nullable: true })

@@ -33,12 +33,12 @@ type Auth {
 }
 
 type BankDetails {
-  accountNumber: String!
-  bankName: String!
+  accountNumber: String
+  bankName: String
   id: String!
-  ifscCode: String!
+  ifscCode: String
   status: String
-  userId: String!
+  userId: String
 }
 
 input BankDetailsInput {
@@ -290,6 +290,7 @@ type Mutation {
   removeShareholding(id: Int!): Shareholding!
   signup(data: SignupInput!): Auth!
   updateBankDetails(data: UpdateBankDetailsInput!): BankDetails!
+  updateBankDetailsOfUserByAgency(data: UpdateBankDetailsInput!, userId: String!): BankDetails!
   updateBasicDetailsByAdmin(data: UpdateBasicDetailsInput!): User!
   updateDataByAdmin(data: UpdateUserInputByAdmin!): User!
   updateDematDetailsByAdmin(data: UpdateDematDocumentsInput!): User!
@@ -434,6 +435,7 @@ type Query {
   me: User!
   myDocuments(userId: String!): [Document!]!
   myNominee(userId: String!): Nominee!
+  pendingBankDetails: [User!]!
   pendingTasks(skip: Int! = 0, take: Int! = 3000): [Document!]!
   projectEnrolled(id: String!): [Projects!]!
   salesChannel: [SalesChannel!]!
