@@ -309,7 +309,7 @@ export class UsersResolver {
   // ********************************* List of As Per Subscribers Type ********************************************
 
   @Query(() => [User])
-  @UseInterceptors(CacheInterceptor)
+  // @UseInterceptors(CacheInterceptor)
   async allKycUser(
     @Args('input') input: SearchMembershipInput,
     @Args({ name: 'take', type: () => Int, defaultValue: 100 }) take: number,

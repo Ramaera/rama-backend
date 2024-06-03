@@ -27,7 +27,7 @@ import { SalesChannelModule } from './sales-channel/sales-channel.module';
 
 @Module({
   imports: [
-    CacheModule.register({ isGlobal: true, max:100,ttl:0 }),
+    // CacheModule.register({ isGlobal: true, max:100,ttl:0 }),
     ConfigModule.forRoot({ isGlobal: true, load: [config] }),
     PrismaModule.forRoot({
       isGlobal: true,

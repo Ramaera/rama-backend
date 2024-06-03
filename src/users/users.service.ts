@@ -41,19 +41,19 @@ export class UsersService {
   constructor(
     private prisma: PrismaService,
     private passwordService: PasswordService ,
-     @Inject(CACHE_MANAGER) private cacheManager: Cache
+    //  @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {}
 
 
 
 
-  async setCacheKey(key:string,value:string):Promise<void>{
-    await this.cacheManager.set(key,value);
-  }
+  // async setCacheKey(key:string,value:string):Promise<void>{
+  //   await this.cacheManager.set(key,value);
+  // }
 
-  async getCacheKey(key:string):Promise<string>{
-    return await this.cacheManager.get(key);
-  }
+  // async getCacheKey(key:string):Promise<string>{
+  //   return await this.cacheManager.get(key);
+  // }
 
   // ************************* Update User Details *****************
 
