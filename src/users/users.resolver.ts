@@ -55,7 +55,7 @@ import { UpdateBankDetailsInput } from './dto/update-bankDetails.input';
 import { AllBankDetails } from './entities/AllbankDetails.entity';
 
 @Resolver(() => User)
-@UseGuards(GqlAuthGuard)
+// @UseGuards(GqlAuthGuard)
 export class UsersResolver {
   constructor(
     private usersService: UsersService,
@@ -368,6 +368,12 @@ export class UsersResolver {
   @Mutation(() => BankDetails)
   async updateBankDetails(@Args('data') data: UpdateBankDetailsInput) {
     return this.usersService.updateBankDetails(data);
+  }
+
+
+  @Mutation(() => User)
+  async updateKyc500(@Args('id') userId: string) {
+    return this.usersService.update500kyc(userId);
   }
 
   @Query(() => [AllBankDetails])

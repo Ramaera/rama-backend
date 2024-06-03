@@ -686,4 +686,17 @@ export class UsersService {
       },
     });
   }
+
+
+
+  async update500kyc(userId){
+    return await this.prisma.user.update({
+      where:{
+        id:userId
+      },
+      data:{
+        isCommonMembership500:true
+      }
+    })
+  }
 }

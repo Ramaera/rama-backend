@@ -298,6 +298,7 @@ type Mutation {
   updateDocumentByAdmin(data: UpdateDocumentInput!): Document!
   updateDocumentStatusByAdmin(data: UpdateDocumentStatusByAdmin!): Document!
   updateDocumentUTR(data: UpdateDocumentUTRandAmountInput!): Document!
+  updateKyc500(id: String!): User!
   updateMembership(data: UpdateUserMembershipAdmin!): User!
   updateNomineeDetailByAdmin(data: UpdateNomineeDetailsInput!): User!
   updateSalesChannel(updateSalesChannelInput: UpdateSalesChannelInput!): SalesChannel!
