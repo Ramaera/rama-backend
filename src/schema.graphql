@@ -696,6 +696,7 @@ type User {
   email: String
   father_or_husband_name: String
   id: String!
+  isCommonMembership500: Boolean
   isKycAgent: Boolean
   kyc: KYC!
   kycAgency: [KycAgencyModel!]

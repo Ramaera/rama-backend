@@ -8,7 +8,7 @@ import {
   ResolveField,
   Int,
 } from '@nestjs/graphql';
-import { ConflictException, UseGuards } from '@nestjs/common';
+import { ConflictException, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UserEntity } from 'src/common/decorators/user.decorator';
 import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
 import { UsersService } from './users.service';
@@ -53,6 +53,7 @@ import { BankDetails } from './entities/bankDetails.entity';
 import { STATUS } from '@prisma/client';
 import { UpdateBankDetailsInput } from './dto/update-bankDetails.input';
 import { AllBankDetails } from './entities/AllbankDetails.entity';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Resolver(() => User)
 @UseGuards(GqlAuthGuard)
@@ -308,6 +309,7 @@ export class UsersResolver {
   // ********************************* List of As Per Subscribers Type ********************************************
 
   @Query(() => [User])
+  @UseInterceptors(CacheInterceptor)
   async allKycUser(
     @Args('input') input: SearchMembershipInput,
     @Args({ name: 'take', type: () => Int, defaultValue: 100 }) take: number,

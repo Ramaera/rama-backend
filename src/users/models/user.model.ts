@@ -73,6 +73,9 @@ export class User extends BaseModel {
   @Field(() => String, { nullable: true })
   panCardNumber?: string | null;
 
+  @Field(() => Boolean)
+  isCommonMembership500?: Boolean ;
+
   @Field(() => String, { nullable: true })
   Address?: string | null;
 

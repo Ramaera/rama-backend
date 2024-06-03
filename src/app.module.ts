@@ -1,5 +1,6 @@
 import { GraphQLModule } from '@nestjs/graphql';
-import { Logger, Module, CacheModule } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
+import { CacheModule } from '@nestjs/cache-manager';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from 'nestjs-prisma';
 import { AppController } from './app.controller';
@@ -26,7 +27,7 @@ import { SalesChannelModule } from './sales-channel/sales-channel.module';
 
 @Module({
   imports: [
-    // CacheModule.register({ isGlobal: true, store: redisStore }),
+    CacheModule.register({ isGlobal: true, max:100,ttl:0 }),
     ConfigModule.forRoot({ isGlobal: true, load: [config] }),
     PrismaModule.forRoot({
       isGlobal: true,

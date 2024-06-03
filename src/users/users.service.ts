@@ -33,13 +33,27 @@ import { UpdateNomineeDetailsInput } from './dto/update-nominee.input';
 import { updateUserDemat } from './dto/update-user-demat.input';
 import { BankDetailsInput } from './dto/create-bankDetails.input';
 import { UpdateBankDetailsInput } from './dto/update-bankDetails.input';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class UsersService {
   constructor(
     private prisma: PrismaService,
-    private passwordService: PasswordService // @Inject(CACHE_MANAGER) private cacheManager: Cache
+    private passwordService: PasswordService ,
+     @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {}
+
+
+
+
+  async setCacheKey(key:string,value:string):Promise<void>{
+    await this.cacheManager.set(key,value);
+  }
+
+  async getCacheKey(key:string):Promise<string>{
+    return await this.cacheManager.get(key);
+  }
 
   // ************************* Update User Details *****************
 
