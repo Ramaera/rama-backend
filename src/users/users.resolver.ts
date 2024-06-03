@@ -55,7 +55,7 @@ import { UpdateBankDetailsInput } from './dto/update-bankDetails.input';
 import { AllBankDetails } from './entities/AllbankDetails.entity';
 
 @Resolver(() => User)
-// @UseGuards(GqlAuthGuard)
+@UseGuards(GqlAuthGuard)
 export class UsersResolver {
   constructor(
     private usersService: UsersService,
