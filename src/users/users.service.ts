@@ -15,7 +15,8 @@ import { NomineeInput } from './dto/createNominee.input';
 import { saveAs } from 'file-saver';
 
 // import { CACHE_MANAGER } from '@nestjs/common';
-// import { Cache } from 'cache-manager';
+import { Cache } from 'cache-manager';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 
 import {
   UpdateLicenseDetailsInput,
@@ -38,7 +39,8 @@ import { UpdateBankDetailsInput } from './dto/update-bankDetails.input';
 export class UsersService {
   constructor(
     private prisma: PrismaService,
-    private passwordService: PasswordService // @Inject(CACHE_MANAGER) private cacheManager: Cache
+    private passwordService: PasswordService ,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {}
 
   // ************************* Update User Details *****************
@@ -323,12 +325,23 @@ export class UsersService {
 
   // ************************ Get All Kyc Handles *****************************
   async getKycHandler() {
-    return await this.prisma.kycHandler.findMany({});
+    const cachedData=await this.cacheManager.get(`kychandler`)
+    if(cachedData){
+      return cachedData
+    }
+    
+    const data=await this.prisma.kycHandler.findMany({});
+    await this.cacheManager.set(`kychandler`,data)
+    return data
   }
 
   // ########## Get All User #####################
 
   async getAllUser({ skip, take }) {
+    const cachedData=await this.cacheManager.get(`alluser`)
+    if (cachedData){
+      return cachedData
+    }
     const allUser = await this.prisma.user.findMany({
       take,
       skip,
@@ -340,6 +353,7 @@ export class UsersService {
         ProjectEnrolledStatus: true,
       },
     });
+    await this.cacheManager.set(`alluser`,allUser)
     return allUser;
   }
 
