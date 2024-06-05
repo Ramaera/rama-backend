@@ -385,4 +385,15 @@ export class UsersResolver {
   ) {
     return this.usersService.getAllBankDetails(skip, take);
   }
+
+  @Query(() => [User])
+  async UsersNotInvestedInProject(
+    @Args({ name: 'take', type: () => Int, defaultValue: 100 }) take: number,
+    @Args({ name: 'skip', type: () => Int, defaultValue: 0 }) skip: number
+  ) {
+    return this.usersService.UsersNotInvestedInProject(skip, take);
+  }
+
+
+
 }

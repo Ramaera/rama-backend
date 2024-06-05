@@ -40,7 +40,7 @@ export class UsersService {
   constructor(
     private prisma: PrismaService,
     private passwordService: PasswordService ,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache
+
   ) {}
 
 
@@ -336,23 +336,16 @@ export class UsersService {
 
   // ************************ Get All Kyc Handles *****************************
   async getKycHandler() {
-    const cachedData=await this.cacheManager.get(`kychandler`)
-    if(cachedData){
-      return cachedData
-    }
+  
     
     const data=await this.prisma.kycHandler.findMany({});
-    await this.cacheManager.set(`kychandler`,data)
     return data
   }
 
   // ########## Get All User #####################
 
   async getAllUser({ skip, take }) {
-    const cachedData=await this.cacheManager.get(`alluser`)
-    if (cachedData){
-      return cachedData
-    }
+
     const allUser = await this.prisma.user.findMany({
       take,
       skip,
@@ -364,7 +357,6 @@ export class UsersService {
         ProjectEnrolledStatus: true,
       },
     });
-    await this.cacheManager.set(`alluser`,allUser)
     return allUser;
   }
 
@@ -723,5 +715,32 @@ export class UsersService {
         isCommonMembership500:true
       }
     })
+  }
+
+
+
+
+  async UsersNotInvestedInProject(skip, take){
+    return await this.prisma.user.findMany({
+      where:{
+        kyc:"APPROVED",
+        documents:{
+          none:{
+            title:{
+              
+                contains:"project_payment",
+                mode:"insensitive"
+              
+             
+            }
+          }
+          
+        }
+      },
+      include:{
+        documents:true
+      }
+    })
+
   }
 }
