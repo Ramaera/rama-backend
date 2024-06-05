@@ -1,6 +1,5 @@
 import { GraphQLModule } from '@nestjs/graphql';
 import { Logger, Module } from '@nestjs/common';
-import { CacheModule } from '@nestjs/cache-manager';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from 'nestjs-prisma';
 import { AppController } from './app.controller';
@@ -18,6 +17,7 @@ import { KycAgencyModule } from './kyc-agency/kyc-agency.module';
 import { ShareholdingModule } from './shareholding/shareholding.module';
 import { ProjectEnrolledModule } from './project-enrolled/project-enrolled.module';
 import { DscModule } from './dsc/dsc.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 import { RestApisModule } from './rest-apis/rest-apis.module';
 import { WalletManagementModule } from './wallet-management/wallet-management.module';
@@ -27,7 +27,7 @@ import { SalesChannelModule } from './sales-channel/sales-channel.module';
 
 @Module({
   imports: [
-    // CacheModule.register({ isGlobal: true, max:100,ttl:0 }),
+    CacheModule.register({ isGlobal: true, ttl:0 }),
     ConfigModule.forRoot({ isGlobal: true, load: [config] }),
     PrismaModule.forRoot({
       isGlobal: true,
