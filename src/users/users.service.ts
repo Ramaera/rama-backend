@@ -14,9 +14,7 @@ import {
 import { NomineeInput } from './dto/createNominee.input';
 import { saveAs } from 'file-saver';
 
-// import { CACHE_MANAGER } from '@nestjs/common';
-import { Cache } from 'cache-manager';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
+
 
 import {
   UpdateLicenseDetailsInput,
