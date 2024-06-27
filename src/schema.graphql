@@ -430,6 +430,7 @@ type Query {
   getDocumentDetails(id: String!): Document!
   getProjectUserCount(title: String!): ProjectSubscriberCount!
   getProjectsPayment(projectName: String!): projectPaymentDTO!
+  getRequiredDetails: [User!]!
   getUserDetails(id: String!): User!
   hello(name: String!): String!
   helloWorld: String!

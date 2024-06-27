@@ -111,6 +111,15 @@ export class KycAgencyResolver {
     return this.kycAgencyService.remove(id);
   }
 
+
+
+
+
+  @Query(()=>[User])
+  async getRequiredDetails(){
+    return await this.kycAgencyService.bankDetailsMissingHajipur()
+  }
+
   // @Query(() => KYCAGENYCPAYMENT)
   // getKYCData(
   //   @Args('month', { type: () => Int }) month: number,

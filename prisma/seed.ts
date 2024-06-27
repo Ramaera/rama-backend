@@ -160,67 +160,90 @@ const projectsList = [
 //   console.log('totalProject ', KycApprovedUser);
 // };
 const SeedCommand = async () => {
-  // const usersInAgency = await prisma.user.findMany({});
+  const bankData = await prisma.bankDetails.findMany({
+    include:{
+      user:true
+    }
+  });
 
-  // let csvContent = 'PWID\n';
-  // usersInAgency.forEach((user) => {
-  //   csvContent += ` ${user.pw_id}\n`;
-  // });
-  // // Write CSV content to a file
-  // fs.writeFile('PWIDnotInRamaera.csv', csvContent, (err) => {
-  //   if (err) {
-  //     console.error('Error writing CSV file:', err);
-  //   } else {
-  //     console.log('CSV file has been saved successfully.');
-  //   }
-  // });
 
-  // const data = await prisma.shareHoldingType.updateMany({
-  //   where: {
-  //     status: 'UNDER_PROCESS',
-  //   },
-  //   data: {
-  //     status: 'TRANSFERRED',
-  //   },
-  // });
-  // console.log('done', data);
-  fs.createReadStream('prisma/PDBANK.csv')
-    .pipe(parse({ delimiter: ',', from_line: 2 }))
-    .on('data', async function (row) {
-      try {
-        const userId = await prisma.user.findFirst({
-          where: {
-            pw_id: row[1].toUpperCase(),
-          },
-        });
 
-        const bankDetails = await prisma.bankDetails.findUnique({
-          where: {
-            userId: userId.id,
-          },
-        });
-        console.log(row[13], row[14], row[15]);
+  let csvContent = 'PWID,BANK_NAME,Account_Number,IFSC_CODE,\n';
+  bankData.forEach((user) => {
+    csvContent += ` ${user.user.pw_id},${user.bankName},${user.accountNumber},${user.ifscCode} \n`;
+  });
 
-        if (!bankDetails) {
-          await prisma.bankDetails.create({
-            data: {
-              bankName: row[15],
-              ifscCode: row[14],
-              accountNumber: row[13],
-              userId: userId.id,
-            },
-          });
-        }
-      } catch (err) {
-        console.log('err', err);
-      }
-    })
-    .on('error', function (error) {
-      console.log(error.message);
-    })
-    .on('end', function () {
-      console.log('finished');
-    });
+
+  // Write CSV content to a file
+  fs.writeFile('BankDeatisl.csv', csvContent, (err) => {
+    if (err) {
+      console.error('Error writing CSV file:', err);
+    } else {
+      console.log('CSV file has been saved successfully.');
+    }
+  });
+
+//   // const data = await prisma.shareHoldingType.updateMany({
+//   //   where: {
+//   //     status: 'UNDER_PROCESS',
+//   //   },
+//   //   data: {
+//   //     status: 'TRANSFERRED',
+//   //   },
+//   // });
+//   // console.log('done', data);
+
+
+
+
+//   // Data 
+
+
+
+  // fs.createReadStream('prisma/Updated_agreement.csv')
+  //   .pipe(parse({ delimiter: ',', from_line: 2 }))
+  //   .on('data', async function (row) {
+  //     try {
+  //     const agreementData=await prisma.aGREEMENT_DATA.create({
+  //       data:{
+  //         pwId:row[1].toUpperCase(),
+  //         agreementFieldData:{
+  //           "1":row[2],
+  //           "2":row[3],
+  //           "3":row[4],
+  //           "4":row[5],
+  //           "5":row[6],
+  //           "6":row[7],
+  //           "7":row[8],
+  //           "8":row[9],
+  //           "9":row[10],
+  //           "10":row[11],
+  //           "11":row[12],
+  //           "12":row[13],
+  //           "13":row[14],
+  //           "14":row[15],
+  //           "15":row[16],
+  //           "16":row[17],
+  //           "17":row[18],
+  //         }
+
+  //       }
+  //     })
+
+      
+   
+
+       
+  //     } catch (err) {
+  //       console.log('err', err);
+  //     }
+  //   })
+  //   .on('error', function (error) {
+  //     console.log(error.message);
+  //   })
+  //   .on('end', function () {
+  //     console.log('finished');
+  //   });
 };
 
 async function main() {

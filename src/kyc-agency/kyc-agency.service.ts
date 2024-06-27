@@ -681,6 +681,34 @@ export class KycAgencyService {
     return totallists;
   }
 
+
+
+
+
+  async bankDetailsMissingHajipur(){
+    const details = await this.prisma.user.findMany({
+      where:{
+        documents:{
+          some:{
+            title:"hajipur_project_payment"
+          }
+        },
+        BankDetails:{
+          none:{}
+        }
+      },
+      include:{
+        documents:true,
+        BankDetails:true
+      },
+      orderBy:{
+        createdAt:"asc"
+      }
+
+    })
+    return details
+  }
+
   // async findReport11() {
   //   const projectPaymentDocuments = await this.prisma.document.findMany({
   //     where: {
