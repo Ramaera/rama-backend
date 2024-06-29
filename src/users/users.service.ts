@@ -701,6 +701,9 @@ export class UsersService {
       include: {
         user: true,
       },
+      orderBy:{
+        createdAt:"desc"
+      }
     });
   }
 
