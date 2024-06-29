@@ -684,7 +684,7 @@ export class UsersService {
   }
   async updateBankDetails(bankData: UpdateBankDetailsInput) {
     return await this.prisma.bankDetails.update({
-      data: { ...bankData },
+      data: { ...bankData,status:"PENDING" },
       where: {
         userId: bankData.userId,
       },
