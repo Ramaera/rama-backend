@@ -386,7 +386,7 @@ export class UsersResolver {
     return this.usersService.getAllBankDetails(skip, take);
   }
 
-  @Query(() => AllBankDetails)
+  @Mutation(() => AllBankDetails)
   async UpdateBankStatus(
     @Args({ name: 'userId', type: () => String, }) userId: string,
     @Args({ name: 'status', type: () => STATUS, }) status: STATUS
