@@ -23,7 +23,7 @@ import {
   UpdateUserMembershipAdmin,
   UpdateUserStatusAdmin,
 } from './dto/update-user-Admin.input ';
-import { Membership, User } from '@prisma/client';
+import { Membership, STATUS, User } from '@prisma/client';
 import { UpdateDocumentUTRandAmountInput } from './dto/update-documentUTRandAmount.input';
 import { UpdateDocumentInput } from './dto/update-document.input';
 import { UpdateBasicDetailsInput } from './dto/update-BasicDetails.input';
@@ -693,6 +693,21 @@ export class UsersService {
       },
     });
   }
+
+
+  async updateStatusofBankDetails(userId:string, status:STATUS){
+    return await this.prisma.bankDetails.update({
+      data:{
+        status
+      },
+      where:{
+        userId:userId
+      }
+    })
+
+  }
+
+
 
   async getAllBankDetails(skip, take) {
     return await this.prisma.bankDetails.findMany({

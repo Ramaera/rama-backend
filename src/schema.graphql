@@ -409,6 +409,7 @@ type Query {
   GetFinalWalletBalanceOfAgency(agencyCode: String!): WalletBalance!
   Report: [User!]!
   TotalShareholders(skip: Int! = 0, take: Int! = 100): [Shareholding!]!
+  UpdateBankStatus(status: STATUS!, userId: String!): AllBankDetails!
   UsersNotInvestedInProject(skip: Int! = 0, take: Int! = 100): [User!]!
   agencyWithdrawlRequest(agencyCode: String!): [withdrawlRequest!]!
   allKycUser(input: SearchMembershipInput!, skip: Int! = 0, take: Int! = 100): [User!]!

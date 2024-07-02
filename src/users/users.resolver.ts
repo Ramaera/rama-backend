@@ -386,6 +386,14 @@ export class UsersResolver {
     return this.usersService.getAllBankDetails(skip, take);
   }
 
+  @Query(() => AllBankDetails)
+  async UpdateBankStatus(
+    @Args({ name: 'userId', type: () => String, }) userId: string,
+    @Args({ name: 'status', type: () => STATUS, }) status: STATUS
+  ) {
+    return this.usersService.updateStatusofBankDetails(userId, status);
+  }
+
   @Query(() => [User])
   async UsersNotInvestedInProject(
     @Args({ name: 'take', type: () => Int, defaultValue: 100 }) take: number,
