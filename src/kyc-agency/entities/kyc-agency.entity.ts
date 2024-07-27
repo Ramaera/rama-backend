@@ -79,6 +79,13 @@ export class KYCAGENYCPAYMENT {
   @Field(() => [User], { nullable: true })
   KycApprovedUser: User[];
 
+
+  @Field(() => [User], { nullable: true })
+  SpecialKycApprovedUser: User[];
+
+  @Field(() => [User], { nullable: true })
+  SpecialKycCommon500ApprovedUser: User[];
+
   @Field(() => [User], { nullable: true })
   KycCommon500ApprovedUser: User[];
 

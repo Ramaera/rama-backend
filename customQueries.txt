@@ -124,8 +124,59 @@
   allPayment.forEach((payment) => {
     csvContent += `${payment.title},${payment.approvalDocumentDate},${payment.amount},${payment.user.pw_id}\n`;
   });
+
+
+
   // Write CSV content to a file
   fs.writeFile('payments.csv', csvContent, (err) => {
+    if (err) {
+      console.error('Error writing CSV file:', err);
+    } else {
+      console.log('CSV file has been saved successfully.');
+    }
+  });
+
+ 
+ 
+ 
+ const bankData = await prisma.user.findMany({
+  where: {
+    AND: [
+      {
+        documents: {
+          some: {
+            title: 'hajipur_project_payment' // Check for document title
+          }
+        }
+      },
+      {
+        BankDetails: {
+          some:{
+            status:"APPROVED"// Check for existence of any bank detail entry
+        }}
+      }
+    ]
+  },
+  include:{
+    BankDetails:true
+  }
+});
+
+
+
+
+
+
+  let csvContent = 'PWID,AccountNumber,IFSC_CODE,BANK_NAME,Status\n';
+  bankData.forEach((doc) => {
+    csvContent += ` ${doc.pw_id},${doc.BankDetails[0].accountNumber}, ${doc.BankDetails[0].ifscCode},${doc.BankDetails[0].bankName},${doc.BankDetails[0].status} \n`;
+  });
+
+
+
+
+  // Write CSV content to a file
+  fs.writeFile('hajipurBankApprovedData.csv', csvContent, (err) => {
     if (err) {
       console.error('Error writing CSV file:', err);
     } else {

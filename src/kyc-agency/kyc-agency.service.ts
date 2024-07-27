@@ -136,6 +136,8 @@ export class KycAgencyService {
     ) {
       let totalKycUser = 0;
       let totalKYC500User = 0;
+      let totalSpecialKycApprovedUser=0
+      let totalSpecialCommonKycApprovedUser=0
       let kycAmount = 0;
       let kyc500Amount = 0;
 
@@ -148,6 +150,10 @@ export class KycAgencyService {
 
       let agraProjectAmount = 0;
 
+      
+
+
+
       const KycApprovedUser = await this.prisma.user.findMany({
         where: {
           referralAgencyCode: AgencyCode,
@@ -155,6 +161,7 @@ export class KycAgencyService {
           isCommonMembership500: false,
           createdAt: {
             gte: agencyCreationDate.createdAt,
+            lte:"2024-07-08T00:00:00.000Z"
           },
           documents: {
             some: {
@@ -189,6 +196,53 @@ export class KycAgencyService {
           },
         },
       });
+
+
+
+
+      const SpecialKycApprovedUser = await this.prisma.user.findMany({
+        where: {
+          referralAgencyCode: AgencyCode,
+          kyc: 'APPROVED',
+          isCommonMembership500: false,
+          kycApprovalDate:{
+            gte:"2024-07-08T00:00:00.000Z",
+            lte: getLocalDateData.endDate,
+          },
+          createdAt: {
+            gte: "2024-07-08T00:00:00.000Z",
+          },
+          documents: {
+            some: {
+              status: 'APPROVED',
+              title: 'demat_document',
+              approvalDocumentDate: {
+                gte: "2024-07-08T00:00:00.000Z",
+                lte: getLocalDateData.endDate,
+              },
+            },
+          },
+        },
+      });
+  
+      const SpecialKycCommon500ApprovedUser = await this.prisma.user.findMany({
+        where: {
+          referralAgencyCode: AgencyCode,
+          kyc: 'APPROVED',
+          isCommonMembership500: true,
+          kycApprovalDate:{
+            gte:"2024-07-08T00:00:00.000Z",
+            lte: getLocalDateData.endDate,
+          },
+          createdAt: {
+            gte: "2024-07-08T00:00:00.000Z",
+          },
+        },
+      });
+
+
+      totalSpecialKycApprovedUser=SpecialKycApprovedUser.length
+      totalSpecialCommonKycApprovedUser=SpecialKycCommon500ApprovedUser.length
 
       totalKYC500User = KycCommon500ApprovedUser.length;
 
@@ -323,6 +377,8 @@ export class KycAgencyService {
       return {
         kycRewardAmount,
         kycAmount,
+        SpecialKycApprovedUser,
+        SpecialKycCommon500ApprovedUser,
 
         KycApprovedUser,
         kyc500RewardAmount,
@@ -487,6 +543,69 @@ export class KycAgencyService {
         return range.amount;
       }
     }
+  }
+
+
+
+  async getAmountAfter8July(month,year,agencyCode){
+    const getLocalDateData = getStartAndEndDate(month, year);
+
+    const agencyCreationDate = await this.prisma.kycAgency.findFirst({
+      where: {
+        agencyCode: agencyCode,
+      },
+      include: {
+        user: true,
+      },
+    });
+    const KycApprovedUser = await this.prisma.user.findMany({
+      where: {
+        referralAgencyCode: agencyCode,
+        kyc: 'APPROVED',
+        isCommonMembership500: false,
+        kycApprovalDate:{
+          gte:"2024-07-08T00:00:00.000Z",
+          lte: getLocalDateData.endDate,
+        },
+        createdAt: {
+          gte: agencyCreationDate.createdAt,
+        },
+        documents: {
+          some: {
+            status: 'APPROVED',
+            title: 'demat_document',
+            approvalDocumentDate: {
+              gte: "2024-07-08T00:00:00.000Z",
+              lte: getLocalDateData.endDate,
+            },
+          },
+        },
+      },
+    });
+
+    const KycCommon500ApprovedUser = await this.prisma.user.findMany({
+      where: {
+        referralAgencyCode: agencyCode,
+        kyc: 'APPROVED',
+        isCommonMembership500: true,
+        kycApprovalDate:{
+          gte:"2024-07-08T00:00:00.000Z",
+          lte: getLocalDateData.endDate,
+        },
+        createdAt: {
+          gte: agencyCreationDate.createdAt,
+        },
+      },
+    });
+
+
+   const kycAmount=KycApprovedUser.length*1000
+ const    kyc500Amount=KycCommon500ApprovedUser.length*250
+
+
+
+    return {KycApprovedUser,KycCommon500ApprovedUser,kycAmount,kyc500Amount}
+    
   }
 
   async getProjectReferralAmount(month, year, projectTitle, agencyCode) {
@@ -709,157 +828,6 @@ export class KycAgencyService {
     return details
   }
 
-  // async findReport11() {
-  //   const projectPaymentDocuments = await this.prisma.document.findMany({
-  //     where: {
-  //       AND: [
-  //         {
-  //           createdAt: {
-  //             gte: '2023-09-23T00:00:00.000Z',
-  //             lte: '2023-09-29T23:59:00.000Z',
-  //           },
-  //           url: {
-  //             contains: 'kycramaerabackend.ramaera.com',
-  //           },
-  //           title: {
-  //             contains: 'agra',
-  //           },
-  //           status: {
-  //             not: 'REJECTED',
-  //           },
-  //         },
-  //       ],
-  //     },
-  //     orderBy: {
-  //       user: {
-  //         referralAgencyCode: 'desc',
-  //       },
-  //     },
-  //     include: {
-  //       user: true,
-  //     },
-  //   });
-  //   projectPaymentDocuments.map((projectPaymentDocument) => {
-  //     console.log(
-  //       projectPaymentDocument.user.pw_id,
-  //       projectPaymentDocument.title,
-  //       projectPaymentDocument.amount,
-  //       projectPaymentDocument.user.referralAgencyCode
-  //     );
-  //   });
-  //   return projectPaymentDocuments;
-  // }
-
-  // async findReport1() {
-  //   let total = 0;
-
-  //   const doc = await this.prisma.document.findMany({
-  //     where: {
-  //       AND: [
-  //         {
-  //           title: { contains: 'agra' },
-  //           status: { not: 'REJECTED' },
-  //           user: {
-  //             referralAgencyCode: {
-  //               contains: 'RLI',
-  //             },
-  //           },
-  //         },
-  //       ],
-  //       OR: [
-  //         {
-  //           createdAt: {
-  //             gte: '2023-08-26T00:00:00.000Z',
-  //             lte: '2023-09-01T23:59:00.000Z',
-  //           },
-  //         },
-  //         {
-  //           updatedAt: {
-  //             gte: '2023-08-26T00:00:00.000Z',
-  //             lte: '2023-09-01T23:59:00.000Z',
-  //           },
-  //         },
-  //       ],
-  //     },
-  //     include: {
-  //       user: true,
-  //     },
-  //   });
-
-  //   console.log('--->>>', doc.length);
-  //   let total_amount = 0;
-  //   doc.map(async (dd) => {
-  //     const user = await this.prisma.user.findFirst({
-  //       where: {
-  //         id: dd.userId,
-  //       },
-  //     });
-
-  //     const am = await this.prisma.document.findMany({
-  //       where: {
-  //         id: dd.id,
-  //       },
-  //     });
-  //     console.log('--->>', am.length, user.referralAgencyCode);
-  //     am.map((amount_total) => {
-  //       console.log(
-  //         '----->>Hajipur Details',
-  //         amount_total.amount,
-  //         amount_total.title,
-  //         user.referralAgencyCode,
-  //         user.pw_id
-  //       );
-  //     });
-  //   });
-
-  //   // checkreport.map(async (agency) => {
-  //   //   console.log(agency.agencyCode);
-
-  //   let totalUser;
-  //   // const checkusersList = await this.prisma.user.findMany({
-  //   //   where: {
-  //   //     referralAgencyCode: agency.agencyCode,
-  //   //   },
-  //   // });
-
-  //   // checkusersList.map(async (users) => {
-  //   //   const docwithpay = await this.prisma.document.findMany({
-  //   //     where: {
-  //   //       AND: [
-  //   //         {
-  //   //           title: { contains: 'hajipur' },
-  //   //           createdAt: {
-  //   //             gte: '2023-08-26T00:00:00.000Z',
-  //   //             lte: '2023-09-01T23:59:00.000Z',
-  //   //           },
-  //   //         },
-  //   //       ],
-  //   //     },
-  //   //   });
-  //   //   total += 1;
-  //   // });
-
-  //   // const checkuserinsideAGENCY = await this.prisma.user.findMany({
-  //   //   where: {
-  //   //     AND: [
-  //   //       {
-  //   //         referralAgencyCode: agency.agencyCode,
-  //   //         createdAt: {
-  //   //           gte: '2023-08-26T00:00:00.000Z',
-  //   //           lte: '2023-09-01T23:59:00.000Z',
-  //   //         },
-  //   //       },
-  //   //     ],
-  //   //   },
-  //   //   include: {
-  //   //     documents: true,
-  //   //   },
-  //   //   // });
-  //   // });
-  //   // console.log('total hajipur doc', total);
-
-  //   // console.log('---->>>', checkreport);
-  // }
 
   update(id: number, updateKycAgencyInput: UpdateKycAgencyInput) {
     return `This action updates a #${id} kycAgency`;
