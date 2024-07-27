@@ -34,6 +34,7 @@ import { BankDetailsInput } from './dto/create-bankDetails.input';
 import { UpdateBankDetailsInput } from './dto/update-bankDetails.input';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
+import { VisitUserInputData } from './dto/user-visit.input';
 
 @Injectable()
 export class UsersService {
@@ -735,6 +736,36 @@ export class UsersService {
     })
   }
 
+
+
+  async userVistedProject(visitUserData:VisitUserInputData){
+
+    const findUserVisit=await this.prisma.projectVisitUserData.findFirst({
+      where:{
+        userId:visitUserData.userId,
+        projectName:visitUserData.projectName
+      }
+    })
+
+    if (!findUserVisit){
+      const addUserData = await this.prisma.projectVisitUserData.create({
+        data:{
+          userId:visitUserData.userId,
+          projectName:visitUserData.projectName
+        }
+      })
+
+      return {
+        status:200,
+        message:"Success"
+      }
+
+    }
+    return {status:409,
+      message:"userDataAlreadyExist"
+    }
+
+  }
 
 
 

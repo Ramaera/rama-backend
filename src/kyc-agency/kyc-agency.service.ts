@@ -249,10 +249,10 @@ export class KycAgencyService {
 
       totalKycUser = KycApprovedUser.length;
 
-      const kycRewardAmount =
-        getStartAndEndDate(month, year).startDate >= '2024-02-01T00:00:00.000Z'
-          ? await this.getKycReferralAmount(totalKycUser)
-          : 200;
+      const kycRewardAmount =200 
+        // getStartAndEndDate(month, year).startDate >= '2024-02-01T00:00:00.000Z'
+        //   ? await this.getKycReferralAmount(totalKycUser)
+        //   : 200;
 
       const kyc500RewardAmount = await this.getKyc500ReferralAmount(
         totalKYC500User

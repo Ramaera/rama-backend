@@ -54,6 +54,7 @@ import { STATUS } from '@prisma/client';
 import { UpdateBankDetailsInput } from './dto/update-bankDetails.input';
 import { AllBankDetails } from './entities/AllbankDetails.entity';
 import { CacheInterceptor } from '@nestjs/cache-manager';
+import { VisitUserInputData } from './dto/user-visit.input';
 
 @Resolver(() => User)
 @UseGuards(GqlAuthGuard)
@@ -394,6 +395,16 @@ export class UsersResolver {
     return this.usersService.updateStatusofBankDetails(userId, status);
   }
 
+
+
+
+  
+  @Mutation(() => AllBankDetails)
+  async createProjectVisitData(
+    @Args({ name: 'data', type: () => String, }) data:VisitUserInputData ,
+  ) {
+    return this.usersService.userVistedProject(data);
+  }
   @Query(() => [User])
   async UsersNotInvestedInProject(
     @Args({ name: 'take', type: () => Int, defaultValue: 100 }) take: number,

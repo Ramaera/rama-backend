@@ -37,6 +37,7 @@ Table User {
   ReferralKYCTransaction ReferralKYCTransaction [not null]
   ReferralProjectransaction ReferralProjectTransaction [not null]
   BankDetails BankDetails [not null]
+  ProjectVisitUserData ProjectVisitUserData [not null]
 }
 
 Table BankDetails {
@@ -227,6 +228,15 @@ Table SalesPerson {
   SalesPersonDocument SalesPersonDocument [not null]
 }
 
+Table ProjectVisitUserData {
+  id String [pk]
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime
+  user User [not null]
+  userId String [not null]
+  projectName String [not null]
+}
+
 Table SalesPersonDocument {
   id String [pk]
   createdAt DateTime [default: `now()`]
@@ -335,5 +345,7 @@ Ref: ReferralSalesTransaction.salesPersonId - SalesPerson.id
 Ref: ReferralSalesTransaction.kycAgencyId > KycAgency.id
 
 Ref: SalesPerson.kycAgencycode > KycAgency.agencyCode
+
+Ref: ProjectVisitUserData.userId > User.id
 
 Ref: SalesPersonDocument.salesPersonId > SalesPerson.id

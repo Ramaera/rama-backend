@@ -279,6 +279,7 @@ type Mutation {
   createDsc(createDscInput: CreateDscInput!): DscOutputDataField!
   createKycAgency(data: CreateKycAgencyCodeInput!): AllKycAgency!
   createProjectEnrolled(projectData: projectDataInput!): ProjectEnrolled!
+  createProjectVisitData(data: String!): AllBankDetails!
   createSalesPerson(data: CreateSalesPerson!): SalesPersonOutPut!
   createShareholding(data: CreateShareholdingInput!): Shareholding!
   deleteDocumet(id: String!): Document!

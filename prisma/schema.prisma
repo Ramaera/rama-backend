@@ -48,6 +48,8 @@ model User {
   ReferralKYCTransaction    ReferralKYCTransaction[]
   ReferralProjectransaction ReferralProjectTransaction[]
   BankDetails               BankDetails[]
+
+  ProjectVisitUserData ProjectVisitUserData[]
 }
 
 model BankDetails {
@@ -238,6 +240,17 @@ model SalesPerson {
   address                          Json?
   extraInfo                        Json?
   SalesPersonDocument              SalesPersonDocument[]
+}
+
+
+model ProjectVisitUserData{
+   id            String      @id @default(cuid())
+  createdAt     DateTime?   @default(now())
+  updatedAt     DateTime?   @updatedAt
+  user         User       @relation(fields: [userId], references: [id])
+  userId       String   
+  projectName  String  
+
 }
 
 model SalesPersonDocument {
