@@ -187,6 +187,8 @@ type KYCAGENYCPAYMENT {
   JhansiprojectDocument: [DocumentModal!]
   KycApprovedUser: [User!]
   KycCommon500ApprovedUser: [User!]
+  SpecialKycApprovedUser: [User!]
+  SpecialKycCommon500ApprovedUser: [User!]
   agraProjectAmount: Int
   chapraProjectAmount: Int
   hajipurProjectAmount: Int

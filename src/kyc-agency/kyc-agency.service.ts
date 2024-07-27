@@ -183,6 +183,7 @@ export class KycAgencyService {
           isCommonMembership500: true,
           createdAt: {
             gte: agencyCreationDate.createdAt,
+            lte:"2024-07-08T00:00:00.000Z"
           },
           documents: {
             some: {
@@ -379,7 +380,6 @@ export class KycAgencyService {
         kycAmount,
         SpecialKycApprovedUser,
         SpecialKycCommon500ApprovedUser,
-
         KycApprovedUser,
         kyc500RewardAmount,
         kyc500Amount,
