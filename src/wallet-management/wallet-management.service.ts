@@ -226,21 +226,20 @@ export class WalletManagementService {
   ) {
     try {
       const check = await tx.getOrderFromPlanetsera(orderId);
-      // if (check) {
-      //   throw new ConflictException(
-      //     `Project Amount already Transferred To Wallet`
-      //   );
-      // }
-      // await tx.referralProjectTransaction.create({
-      //   data: {
-      //     agencyCode: agencyCode,
-      //     kycAgencyId: agencyId,
-      //     userId: userIdValue,
-      //     documentId: documentId,
-      //     transferDate: new Date(),
-      //     pwID: (await tx.user.findFirst({ where: { id: userIdValue } })).pw_id,
-      //   },
-      // });
+      if (check) {
+        throw new ConflictException(
+          `Order Reward Amount already Transferred To Wallet`
+        );
+      }
+      await tx.planetseraOrderRewardTransaction.create({
+        data: {
+          agencyCode: agencyCode,
+          kycAgencyId: agencyId,
+          userId: userId,
+          orderId: orderId,
+          transferDate: new Date(),
+        },
+      });
     } catch (err) {
       throw new Error(err.message);
     }
