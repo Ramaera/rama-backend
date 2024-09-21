@@ -129,7 +129,7 @@ export class WalletManagementService {
     });
   }
 
-  async agencyWithdrawlRequest(agencyCode: String) {
+  async agencyWithdrawlRequest(agencyCode: string) {
     return this.prisma.withdrawlRequest.findMany({
       where: { agencyCode },
     });
@@ -312,5 +312,9 @@ export class WalletManagementService {
 
   findAllProjectReferral() {
     return this.prisma.referralProjectTransaction.findMany({});
+  }
+
+  findAllPlanetseraReferral() {
+    return this.prisma.planetseraOrderRewardTransaction.findMany({});
   }
 }
