@@ -55,6 +55,7 @@ import { UpdateBankDetailsInput } from './dto/update-bankDetails.input';
 import { AllBankDetails } from './entities/AllbankDetails.entity';
 import { CacheInterceptor } from '@nestjs/cache-manager';
 import { VisitUserInputData } from './dto/user-visit.input';
+import { VisitUserInputData } from './dto/user-visit.input';
 
 @Resolver(() => User)
 @UseGuards(GqlAuthGuard)
@@ -373,7 +374,6 @@ export class UsersResolver {
     return this.usersService.updateBankDetails(data);
   }
 
-
   @Mutation(() => User)
   async updateKyc500(@Args('id') userId: string) {
     return this.usersService.update500kyc(userId);
@@ -389,19 +389,15 @@ export class UsersResolver {
 
   @Mutation(() => AllBankDetails)
   async UpdateBankStatus(
-    @Args({ name: 'userId', type: () => String, }) userId: string,
-    @Args({ name: 'status', type: () => STATUS, }) status: STATUS
+    @Args({ name: 'userId', type: () => String }) userId: string,
+    @Args({ name: 'status', type: () => STATUS }) status: STATUS
   ) {
     return this.usersService.updateStatusofBankDetails(userId, status);
   }
 
-
-
-
-  
   @Mutation(() => AllBankDetails)
   async createProjectVisitData(
-    @Args({ name: 'data', type: () => String, }) data:VisitUserInputData ,
+    @Args({ name: 'data', type: () => String }) data: VisitUserInputData
   ) {
     return this.usersService.userVistedProject(data);
   }
@@ -412,7 +408,4 @@ export class UsersResolver {
   ) {
     return this.usersService.UsersNotInvestedInProject(skip, take);
   }
-
-
-
 }
