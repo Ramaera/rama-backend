@@ -7,6 +7,7 @@ import { WalletBalance } from './entities/wallet-balance.entity';
 import { UsersService } from 'src/users/users.service';
 import { PrismaClient, WITHDRAW_STATUS } from '@prisma/client';
 import { WithdraWalletMoney } from './dto/withdrawlRequest.input.dto';
+import axios from 'axios';
 
 @Injectable()
 export class WalletManagementService {
@@ -59,7 +60,7 @@ export class WalletManagementService {
               : transactionInput.amount,
           },
         });
-        var metadataFromOutput = totalDetails.metaData;
+        const metadataFromOutput = totalDetails.metaData;
         const dataFromMetaData = metadataFromOutput as { userId?: string }[];
         const userObject = dataFromMetaData.find((obj) =>
           obj.hasOwnProperty('userId')
@@ -83,11 +84,29 @@ export class WalletManagementService {
         const documentIdValue = documentObject
           ? documentObject.documentId
           : null;
+        const OrderDataFromMetaData = metadataFromOutput as {
+          orderId: string;
+        }[];
+        const OrderObject = OrderDataFromMetaData.find((obj) =>
+          obj.hasOwnProperty('orderId')
+        );
+        const OrderIdValue = OrderObject ? OrderObject.orderId : null;
+
         if (transactionInput.category === 'DEPOSIT_PROJECT') {
           await this.referralProjectTransaction(
             tx,
             userIdValue,
             documentIdValue,
+            transactionInput.agencyCode,
+            checkAgencyCode.id
+          );
+        }
+
+        if (transactionInput.category === 'DEPOSIT_PLANETSERA') {
+          await this.planetseraOrderRewardTransaction(
+            tx,
+            userIdValue,
+            OrderIdValue,
             transactionInput.agencyCode,
             checkAgencyCode.id
           );
@@ -110,7 +129,7 @@ export class WalletManagementService {
     });
   }
 
-  async agencyWithdrawlRequest(agencyCode: String) {
+  async agencyWithdrawlRequest(agencyCode: string) {
     return this.prisma.withdrawlRequest.findMany({
       where: { agencyCode },
     });
@@ -184,6 +203,48 @@ export class WalletManagementService {
     }
   }
 
+  async getOrderFromPlanetsera(id) {
+    try {
+      const response = await axios.get(
+        `https://planetseraapi.planetsera.com/order/${id}`
+      );
+
+      console.log('Planetsera Order:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error:', error);
+      throw new Error(`Failed to fetch order: ${error.message}`);
+    }
+  }
+
+  async planetseraOrderRewardTransaction(
+    tx,
+    userId,
+    orderId: string,
+    agencyCode: string,
+    agencyId: string
+  ) {
+    try {
+      const check = await tx.getOrderFromPlanetsera(orderId);
+      if (check) {
+        throw new ConflictException(
+          `Order Reward Amount already Transferred To Wallet`
+        );
+      }
+      await tx.planetseraOrderRewardTransaction.create({
+        data: {
+          agencyCode: agencyCode,
+          kycAgencyId: agencyId,
+          userId: userId,
+          orderId: orderId,
+          transferDate: new Date(),
+        },
+      });
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  }
+
   async findWalletBalance(agencyCode: string) {
     const finalBalance = this.prisma.walletTransactionAndBalance.findFirst({
       where: {
@@ -250,5 +311,9 @@ export class WalletManagementService {
 
   findAllProjectReferral() {
     return this.prisma.referralProjectTransaction.findMany({});
+  }
+
+  findAllPlanetseraReferral() {
+    return this.prisma.planetseraOrderRewardTransaction.findMany({});
   }
 }

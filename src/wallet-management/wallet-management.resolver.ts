@@ -12,6 +12,7 @@ import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
 import { WithdraWalletMoney } from './dto/withdrawlRequest.input.dto';
 import { WITHDRAW_STATUS } from '@prisma/client';
+import { PLANETSERAREFERRAL } from './entities/planetsera-referral.entity';
 
 @Resolver(() => Wallet)
 export class WalletManagementResolver {
@@ -62,6 +63,12 @@ export class WalletManagementResolver {
   @Query(() => [PROJECTREFERRAL], { name: 'getAllProjectReferral' })
   findAllProjectReferral() {
     return this.walletService.findAllProjectReferral();
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @Query(() => [PLANETSERAREFERRAL], { name: 'getAllPlanetseraReferral' })
+  findAllPlanetseraReferral() {
+    return this.walletService.findAllPlanetseraReferral();
   }
 
   @UseGuards(GqlAuthGuard)
