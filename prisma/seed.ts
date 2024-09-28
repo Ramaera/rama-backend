@@ -17,24 +17,24 @@ const { parse } = require('csv-parse');
 
 
 const SeedCommand = async () => {
-  fs.createReadStream('prisma/COMMON_KYC_UNDER_PROCESS2.csv')
+  fs.createReadStream('prisma/HajipurShareAllotment.csv')
     .pipe(parse({ delimiter: ',', from_line: 2 }))
     .on('data', async function (row) {
 try{
 
       const searchData= await prisma.user.findFirst({
         where:{
-          pw_id:row[1]
+          pw_id:row[1].toUpperCase()
         }
       })
 
       if (searchData){
       await prisma.shareHoldingType.create({
         data:{
-          InvestmentType:"COMMON_KYC_SHARE",
-          allotedShare:parseInt(row[6]),
-          status:"UNDER_PROCESS",
-          userPWId:row[1],
+          InvestmentType:"HAJIPUR_PROJECT_SHARE",
+          allotedShare:parseInt(row[3]),
+          status:"TRANSFERRED",
+          userPWId:row[1].toUpperCase(),
           userId:searchData?.id
         }
       })

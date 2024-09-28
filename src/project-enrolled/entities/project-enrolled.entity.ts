@@ -19,7 +19,7 @@ export class Projects {
 @ObjectType()
 export class ProjectEnrolled {
   @Field(() => String, { description: 'Example field (placeholder)' })
-  userId?: String;
+  userId?: string;
 
   @Field(() => User)
   user?: User | null;

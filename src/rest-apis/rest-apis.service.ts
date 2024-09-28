@@ -21,6 +21,7 @@ export class RestApisService {
           createdAt: true,
           membership: true,
           referralAgencyCode: true,
+          ProjectEnrolledStatus: true,
           documents: {
             select: {
               title: true,
@@ -59,6 +60,14 @@ export class RestApisService {
           }
 
           return newUser;
+        });
+      })
+      .then((data) => {
+        return data.map((user) => {
+          const totalEnrolledInProjects = user.ProjectEnrolledStatus.length;
+          const newData = { ...user, totalEnrolledInProjects };
+
+          return newData;
         });
       });
   }
