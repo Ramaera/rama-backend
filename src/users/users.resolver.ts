@@ -55,7 +55,6 @@ import { UpdateBankDetailsInput } from './dto/update-bankDetails.input';
 import { AllBankDetails } from './entities/AllbankDetails.entity';
 import { CacheInterceptor } from '@nestjs/cache-manager';
 import { VisitUserInputData } from './dto/user-visit.input';
-import { VisitUserInputData } from './dto/user-visit.input';
 
 @Resolver(() => User)
 @UseGuards(GqlAuthGuard)
