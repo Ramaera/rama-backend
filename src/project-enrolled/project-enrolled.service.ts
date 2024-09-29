@@ -136,7 +136,7 @@ export class ProjectEnrolledService {
               : data.project_payment_name === 'chapra_project_payment'
               ? 'CHAPRA_WATER_PROJECT'
               : data.project_payment_name === 'jhansi_project_payment'
-              ? 'CHAPRA_WATER_PROJECT'
+              ? 'JHANSI_WATER_PROJECT'
               : 'Not in Project',
           projectStatus: 'ENROLLED',
           userId: searchUser.id,

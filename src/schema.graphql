@@ -335,6 +335,26 @@ type NomineeModel {
   updatedAt: DateTime!
 }
 
+type PLANETSERAREFERRAL {
+  """Agency COde"""
+  agencyCode: String!
+
+  """Transaction Created At """
+  createdAt: DateTime!
+
+  """Id of Transaction"""
+  id: Int!
+
+  """Order Id """
+  orderId: String!
+
+  """Transaction Updated At """
+  updatedAt: DateTime!
+
+  """user Id """
+  userId: String!
+}
+
 type PROJECTREFERRAL {
   """Agency COde"""
   agencyCode: String!
@@ -428,6 +448,7 @@ type Query {
   getAgreementData(PWID: String!): AgreementData!
   getAllKycHandler: [KYCHANDLER!]!
   getAllKycReferral: [KYCREFERRAL!]!
+  getAllPlanetseraReferral: [PLANETSERAREFERRAL!]!
   getAllProjectReferral: [PROJECTREFERRAL!]!
   getAllShareHoldersCount: ShareHolderCountDTO!
   getAllUser(skip: Int! = 0, take: Int! = 5000): [User!]!

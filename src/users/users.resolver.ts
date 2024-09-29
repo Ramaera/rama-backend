@@ -337,8 +337,8 @@ export class UsersResolver {
 
   @Query(() => User)
   async ChangeAmountOfRamaeraLegalInfoTech() {
-    let projectAmounts = await this.getProjectsPayment('hajipur');
-    let hajipur_total_received = projectAmounts.ProjectAmountReceived;
+    const projectAmounts = await this.getProjectsPayment('hajipur');
+    const hajipur_total_received = projectAmounts.ProjectAmountReceived;
     const _user = await this.usersService.changeAmountofRamaeraLegal(
       hajipur_total_received
     );

@@ -28,9 +28,9 @@ export class RestApisService {
               status: true,
               // approvalDocumentDate: true,
             },
-            where: {
-              title: 'demat_document',
-            },
+            // where: {
+            //   title: 'demat_document',
+            // },
           },
         },
       })
@@ -64,12 +64,43 @@ export class RestApisService {
       })
       .then((data) => {
         return data.map((user) => {
-          const totalEnrolledInProjects = user.ProjectEnrolledStatus.length;
+          const totalEnrolledInProjects = this.getEnrolledProjectsCount(
+            user.documents
+          );
           const newData = { ...user, totalEnrolledInProjects };
 
           return newData;
         });
       });
+  }
+
+  getEnrolledProjectsCount(documents) {
+    let enrolledProjects = 0;
+    documents.map((doc) => {
+      if (
+        doc.title === 'hajipur_project_payment' &&
+        doc.status === 'APPROVED'
+      ) {
+        enrolledProjects = enrolledProjects + 1;
+      }
+      if (doc.title === 'agra_project_payment' && doc.status === 'APPROVED') {
+        enrolledProjects = enrolledProjects + 1;
+      }
+      if (
+        doc.title === 'hyderabad_project_payment' &&
+        doc.status === 'APPROVED'
+      ) {
+        enrolledProjects = enrolledProjects + 1;
+      }
+      if (doc.title === 'chapra_project_payment' && doc.status === 'APPROVED') {
+        enrolledProjects = enrolledProjects + 1;
+      }
+      if (doc.title === 'jhansi_project_payment' && doc.status === 'APPROVED') {
+        enrolledProjects = enrolledProjects + 1;
+      }
+    });
+
+    return enrolledProjects;
   }
 
   findOne(id: number) {
