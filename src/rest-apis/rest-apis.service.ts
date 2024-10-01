@@ -26,6 +26,7 @@ export class RestApisService {
             select: {
               title: true,
               status: true,
+              amount: true,
               // approvalDocumentDate: true,
             },
             // where: {
